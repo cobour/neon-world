@@ -1,0 +1,9 @@
+*.bin
+*.raw
+*.gz
+files_descriptor.i
+files_index.i
+*.dat
+.DS_Store
+**/.DS_Store
+NeonWorld

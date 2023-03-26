@@ -1,0 +1,52 @@
+
+DONE    only one index- and filedesc-file
+        
+DONE    scroll: do not draw right column when at end of screenbuffer
+DONE    scroll: do not draw left column when at beginning of screenbuffer
+DONE    scroll: draw left column
+DONE    scroll: reaching-end-of-level detection => add metadata to generated source files and use at '.ps_update_xpos' and '.pdnt_done'
+
+DONE    scroll: status bytes => status-bits
+
+DONE    scroll: usage of second buffer and buffer-switching each frame
+DONE    scroll: filling of third buffer for bob-restoring
+        
+DONE    output memory usage to console on exit
+
+DONE    player: playersprite moves with joystick input
+DONE    player: animation (normal, moving up, moving down)
+DONE    player: collision detection with explosion (anim+sfx)
+DONE    player: shots when pressing fire (with delay between shots), just play sample in the first place
+
+DONE    panel: lives and score
+NOPE    panel: include in color fade ?
+
+DONE    joystick.asm
+
+DONE    fade: move vars to global om-structure
+
+DONE    IG_EXIT: only one user? delete as macro and include code at user location
+
+DONE    mainmenu: fade in and out
+DONE    REFACTOR: do_fade to fade.asm, FadeIn and FadeOut bits to general bits
+DONE    mainmenu: animate blue lightning bar
+DONE    mainmenu: use joystick to switch options and start level or exit accordingly
+DONE    mainmenu: show credits (graphics, music and code)
+
+DONE    ingame: exit back to mainmenu
+DONE    REFACTOR: all colors in copperlist to black -> no need to set them to black in code
+
+DONE    fade: switch to proportional steps when fading
+        
+DONE    sfx.asm
+        
+DONE    convert todo.txt and all readme.txt's to markdown
+
+
+
+        check error codes after os calls
+
+        scroll: switch buffers even when there is no more scrolling
+
+        playershots: shots are bobs and do not collide in the first place
+        playershots: collision detection with bitplanes

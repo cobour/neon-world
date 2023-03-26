@@ -1,0 +1,4 @@
+{
+    "java.project.sourcePaths": ["data/tools"],
+    "java.project.outputPath": "build/java/bin",
+}

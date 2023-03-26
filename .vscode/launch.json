@@ -1,0 +1,54 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Launch Converter",
+            "request": "launch",
+            "mainClass": "Converter",
+            "projectName": "neon-world_82c9b3a9"
+        },
+        {
+            "type": "amiga-assembly",
+            "request": "launch",
+            "name": "FS-UAE Debug",
+            "stopOnEntry": false,
+            "program": "${workspaceFolder}/uae/dh0/NeonWorld",
+            "remoteProgram": "SYS:NeonWorld",
+            "emulatorType": "fs-uae",
+            "emulatorArgs": [
+                "--chip_memory=512",
+                "--slow_memory=0",
+                "--hard_drive_0=${workspaceFolder}/uae/dh0",
+                "--automatic_input_grab=0",
+                "--joystick_port_1=keyboard",
+                "--amiga_model=A500",
+                "--automatic_input_grab=0",
+                "--video_sync=0",
+                "--fullscreen=0"
+            ],
+            "preLaunchTask": "amigaassembly: build"
+        },
+        {
+            "type": "uae-run",
+            "request": "launch",
+            "name": "FS-UAE Run",
+            "emulator": "${config:amiga-assembly.binDir}/fs-uae",
+            "emulatorWorkingDir": "${config:amiga-assembly.binDir}",
+            "options": [
+                "--chip_memory=512",
+                "--slow_memory=0",
+                "--hard_drive_0=${workspaceFolder}/uae/dh0_adf",
+                "--joystick_port_1=keyboard",
+                "--amiga_model=A500",
+                "--automatic_input_grab=0",
+                "--video_sync=0",
+                "--fullscreen=0"
+            ],
+            "preLaunchTask": "amigaassembly: build for ADF"
+        }
+    ]
+}
