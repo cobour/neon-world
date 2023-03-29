@@ -83,8 +83,7 @@ ig_start:
 .init_music:
                 lea.l       m_om_area+ig_om_f003+f003_dat_universe_mod_data,a0
                 lea.l       m_cm_area+ig_cm_f002+f002_dat_universe_mod_samples,a1
-                moveq.l     #0,d0
-                jmp         _mt_init
+                PTP_INIT
 
 .cleanup_music:
                 jmp         _mt_end

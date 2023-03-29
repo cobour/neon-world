@@ -139,8 +139,7 @@ init_lightning_anim:
 init_music:
   lea.l         m_om_area+mm_om_f001+f001_dat_vision_mod_data,a0
   lea.l         m_cm_area+mm_cm_f000+f000_dat_vision_mod_samples,a1
-  moveq.l       #0,d0
-  jmp           _mt_init
+  PTP_INIT
 
 init_screenbuffer:
   WAIT_BLT

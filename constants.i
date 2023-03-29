@@ -360,3 +360,13 @@ BLT_AD_CPY                     macro
                                move.w     #TilesWidthBytes-2,BLTAMOD(a6)
                                move.w     #\1-2,BLTDMOD(a6)
                                endm
+
+; Inits module, sets music volume to half (so sfx can be heard better) 
+; and returns from subroutine (so should be called in a subroutine ;-)
+; uses d0
+PTP_INIT                       macro
+                               moveq.l    #0,d0
+                               jsr        _mt_init
+                               move.w     #32,d0
+                               jmp        _mt_mastervol
+                               endm
