@@ -38,7 +38,7 @@ text_init:
   rts
 
   xdef       text_print
-; prints one line of text to screenbuffer, starts at exact word boundary
+; prints one line of text to screenbuffer, starts at exact byte boundary
 ; a0 - pointer to null-terminated text
 ; a1 - pointer to screenbuffer (must point to correct x,y position in screenbuffer)
 ; d0 - width of screenbuffer in bytes
