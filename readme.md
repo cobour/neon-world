@@ -34,7 +34,7 @@ It produces necessary asm and binary files from the source files of the various 
 
 ## Downloadable ADF
 
-The ADF for download can be found [here](/releases).
+The ADF for download can be found [here](https://github.com/cobour/neon-world/releases).
 
 ## Music
 
