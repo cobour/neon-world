@@ -34,7 +34,7 @@ It produces necessary asm and binary files from the source files of the various 
 
 ## Downloadable ADF
 
-The ADF for download can be found [in the dist folder](/dist/NeonWorld.adf).
+The ADF for download can be found [here](/releases).
 
 ## Music
 
