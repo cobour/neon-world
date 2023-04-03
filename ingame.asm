@@ -53,6 +53,9 @@ ig_start:
                 jsr         panel_init
                 jsr         sf_init
 
+                move.l      #LevelScreenBufferWidthBytes,d0
+                jsr         cc_init
+
                 bsr.s       .init_copper_list_and_irq_handler
 
                 bsr.s       .init_music
@@ -66,7 +69,7 @@ ig_start:
                 
                 bsr.s       .cleanup_music
 
-                ; for now lways return to mainmenu
+                ; for now always return to mainmenu
                 clr.b       g_om_level(a4)
 
                 rts
