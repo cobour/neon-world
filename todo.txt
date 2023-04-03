@@ -46,7 +46,7 @@ DONE    convert todo.txt and all readme.txt's to markdown
 
         check error codes after os calls
 
-        scroll: switch buffers even when there is no more scrolling
+DONE    scroll: switch buffers even when there is no more scrolling
 
         playershots: shots are bobs and do not collide in the first place
         playershots: collision detection with bitplanes

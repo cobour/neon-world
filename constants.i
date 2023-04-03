@@ -254,6 +254,7 @@ ig_cm_size:                    rs.b       0
                                rsreset
 ig_om_general:                 rs.b       g_om_size
 ig_om_frame_counter            rs.l       1                                                ; counts every ingame frame, can be used for different features
+ig_om_scroll_xpos_frbuf:       rs.w       1                                                ; x position in framebuffer
 ig_om_scroll_xpos:             rs.l       1                                                ; absolute x position in level
 ig_om_max_scroll_xpos:         rs.l       1                                                ; max x position in level due to level width
 ig_om_bpl_offsets:             rs.l       ScreenBitPlanes                                  ; bitplane pointer offsets for scrolling

@@ -14,6 +14,7 @@ pf_init:
 .init_scroll_vars:
 ; initial absolute x position in level
                 clr.l         ig_om_scroll_xpos(a4)
+                clr.w         ig_om_scroll_xpos_frbuf(a4)
                 moveq.l       #1,d0
                 bset          #IgPerformScroll,ig_om_bools(a4)
                 bset          #IgDrawTiles,ig_om_bools(a4)
@@ -103,16 +104,24 @@ pf_scroll:
                 bsr           pf_draw_next_tiles
 .ps_do_scroll:
                 btst          #IgPerformScroll,ig_om_bools(a4)
-                beq.s         .ps_exit
+                beq.s         .ps_no_update_xpos
                 bsr.s         .ps_update_xpos
-                bsr.s         pf_set_scroll_vars_in_coplist
-.ps_exit:
-                rts
-
+                bra.s         pf_set_scroll_vars_in_coplist
+.ps_no_update_xpos:
+                ; just switch buffers
+                lea.l         ig_cop_scroll,a0
+                lea.l         ig_om_bpl_offsets(a4),a1
+                move.l        ig_om_frame_counter(a4),d0
+                bra           pf_update_copperlist
+ 
 ; checks, if further scrolling is possible and if so, scrolls playfield by 1 pixel
 .ps_update_xpos:
+                moveq.l       #1,d1
+                ; xpos in framebuffer
+                add.w         d1,ig_om_scroll_xpos_frbuf(a4)
+                ; absolute xpos in level
                 move.l        ig_om_scroll_xpos(a4),d0
-                addq.l        #1,d0
+                add.l         d1,d0
                 move.l        d0,ig_om_scroll_xpos(a4)
                 cmp.l         ig_om_max_scroll_xpos(a4),d0
                 bne.s         .pux_exit
@@ -122,7 +131,6 @@ pf_scroll:
 
 ; Sets registers needed for scrolling in the copperlist
 pf_set_scroll_vars_in_coplist:
-                lea.l         ig_cop_scroll,a0
                 move.l        ig_om_scroll_xpos(a4),d0
                 lea.l         ig_om_bpl_offsets(a4),a1
 ; test for word-boundary
@@ -145,6 +153,7 @@ pf_set_scroll_vars_in_coplist:
                 move.l        (a1),d3
                 cmp.l         d2,d3
                 ble.s         .pssv_no_reset
+                clr.w         ig_om_scroll_xpos_frbuf(a4)
                 moveq.l       #0,d2
                 move.l        a1,a2
                 moveq.l       #ScreenBitPlanes-1,d7
@@ -160,30 +169,9 @@ pf_set_scroll_vars_in_coplist:
 
 ; set bitplane pointers for playfield
 .pssv_no_reset:
-                lea.l         ig_cop_bplpt,a2
-                btst          #0,d0
-                bne.s         .1
-                move.l        #ig_cm_screenbuffer0+m_cm_area,d2
-                bra.s         .2
-.1:
-                move.l        #ig_cm_screenbuffer1+m_cm_area,d2
-.2:
-                moveq.l       #ScreenBitPlanes-1,d7
-.pssv_fill_bpls_to_coplist:
-                move.l        (a1)+,d1
-                add.l         d2,d1
-                swap          d1
-                move.w        d1,2(a2)
-                swap          d1
-                move.w        d1,6(a2)
-                addq.l        #8,a2
-                dbf           d7,.pssv_fill_bpls_to_coplist
-
-                clr.w         2(a0)                                                                                           ; BPLCON1
-                move.w        #LevelScreenBufferWidthBytes*ScreenBitPlanes-ScreenWidthBytes,d1
-                move.w        d1,6(a0)                                                                                        ; BPL1MOD
-                move.w        d1,10(a0)                                                                                       ; BPL1MOD
-                move.w        #(ScreenStartX/2-DdfResolution),14(a0)                                                          ; DDFSTRT
+                lea.l         ig_cop_scroll,a0
+                lea.l         ig_om_bpl_offsets(a4),a1
+                bsr.s         pf_update_copperlist
 
 ; again check for word boundary
                 tst.b         d0
@@ -216,6 +204,38 @@ pf_set_scroll_vars_in_coplist:
 
 .pssv_bplcon1:  dc.w          $00ff,$00ee,$00dd,$00cc,$00bb,$00aa,$0099,$0088
                 dc.w          $0077,$0066,$0055,$0044,$0033,$0022,$0011
+
+; switches buffers and updates copperlist accordingly
+; a0   - copperlist area with setting of scroll registers (BPLCON1...)
+; a1   - list of bitplane pointer offsets
+; d0.b - counter indicating odd or even frame
+pf_update_copperlist:
+                lea.l         ig_cop_bplpt,a2
+                btst          #0,d0
+                bne.s         .1
+                move.l        #ig_cm_screenbuffer0+m_cm_area,d2
+                bra.s         .2
+.1:
+                move.l        #ig_cm_screenbuffer1+m_cm_area,d2
+.2:
+                moveq.l       #ScreenBitPlanes-1,d7
+.puc_loop:
+                move.l        (a1)+,d1
+                add.l         d2,d1
+                swap          d1
+                move.w        d1,2(a2)
+                swap          d1
+                move.w        d1,6(a2)
+                addq.l        #8,a2
+                dbf           d7,.puc_loop
+
+                clr.w         2(a0)                                                                                           ; BPLCON1
+                move.w        #LevelScreenBufferWidthBytes*ScreenBitPlanes-ScreenWidthBytes,d1
+                move.w        d1,6(a0)                                                                                        ; BPL1MOD
+                move.w        d1,10(a0)                                                                                       ; BPL1MOD
+                move.w        #(ScreenStartX/2-DdfResolution),14(a0)                                                          ; DDFSTRT
+
+                rts
 
 ; draws next tiles to screen buffers (called every frame)
 pf_draw_next_tiles:
