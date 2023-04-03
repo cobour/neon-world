@@ -37,11 +37,6 @@ AvailMem     equ -$d8
 .s6:              dc.b       0,0,0,0,0,0,0,0,10,0
 .e6:              even
 
-; d0 - value
-.long_to_string:
-
-                  rts
-
 ; d1 - ram type
 .print_ram:
                   move.l     ExecBase,a6
