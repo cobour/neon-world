@@ -263,7 +263,7 @@ pf_draw_next_tiles:
 .pdnt_draw_left_of_visible_area:
 ; check if left of visible area needs to be drawn
                 move.l        ig_om_next_tile_col_left(a4),d3
-                tst.w         d3
+                tst.l         d3
                 blt.s         .pdnt_done
                 bsr.s         .pdnt_blit_tile
 
@@ -295,8 +295,7 @@ pf_draw_next_tiles:
 ; third buffer
                 move.l        d4,d3
                 add.l         #m_cm_area+ig_cm_screenbuffer2,d3
-                bsr.s         .pdnt_blit_tile_sub
-                rts                
+
 .pdnt_blit_tile_sub:
                 add.l         d1,d3
                 WAIT_BLT
