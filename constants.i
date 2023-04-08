@@ -203,6 +203,39 @@ SHOW_COLLISION_RED          equ 0
 
 ; Structures
 
+; BOBs
+                               rsreset
+; backup-structure (remembers parameters for last blit, used for restoring)
+bb_screenbuffer_base:          rs.l       1                                                ; basepointer of screenbuffer (here for fast reference, so it does not need to be checked for)
+bb_bltptr:                     rs.l       1                                                ; last BLTCPTH/BLTDPTH in framebuffer (1 when not applicable, serves as indicator that bob has been blitted to buffer ever)
+bb_bltmod:                     rs.w       1                                                ; last BLTCMOD/BLTDMOD in framebuffer
+bb_bltsize:                    rs.w       1                                                ; last BLTSIZE in framebuffer
+bb_size:                       rs.b       0
+
+; bob-structure
+                               rsreset
+b_bools:                       rs.b       1                                                ; flags
+b_padding_byte:                rs.b       1
+b_eol_frame:                   rs.l       1                                                ; frame after the bob died and the background was restored in both framebuffers
+b_tiles_offset:                rs.l       1                                                ; offset in tiles (for gfx and mask)
+b_xpos:                        rs.w       1                                                ; x-position on screen
+b_ypos:                        rs.w       1                                                ; y-position on screen
+b_width:                       rs.w       1                                                ; width of bob in pixels
+b_height:                      rs.w       1                                                ; height of bob in pixels
+b_b_0:                         rs.b       bb_size                                          ; backup-structure for framebuffer 0
+b_b_1:                         rs.b       bb_size                                          ; backup-structure for framebuffer 1
+b_size:                        rs.b       0
+; bits for b_bools
+BobActive                   equ 0
+
+; PlayerShot
+                               rsreset
+ps_bob:                        rs.b       b_size                                           ; bob-structure
+ps_size:                       rs.b       0
+; other constants
+PsMaxCount                  equ 5                                                          ; maximum count of playershots active
+PsSpeed                     equ 4                                                          ; movement speed each frame
+
 ; Player
                                rsreset
 pl_xpos:                       rs.w       1                                                ; x-position on screen (hardware coordinates)
@@ -212,6 +245,7 @@ pl_animstep:                   rs.b       1                                     
 pl_max_animstep:               rs.b       1                                                ; max animstep (1 - ..)
 pl_frames_till_next_shot:      rs.b       1                                                ; frames until next shot can be fired (0 - pl_shot_delay)
 pl_padding_byte                rs.b       1
+pl_joystick:                   rs.w       1                                                ; joystick state from current frame
 pl_size:                       rs.b       0
 pl_shot_delay               equ 16                                                         ; minimum frames between two shots fired
 
@@ -265,6 +299,7 @@ ig_om_next_tile_col_right:     rs.l       1                                     
 ig_om_bools:                   rs.b       1
 ig_om_padding_byte:            rs.b       1
 ig_om_player                   rs.b       pl_size
+ig_om_playershots:             rs.b       ps_size*PsMaxCount                               ; playershots
 ig_om_starfield:               rs.l       NumberOfStars                                    ; first word contains x-pos, second word contains value that is subtracted each frame
 ig_om_f003:                    rs.b       f003_size
 ig_om_size:                    rs.b       0

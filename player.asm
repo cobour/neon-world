@@ -176,6 +176,7 @@ player_update:
 
 ; check joystick
   jsr        js_read
+  move.w     d0,pl_joystick(a3)
  
 ; update position according to joystick movement and switch between animations
 .check_directions:
@@ -208,19 +209,6 @@ player_update:
   move.l     #ig_om_f003+f003_dat_player_anim_up_tmx+m_om_area,pl_anim(a3)
   move.b     #f003_dat_player_anim_up_tmx_tiles_width,pl_max_animstep(a3)
 .end_check:
-
-; update shot delay if necessary
-  tst.b      pl_frames_till_next_shot(a3)
-  beq.s      .read_firebutton
-  sub.b      #1,pl_frames_till_next_shot(a3)
-  bra.s      .end_read_firebutton
-; fire shot when button is pressed
-.read_firebutton:
-  btst       #JsFire,d0
-  ble.s      .end_read_firebutton
-  jsr        ps_new_shot
-  move.b     #pl_shot_delay,pl_frames_till_next_shot(a3)
-.end_read_firebutton:
 
 ; validate xpos and ypos against bounding box
   cmp.w      #ScreenStartY+11,pl_ypos(a3)                                             ; +11 because of lives-/score-display
@@ -282,4 +270,27 @@ player_update:
 ; draw animstep
   bsr        copy_animstep
   
+  rts
+
+; checks if player has pressed firebutton and spawns playershot
+; uses a3,d0 
+  xdef       player_firebutton
+player_firebutton:
+  lea.l      ig_om_player(a4),a3
+  move.w     pl_joystick(a3),d0
+
+; update shot delay if necessary
+  tst.b      pl_frames_till_next_shot(a3)
+  beq.s      .1
+  sub.b      #1,pl_frames_till_next_shot(a3)
+  bra.s      .2
+
+; fire shot when button is pressed
+.1:
+  btst       #JsFire,d0
+  ble.s      .2
+  jsr        ps_new_shot
+  move.b     #pl_shot_delay,pl_frames_till_next_shot(a3)
+
+.2:
   rts

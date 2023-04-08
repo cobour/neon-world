@@ -56,6 +56,8 @@ ig_start:
                 move.l      #LevelScreenBufferWidthBytes,d0
                 jsr         cc_init
 
+                jsr         ps_init
+
                 bsr.s       .init_copper_list_and_irq_handler
 
                 bsr.s       .init_music
@@ -127,8 +129,18 @@ ig_lvl3_handler:
                 lea.l       ig_cop_colors,a0
                 jsr         do_fade
 
-                ; scroll playfield
+                ; scroll playfield (MUST be called before everything regarding BOBs, 
+                ; otherwise BOBs will be drawn to visible buffer, may cause flickering)
                 jsr         pf_scroll
+
+                ; restore background for ALL bobs
+                jsr         bob_restore
+
+                ; read firebutton 
+                jsr         player_firebutton
+                
+                ; update all currently active playershots
+                jsr         ps_update
 
                 ; increment frame counter
                 add.l       #1,ig_om_frame_counter(a4)

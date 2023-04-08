@@ -48,5 +48,7 @@ DONE    convert todo.txt and all readme.txt's to markdown
 
 DONE    scroll: switch buffers even when there is no more scrolling
 
-        playershots: shots are bobs and do not collide in the first place
+DONE    playershots: shots are bobs and do not collide in the first place
         playershots: collision detection with bitplanes
+
+        bob.asm: clip blits (top, bottom, left)
