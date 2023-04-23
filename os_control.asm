@@ -32,6 +32,14 @@ osc_black_screen:
                   movem.l     d0-d7/a0-a6,-(sp)
 
                   lea.l       CustomBase,a6
+
+                  moveq.l     #31,d7
+                  move.l      a6,a0
+                  add.w       #COLOR00,a0
+.set_colors_loop:
+                  clr.w       (a0)+
+                  dbf         d7,.set_colors_loop
+
                   move.l      #osc_cop_list_all_black,COP1LC(a6)
                   WAIT_VB2
 
