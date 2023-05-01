@@ -69,10 +69,10 @@ ps_update:
   moveq.l    #PsMaxCount-1,d7
 .loop:
   tst.l      b_eol_frame(a1)
-  bne.s      .go_on
+  bne        .go_on
 
   btst       #BobActive,b_bools(a1)
-  beq.s      .go_on
+  beq        .go_on
   add.w      #PsSpeed,b_xpos(a1)
 
   ; check for collision with background between old and new position
@@ -100,6 +100,7 @@ ps_update:
   beq.s      .draw_shot
 
   ; shot hit background
+  jsr        sfx_explosion
   move.l     ig_om_frame_counter(a4),d0
   addq.l     #2,d0
   move.l     d0,b_eol_frame(a1)
@@ -107,6 +108,21 @@ ps_update:
   ;
   ; TODO: spawn small explosion (only one at a time is enough?!)
   ;
+  lea.l      ig_om_playershot_explosion(a4),a2
+  bset       #BobActive,b_bools(a2)
+  moveq.l    #1,d0
+  move.l     d0,b_b_0+bb_bltptr(a2)
+  move.l     d0,b_b_1+bb_bltptr(a2)
+
+  clr.l      b_eol_frame(a2)
+
+  move.w     #TilePixelWidth,b_width(a2)
+  move.w     #TilePixelHeight,b_height(a2)
+
+  move.w     b_xpos(a1),b_xpos(a2)
+  move.w     b_ypos(a1),b_ypos(a2)
+
+  move.b     #-1,pse_anim_count(a2)
 
   bra.s      .go_on
 
@@ -116,6 +132,36 @@ ps_update:
 .go_on:
   add.l      #ps_size,a1
   dbf        d7,.loop
+
+  ; draw playershot-explosion
+  lea.l      ig_om_playershot_explosion(a4),a1
+  btst       #BobActive,b_bools(a1)
+  beq.s      .exit
+
+  add.b      #1,pse_anim_count(a1)
+  moveq.l    #0,d0
+  move.b     pse_anim_count(a1),d0
+
+  cmp.b      #PseMaxAnimCount,d0
+  bne.s      .pse_draw
+
+  ; explosion anim ended
+  move.l     ig_om_frame_counter(a4),d0
+  addq.l     #2,d0
+  move.l     d0,b_eol_frame(a1)
+  bra.s      .exit
+
+.pse_draw:
+  lsl.w      #1,d0
+  lea.l      ig_om_f003(a4),a0
+  add.l      #f003_dat_explosion_anim_tmx,a0
+  move.w     (a0,d0.w),d0
+  move.l     d0,b_tiles_offset(a1)
+  
+  move.l     ig_om_frame_counter(a4),d0
+  jsr        bob_draw
+
+.exit:
   rts
 
 mask_background:

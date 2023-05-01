@@ -18,6 +18,8 @@ bob_restore:
   move.w      #b_b_1,d3
 .2:
 
+  ; restore playershots
+
   lea.l       ig_om_playershots(a4),a0
   moveq.l     #PsMaxCount-1,d7
 .ps_loop:
@@ -41,6 +43,27 @@ bob_restore:
 .ps_loop_next:
   add.l       #ps_size,a0
   dbf         d7,.ps_loop
+
+  ; restore playershot-explosion
+
+  lea.l       ig_om_playershot_explosion(a4),a0
+  move.b      b_bools(a0),d0
+  tst.l       b_eol_frame(a0)
+  beq.s       .pse_check_active
+  cmp.l       b_eol_frame(a0),d4
+  bne.s       .pse_check_active
+  bclr        #BobActive,d0
+  move.b      d0,b_bools(a0)
+  clr.l       b_eol_frame(a0)
+  bra.s       .pse_restore
+.pse_check_active:
+  btst        #BobActive,d0
+  beq.s       .pse_end
+.pse_restore:
+  lea.l       (a0,d3.w),a1
+  bsr.s       .restore_one_bob
+
+.pse_end:
 
   rts
 

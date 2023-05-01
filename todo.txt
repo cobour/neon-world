@@ -49,6 +49,8 @@ DONE    convert todo.txt and all readme.txt's to markdown
 DONE    scroll: switch buffers even when there is no more scrolling
 
 DONE    playershots: shots are bobs and do not collide in the first place
-        playershots: collision detection with bitplanes
+DOME    playershots: collision detection with bitplanes
+        playershots: switch to small explosion
 
         bob.asm: clip blits (top, bottom, left)
+        bob.asm: refactor to use of pointerlist to ALL bob's, so no special treatment is necessary when restoring (playershots, playershot-explosion...)

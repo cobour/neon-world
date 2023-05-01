@@ -236,6 +236,15 @@ ps_size:                       rs.b       0
 PsMaxCount                  equ 5                                                          ; maximum count of playershots active
 PsSpeed                     equ 4                                                          ; movement speed each frame
 
+; PlayShot-Explosion (just one active)
+                               rsreset
+pse_bob:                       rs.b       b_size
+pse_anim_step_ptr:             rs.l       1
+pse_anim_count:                rs.b       1
+pse_padding_byte               rs.b       1
+pse_size:                      rs.b       0
+PseMaxAnimCount             equ 7
+
 ; Player
                                rsreset
 pl_xpos:                       rs.w       1                                                ; x-position on screen (hardware coordinates)
@@ -300,6 +309,7 @@ ig_om_bools:                   rs.b       1
 ig_om_padding_byte:            rs.b       1
 ig_om_player                   rs.b       pl_size
 ig_om_playershots:             rs.b       ps_size*PsMaxCount                               ; playershots
+ig_om_playershot_explosion:    rs.b       pse_size
 ig_om_starfield:               rs.l       NumberOfStars                                    ; first word contains x-pos, second word contains value that is subtracted each frame
 ig_om_f003:                    rs.b       f003_size
 ig_om_size:                    rs.b       0
