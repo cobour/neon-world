@@ -114,7 +114,7 @@ bob_draw:
 
   move.w      b_xpos(a1),d1
 
-  move.w      #$ffff,d4                                     ; BLTAFWM and BLTALWM
+  move.w      #$ffff,d4                                       ; BLTAFWM and BLTALWM
   cmp.w       #ScreenWidth-15,d1
   blt.s       .full_fwm_lwm
   lea         .mask_right(pc),a0
@@ -215,7 +215,13 @@ bob_draw:
   move.w      d0,BLTDMOD(a6)
   move.w      d0,bb_bltmod(a2)
 
+  cmp.w       #TilePixelHeight,b_width(a1)
+  beq.s       .2a
+  move.w      #(TilePixelHeight/2*ScreenBitPlanes<<6)+1,d0
+  bra.s       .2b
+.2a:
   move.w      #(TilePixelHeight*ScreenBitPlanes<<6)+1,d0
+.2b:  
   move.w      d0,bb_bltsize(a2)
   move.w      d0,BLTSIZE(a6)
 
@@ -241,7 +247,13 @@ bob_draw:
   move.w      d0,BLTDMOD(a6)
   move.w      d0,bb_bltmod(a2)
 
+  cmp.w       #TilePixelHeight,b_width(a1)
+  beq.s       .3a
+  move.w      #(TilePixelHeight/2*ScreenBitPlanes<<6)+2,d0
+  bra.s       .3b
+.3a:
   move.w      #(TilePixelHeight*ScreenBitPlanes<<6)+2,d0
+.3b:  
   move.w      d0,bb_bltsize(a2)
   move.w      d0,BLTSIZE(a6)
 

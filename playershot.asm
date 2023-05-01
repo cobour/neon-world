@@ -105,9 +105,7 @@ ps_update:
   addq.l     #2,d0
   move.l     d0,b_eol_frame(a1)
 
-  ;
-  ; TODO: spawn small explosion (only one at a time is enough?!)
-  ;
+  ; spawn small explosion (only one at a time is enough)
   lea.l      ig_om_playershot_explosion(a4),a2
   bset       #BobActive,b_bools(a2)
   moveq.l    #1,d0
@@ -116,11 +114,13 @@ ps_update:
 
   clr.l      b_eol_frame(a2)
 
-  move.w     #TilePixelWidth,b_width(a2)
-  move.w     #TilePixelHeight,b_height(a2)
+  move.w     #TilePixelWidth/2,b_width(a2)
+  move.w     #TilePixelHeight/2,b_height(a2)
 
   move.w     b_xpos(a1),b_xpos(a2)
   move.w     b_ypos(a1),b_ypos(a2)
+  add.w      #4,b_xpos(a2)
+  add.w      #4,b_ypos(a2)
 
   move.b     #-1,pse_anim_count(a2)
 
@@ -153,13 +153,16 @@ ps_update:
 
 .pse_draw:
   lsl.w      #1,d0
-  lea.l      ig_om_f003(a4),a0
-  add.l      #f003_dat_explosion_anim_tmx,a0
+  lea.l      pse_tiles_offsets(pc),a0
   move.w     (a0,d0.w),d0
   move.l     d0,b_tiles_offset(a1)
   
   move.l     ig_om_frame_counter(a4),d0
   jsr        bob_draw
+
+  btst       #IgPerformScroll,ig_om_bools(a4)
+  beq.s      .exit
+  sub.w      #1,b_xpos(a1)
 
 .exit:
   rts
@@ -181,3 +184,14 @@ mask_background:
   dc.l       %00000000000001111111111110000000
   dc.l       %00000000000000111111111111000000
   dc.l       %00000000000000011111111111100000
+
+pse_tiles_offsets: ; done here because tiles are 16x16 mostly and player shots are 8x8
+  dc.w       (7*TilePixelHeight*TilesWidthBytes*TilesBitplanes)+36
+  dc.w       (7*TilePixelHeight*TilesWidthBytes*TilesBitplanes)+(8*TilesWidthBytes*TilesBitplanes)+36
+  dc.w       (7*TilePixelHeight*TilesWidthBytes*TilesBitplanes)+(16*TilesWidthBytes*TilesBitplanes)+36
+  dc.w       (7*TilePixelHeight*TilesWidthBytes*TilesBitplanes)+(24*TilesWidthBytes*TilesBitplanes)+36
+  dc.w       (7*TilePixelHeight*TilesWidthBytes*TilesBitplanes)+(32*TilesWidthBytes*TilesBitplanes)+36
+  dc.w       (7*TilePixelHeight*TilesWidthBytes*TilesBitplanes)+(40*TilesWidthBytes*TilesBitplanes)+36
+  dc.w       (7*TilePixelHeight*TilesWidthBytes*TilesBitplanes)+(48*TilesWidthBytes*TilesBitplanes)+36
+  dc.w       (7*TilePixelHeight*TilesWidthBytes*TilesBitplanes)+(56*TilesWidthBytes*TilesBitplanes)+36
+  dc.w       (7*TilePixelHeight*TilesWidthBytes*TilesBitplanes)+(64*TilesWidthBytes*TilesBitplanes)+36
