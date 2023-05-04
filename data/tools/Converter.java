@@ -45,6 +45,7 @@ public class Converter {
                 .source(SourceFile.builder().file("./data/tiles.iff").get())
                 .source(SourceFile.builder().file("./data/sfxr/explosion.wav").get())
                 .source(SourceFile.builder().file("./data/sfxr/shot.wav").get())
+                .source(SourceFile.builder().file("./data/sfxr/explosion_small.wav").get())
                 .get();
         targetFiles.add(target);
         //

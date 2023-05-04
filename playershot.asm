@@ -100,7 +100,7 @@ ps_update:
   beq.s      .draw_shot
 
   ; shot hit background
-  jsr        sfx_explosion
+  jsr        sfx_explosion_small
   move.l     ig_om_frame_counter(a4),d0
   addq.l     #2,d0
   move.l     d0,b_eol_frame(a1)

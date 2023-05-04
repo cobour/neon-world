@@ -17,6 +17,11 @@ sfx_explosion:
   lea.l      explosion_sfx(pc),a0
   bra.s      sfx_play_sample
 
+  xdef       sfx_explosion_small
+sfx_explosion_small:
+  lea.l      explosion_small_sfx(pc),a0
+  bra.s      sfx_play_sample
+
   xdef       sfx_shot
 sfx_shot:
   lea.l      shot_sfx(pc),a0
@@ -49,6 +54,13 @@ explosion_sfx:
   dc.l       m_cm_area+ig_cm_f002+f002_dat_explosion_wav
   dc.w       f002_dat_explosion_wav_length_in_words
   dc.w       f002_dat_explosion_wav_period_pal
+  dc.w       64
+  dc.b       -1
+  dc.b       64
+explosion_small_sfx:
+  dc.l       m_cm_area+ig_cm_f002+f002_dat_explosion_small_wav
+  dc.w       f002_dat_explosion_small_wav_length_in_words
+  dc.w       f002_dat_explosion_small_wav_period_pal
   dc.w       64
   dc.b       -1
   dc.b       64
