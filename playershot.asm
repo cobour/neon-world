@@ -138,7 +138,10 @@ ps_update:
   btst       #BobActive,b_bools(a1)
   beq.s      .exit
 
+  btst       #0,ig_om_frame_counter+3(a4)
+  bne.s      .pse_no_anim_frame_update
   add.b      #1,pse_anim_count(a1)
+.pse_no_anim_frame_update:
   moveq.l    #0,d0
   move.b     pse_anim_count(a1),d0
 
