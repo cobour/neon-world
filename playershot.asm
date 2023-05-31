@@ -9,6 +9,14 @@ ps_init:
 .loop:
   clr.b      (a0)+
   dbf        d7,.loop
+
+  ; init playershot explosion
+  lea.l      ig_om_playershot_explosion(a4),a2
+  moveq.l    #1,d0
+  move.l     d0,b_b_0+bb_bltptr(a2)
+  move.l     d0,b_b_1+bb_bltptr(a2)
+  move.w     #TilePixelWidth/2,b_width(a2)
+  move.w     #TilePixelHeight/2,b_height(a2)
   rts
 
   xdef       ps_new_shot
@@ -108,14 +116,8 @@ ps_update:
   ; spawn small explosion (only one at a time is enough)
   lea.l      ig_om_playershot_explosion(a4),a2
   bset       #BobActive,b_bools(a2)
-  moveq.l    #1,d0
-  move.l     d0,b_b_0+bb_bltptr(a2)
-  move.l     d0,b_b_1+bb_bltptr(a2)
-
   clr.l      b_eol_frame(a2)
-
-  move.w     #TilePixelWidth/2,b_width(a2)
-  move.w     #TilePixelHeight/2,b_height(a2)
+  ; do NOT reset bb_bltptr's since pse may be reused while playing anim
 
   move.w     b_xpos(a1),b_xpos(a2)
   move.w     b_ypos(a1),b_ypos(a2)
@@ -146,7 +148,7 @@ ps_update:
   move.b     pse_anim_count(a1),d0
 
   cmp.b      #PseMaxAnimCount,d0
-  bne.s      .pse_draw
+  ble.s      .pse_draw
 
   ; explosion anim ended
   move.l     ig_om_frame_counter(a4),d0
@@ -197,4 +199,3 @@ pse_tiles_offsets: ; done here because tiles are 16x16 mostly and player shots a
   dc.w       (7*TilePixelHeight*TilesWidthBytes*TilesBitplanes)+(40*TilesWidthBytes*TilesBitplanes)+36
   dc.w       (7*TilePixelHeight*TilesWidthBytes*TilesBitplanes)+(48*TilesWidthBytes*TilesBitplanes)+36
   dc.w       (7*TilePixelHeight*TilesWidthBytes*TilesBitplanes)+(56*TilesWidthBytes*TilesBitplanes)+36
-  dc.w       (7*TilePixelHeight*TilesWidthBytes*TilesBitplanes)+(64*TilesWidthBytes*TilesBitplanes)+36
