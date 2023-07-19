@@ -124,7 +124,7 @@ ps_update:
   add.w      #4,b_xpos(a2)
   add.w      #4,b_ypos(a2)
 
-  move.b     #-1,pse_anim_count(a2)
+  move.b     #0,pse_anim_count(a2)
 
   bra.s      .go_on
 
