@@ -15,7 +15,6 @@ pf_init:
 ; initial absolute x position in level
                 clr.l         ig_om_scroll_xpos(a4)
                 clr.w         ig_om_scroll_xpos_frbuf(a4)
-                moveq.l       #1,d0
                 bset          #IgPerformScroll,ig_om_bools(a4)
                 bset          #IgDrawTiles,ig_om_bools(a4)
 
