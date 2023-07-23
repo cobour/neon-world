@@ -38,6 +38,7 @@ ps_new_shot:
 
 .go_on:
   bset       #BobActive,b_bools(a1)
+  clr.l      b_eol_frame(a1)
 
   move.w     ig_om_player+pl_xpos(a4),d0
   sub.w      #ScreenStartX-16,d0
