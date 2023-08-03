@@ -184,8 +184,8 @@ TileWidthBytes              equ TilePixelWidth/8
 TileAdCopyBltSize           equ (TilePixelHeight*ScreenBitPlanes<<6)+1
 
 ; Starfield (ingame-background)
-NumberOfStars               equ 60                                                         ; was 120
-LineOfFirstStar             equ $35
+NumberOfStars               equ 58                                                         ; was 120
+LineOfFirstStar             equ $3d
 LineAdd                     equ 4                                                          ; was 2
 
 ; bits of joystick state (returned by joystick.asm -> js_read)
@@ -281,11 +281,11 @@ GFadeOut                    equ 2                                               
 ; InGame ChipMem
                                rsreset
 ig_cm_player:                  rs.b       (8*16)+16                                        ; sprites 0 and 1 (attached) display the 16x16 pix player sprite
-ig_cm_sprite2_panel:           rs.b       (8*4)+8                                          ; panel sprite data for sprite 2
-ig_cm_sprite3_panel:           rs.b       (8*4)+8                                          ; panel sprite data for sprite 3
-ig_cm_sprite4_panel:           rs.b       (8*4)+4                                          ; panel sprite data for sprite 4
+ig_cm_sprite2_panel:           rs.b       (16*4)+8                                         ; panel sprite data for sprite 2
+ig_cm_sprite3_panel:           rs.b       (16*4)+8                                         ; panel sprite data for sprite 3
+ig_cm_sprite4_panel:           rs.b       (16*4)+4                                         ; panel sprite data for sprite 4
 ig_cm_sprite4_starfield:       rs.b       (NumberOfStars*8)+4                              ; sprites 4 and 5 (attached) displaying the stars in the background (8 because of 1 line with sprite per Star, giving 2 control-words and 2 bitplane-words, plus 4 bytes for end-of-sprite-list)
-ig_cm_sprite5_panel:           rs.b       (8*4)+4                                          ; panel sprite data for sprite 5
+ig_cm_sprite5_panel:           rs.b       (16*4)+4                                         ; panel sprite data for sprite 5
 ig_cm_sprite5_starfield:       rs.b       (NumberOfStars*8)+4                              ; sprites 4 and 5 (attached) displaying the stars in the background (8 because of 1 line with sprite per Star, giving 2 control-words and 2 bitplane-words, plus 4 bytes for end-of-sprite-list)
 ig_cm_f002:                    rs.b       f002_size
 ig_cm_screenbuffer0:           rs.b       LevelScreenBufferSize

@@ -211,9 +211,9 @@ player_update:
 .end_check:
 
 ; validate xpos and ypos against bounding box
-  cmp.w      #ScreenStartY+11,pl_ypos(a3)                                             ; +11 because of lives-/score-display
+  cmp.w      #ScreenStartY,pl_ypos(a3)
   bgt.s      .bb_left
-  move.w     #ScreenStartY+11,pl_ypos(a3)
+  move.w     #ScreenStartY,pl_ypos(a3)
 .bb_left:
   cmp.w      #ScreenStartX,pl_xpos(a3)
   bgt.s      .bb_right

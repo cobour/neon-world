@@ -268,9 +268,33 @@ ig_cop_colors:  dc.w        COLOR00,$0000
                 dc.w        ((ScreenStartY+7)<<8)+1,$ff00
                 dc.w        COLOR23,$0088
                 dc.w        COLOR27,$0088
+                dc.w        ((ScreenStartY+8)<<8)+1,$ff00
+                dc.w        COLOR23,$00ff
+                dc.w        COLOR27,$00ff
+                dc.w        ((ScreenStartY+9)<<8)+1,$ff00
+                dc.w        COLOR23,$00ee
+                dc.w        COLOR27,$00ee
+                dc.w        ((ScreenStartY+10)<<8)+1,$ff00
+                dc.w        COLOR23,$00dd
+                dc.w        COLOR27,$00dd
+                dc.w        ((ScreenStartY+11)<<8)+1,$ff00
+                dc.w        COLOR23,$00cc
+                dc.w        COLOR27,$00cc
+                dc.w        ((ScreenStartY+12)<<8)+1,$ff00
+                dc.w        COLOR23,$00bb
+                dc.w        COLOR27,$00bb
+                dc.w        ((ScreenStartY+13)<<8)+1,$ff00
+                dc.w        COLOR23,$00aa
+                dc.w        COLOR27,$00aa
+                dc.w        ((ScreenStartY+14)<<8)+1,$ff00
+                dc.w        COLOR23,$0099
+                dc.w        COLOR27,$0099
+                dc.w        ((ScreenStartY+15)<<8)+1,$ff00
+                dc.w        COLOR23,$0088
+                dc.w        COLOR27,$0088
 
 ; reset COLOR23 and COLOR27 for the rest of the screen
-                dc.w        ((ScreenStartY+8)<<8)+1,$ff00
+                dc.w        ((ScreenStartY+16)<<8)+1,$ff00
                 xdef        fade_color23
 fade_color23:
                 dc.w        COLOR23,$0d00
