@@ -9,7 +9,7 @@ import org.springframework.context.ApplicationContextAware;
 
 /**
  * Example call:
- *   mvnw spring-boot:run -Dspring-boot.run.arguments="./ext_data/example_config.yml"
+ *   ./mvnw spring-boot:run -Dspring-boot.run.arguments="./data_files_config.yml"
  */
 @SpringBootApplication
 public class DataFileCreatorApplication implements ApplicationContextAware, CommandLineRunner {
