@@ -1,0 +1,54 @@
+# source, temp and target folders are relative to folder of this config file
+sourceFolder: ../
+tempFolder: ../converted
+targetFolders:
+  - ../../uae/dh0
+  - ../../uae/dh0_adf
+# index and descriptor filenames are relative to folder of this config file
+indexFilename: ../../files_index.i
+descriptorFilename: ../../files_descriptor.i
+# target files, filenames of source files are relative to sourceFolder
+targetFiles:
+  - filename: F000
+    memoryType: CHIP
+    sourceFiles:
+      - filename: tiles.iff
+        withoutMask: true
+      - filename: vision.mod
+      - filename: sfxr/select.wav
+      - filename: sfxr/enter.wav
+  - filename: F001
+    memoryType: OTHER
+    sourceFiles:
+      - filename: tiled/mainmenu.tmx
+        tilesFilename: tiles.iff
+      - filename: tiled/start_on_off.tmx
+        tilesFilename: tiles.iff
+      - filename: tiled/exit_on_off.tmx
+        tilesFilename: tiles.iff
+      - filename: tiled/mm_lightning_anim.tmx
+        tilesFilename: tiles.iff
+      - filename: vision.mod
+  - filename: F002
+    memoryType: CHIP
+    sourceFiles:
+      - filename: universe.mod
+      - filename: tiles.iff
+      - filename: sfxr/explosion.wav
+      - filename: sfxr/shot.wav
+      - filename: sfxr/explosion_small.wav
+  - filename: F003
+    memoryType: OTHER
+    sourceFiles:
+      - filename: tiled/level1.tmx
+        tilesFilename: tiles.iff
+        columnOrientation: true
+      - filename: tiled/player_anim_horizontal.tmx
+        tilesFilename: tiles.iff
+      - filename: tiled/player_anim_up.tmx
+        tilesFilename: tiles.iff
+      - filename: tiled/player_anim_down.tmx
+        tilesFilename: tiles.iff
+      - filename: tiled/explosion_anim.tmx
+        tilesFilename: tiles.iff
+      - filename: universe.mod

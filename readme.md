@@ -29,8 +29,14 @@ When running the game in an emulator there could be some slight stuttering. This
 
 ## Important note
 
-Before program can be assembled and run you must run the Java class "Converter" found in "data/tools".  
-It produces necessary asm and binary files from the source files of the various formats.
+Before program can be assembled and run you must run the Java Application found in "data/data_tool".  
+It produces necessary asm and binary files from the source files of the various formats.  
+An installed and ready-to-use JDK 21+ is required.  
+
+CD into the folder "data/data_tool" and issue the following command:
+```
+./mvnw spring-boot:run -Dspring-boot.run.arguments="./data_files_config.yml"
+```
 
 ## Downloadable ADF
 

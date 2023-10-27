@@ -1,3 +1,0 @@
-enum MemoryType {
-    CHIP, OTHER;
-}

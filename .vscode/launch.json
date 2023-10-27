@@ -5,13 +5,6 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "type": "java",
-            "name": "Launch Converter",
-            "request": "launch",
-            "mainClass": "Converter",
-            "projectName": "neon-world_82c9b3a9"
-        },
-        {
             "type": "amiga-assembly",
             "request": "launch",
             "name": "FS-UAE Debug",
