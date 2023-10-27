@@ -207,7 +207,7 @@ SHOW_COLLISION_RED          equ 0
                                rsreset
 ; backup-structure (remembers parameters for last blit, used for restoring)
 bb_screenbuffer_base:          rs.l       1                                                ; basepointer of screenbuffer (here for fast reference, so it does not need to be checked for)
-bb_bltptr:                     rs.l       1                                                ; last BLTCPTH/BLTDPTH in framebuffer (1 when not applicable, serves as indicator that bob has been blitted to buffer ever)
+bb_bltptr:                     rs.l       1                                                ; last BLTCPTH/BLTDPTH in framebuffer (1 when not applicable, serves as indicator that bob has not been blitted to buffer ever)
 bb_bltmod:                     rs.w       1                                                ; last BLTCMOD/BLTDMOD in framebuffer
 bb_bltsize:                    rs.w       1                                                ; last BLTSIZE in framebuffer
 bb_size:                       rs.b       0
@@ -243,6 +243,7 @@ pse_anim_step_ptr:             rs.l       1
 pse_anim_count:                rs.b       1
 pse_padding_byte               rs.b       1
 pse_size:                      rs.b       0
+; other constants
 PseMaxAnimCount             equ 7
 
 ; Player
