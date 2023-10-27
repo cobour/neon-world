@@ -7,13 +7,9 @@ Because many games did not use the full PAL resolution (320x256), I wanted to tr
 
 ## Development environment
 
-Visual Studio Code with Amiga Assembly plugin.  
+Visual Studio Code with Amiga Assembly plugin  
 FS-UAE (for running/debugging)  
-
-Additional plugins for the data converting tools:  
-Language Support for Java  
-Extension Pack for Java  
-Debugger for Java  
+IntelliJ CE for Tool Development  
 
 ## Test systems
 
