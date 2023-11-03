@@ -141,23 +141,26 @@ ps_update:
   btst       #BobActive,b_bools(a1)
   beq.s      .exit
 
+  cmp.b      #PseMaxAnimCount,pse_anim_count(a1)
+  bne.s      .pse_update_anim_count
+
+  ; anim ended
+  ; check if eol already set
+  tst.l      b_eol_frame(a1)
+  bne.s      .exit
+  ; set eol
+  move.l     ig_om_frame_counter(a4),d0
+  addq.l     #2,d0
+  move.l     d0,b_eol_frame(a1)
+  bra.s      .exit
+
+.pse_update_anim_count:
   btst       #0,ig_om_frame_counter+3(a4)
   bne.s      .pse_no_anim_frame_update
   add.b      #1,pse_anim_count(a1)
 .pse_no_anim_frame_update:
   moveq.l    #0,d0
   move.b     pse_anim_count(a1),d0
-
-  cmp.b      #PseMaxAnimCount,d0
-  ble.s      .pse_draw
-
-  ; explosion anim ended
-  move.l     ig_om_frame_counter(a4),d0
-  addq.l     #2,d0
-  move.l     d0,b_eol_frame(a1)
-  bra.s      .exit
-
-.pse_draw:
   lsl.w      #1,d0
   lea.l      pse_tiles_offsets(pc),a0
   move.w     (a0,d0.w),d0

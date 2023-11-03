@@ -28,7 +28,7 @@ bob_restore:
   tst.l       b_eol_frame(a0)
   beq.s       .ps_go_on
   cmp.l       b_eol_frame(a0),d4
-  bne.s       .ps_go_on
+  ble.s       .ps_go_on
   bclr        #BobActive,d0
   move.b      d0,b_bools(a0)
   clr.l       b_eol_frame(a0)
@@ -48,18 +48,19 @@ bob_restore:
 
   lea.l       ig_om_playershot_explosion(a4),a0
   move.b      b_bools(a0),d0
+
   tst.l       b_eol_frame(a0)
-  beq.s       .pse_check_active
+  beq.s       .pse_go_on
   cmp.l       b_eol_frame(a0),d4
-  bne.s       .pse_check_active
+  ble.s       .pse_go_on
   bclr        #BobActive,d0
   move.b      d0,b_bools(a0)
   clr.l       b_eol_frame(a0)
-  bra.s       .pse_restore
-.pse_check_active:
+  bra.s       .pse_end
+
+.pse_go_on:
   btst        #BobActive,d0
   beq.s       .pse_end
-.pse_restore:
   lea.l       (a0,d3.w),a1
   bsr.s       .restore_one_bob
 
@@ -115,11 +116,11 @@ bob_draw:
   move.w      b_xpos(a1),d1
 
   move.w      #$ffff,d4                                       ; BLTAFWM and BLTALWM
-  cmp.w       #ScreenWidth-15,d1
+  cmp.w       #ScreenWidth-16,d1
   blt.s       .full_fwm_lwm
   lea         .mask_right(pc),a0
   move.w      d1,d2
-  sub.w       #ScreenWidth-15,d2
+  sub.w       #ScreenWidth-16,d2
   lsl.w       #1,d2
   move.w      (a0,d2.w),d4
 .full_fwm_lwm:
