@@ -1,5 +1,6 @@
 *.bin
 *.raw
+*.ods#
 *.gz
 files_descriptor.i
 files_index.i

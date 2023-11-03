@@ -52,3 +52,4 @@ targetFiles:
       - filename: tiled/explosion_anim.tmx
         tilesFilename: tiles.iff
       - filename: universe.mod
+      - filename: movements/simple.ods
