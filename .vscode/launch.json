@@ -9,6 +9,7 @@
             "request": "launch",
             "name": "FS-UAE Debug",
             "stopOnEntry": false,
+            "trace": true,
             "program": "${workspaceFolder}/uae/dh0/NeonWorld",
             "remoteProgram": "SYS:NeonWorld",
             "emulatorType": "fs-uae",
@@ -26,12 +27,12 @@
             "preLaunchTask": "amigaassembly: build"
         },
         {
-            "type": "uae-run",
+            "type": "amiga-assembly",
             "request": "launch",
             "name": "FS-UAE Run",
-            "emulator": "${config:amiga-assembly.binDir}/fs-uae",
-            "emulatorWorkingDir": "${config:amiga-assembly.binDir}",
-            "options": [
+            "program": "${workspaceFolder}/uae/dh0_adf/NeonWorld",
+            "emulatorType": "fs-uae",
+            "emulatorArgs": [
                 "--chip_memory=512",
                 "--slow_memory=0",
                 "--hard_drive_0=${workspaceFolder}/uae/dh0_adf",
