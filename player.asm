@@ -127,30 +127,6 @@ player_update:
   beq.s      .no_collision_bpl1
   bra.s      .collision_detected
 .no_collision_bpl1:
-; sprite 0+1 collide with second bitplane?
-  move.w     #%0001000010000010,CLXCON(a6)
-  move.w     CLXDAT(a6),d0
-  and.b      #%00100000,d0
-  tst.b      d0
-  beq.s      .no_collision_bpl2
-  bra.s      .collision_detected
-.no_collision_bpl2:
-; sprite 0+1 collide with third bitplane?
-  move.w     #%0001000100000100,CLXCON(a6)
-  move.w     CLXDAT(a6),d0
-  and.b      #%00000010,d0
-  tst.b      d0
-  beq.s      .no_collision_bpl3
-  bra.s      .collision_detected
-.no_collision_bpl3:
-; sprite 0+1 collide with fourth bitplane?
-  move.w     #%0001001000001000,CLXCON(a6)
-  move.w     CLXDAT(a6),d0
-  and.b      #%00100000,d0
-  tst.b      d0
-  beq.s      .no_collision_bpl4
-  bra.s      .collision_detected
-.no_collision_bpl4:
 ; no collision detected
   ifne       SHOW_COLLISION_RED
   clr.w      COLOR00(a6)
