@@ -84,8 +84,18 @@ ps_update:
   beq        .go_on
   add.w      #PsSpeed,b_xpos(a1)
 
-  ; check for collision with background between old and new position
+  ; check for end-of-life
   move.w     b_xpos(a1),d0
+  cmp.w      #ScreenWidth,d0
+  blt.s      .still_on_screen
+
+  move.l     ig_om_frame_counter(a4),d1
+  addq.l     #2,d1
+  move.l     d1,b_eol_frame(a1)
+  bra.s      .go_on
+
+  ; check for collision with background between old and new position
+.still_on_screen:
   move.w     b_ypos(a1),d1
   move.w     ig_om_scroll_xpos_frbuf(a4),d2
   jsr        cc_scr_to_bplptr

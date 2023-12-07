@@ -66,6 +66,16 @@ bob_restore:
 
 .pse_end:
 
+  ; restore enemies (always active for now, so no check for b_eol_frame)
+
+  lea.l       ig_om_enemies(a4),a0
+  moveq.l     #EnemyMaxCount-1,d7
+.enemy_loop:
+  lea.l       (a0,d3.w),a1
+  bsr.s       .restore_one_bob
+  add.l       #enemy_size,a0
+  dbf         d7,.enemy_loop
+
   rts
 
 .restore_one_bob
@@ -102,9 +112,7 @@ bob_restore:
 
 ; a1 - pointer to bob-structure (see constant.i)
 ; d0 - odd/even-counter indicating which framebuffer must be drawn to (only bit 0 is used, register is overwritten)
-; uses a0,a2,d1-d3
-;
-; TODO: Because right now the only bobs are playershots, clipping is only done for the right border of the screen.
+; uses a0,a2,d1-d5
 ;
 ; assumptions:
 ;    all BOBs are 16 pixel wide
@@ -113,24 +121,55 @@ bob_restore:
   xdef        bob_draw
 bob_draw:
 
-  move.w      b_xpos(a1),d1
+  ; first check if bob is (at least partly) visible
 
+  move.w      b_xpos(a1),d1
+  cmp.w       #ScreenWidth,d1
+  bgt.s       .exit
+  add.w       b_width(a1),d1
+  tst.w       d1
+  blt.s       .exit
+  move.w      b_ypos(a1),d1
+  cmp.w       #ScreenHeight,d1
+  bgt.s       .exit
+  add.w       b_height(a1),d1
+  tst.w       d1
+  blt.s       .exit
+
+  ; check for need of clipping
+
+  move.w      b_xpos(a1),d1
+  move.w      #ScreenWidth,d5
+  sub.w       b_width(a1),d5                                  ; max x-pos without need for using a mask
   move.w      #$ffff,d4                                       ; BLTAFWM and BLTALWM
-  cmp.w       #ScreenWidth-16,d1
-  blt.s       .full_fwm_lwm
+
+  ; check for right mask
+  cmp.w       d5,d1
+  blt.s       .no_mask_right
+
   lea         .mask_right(pc),a0
   move.w      d1,d2
-  sub.w       #ScreenWidth-16,d2
+  sub.w       d5,d2
   lsl.w       #1,d2
   move.w      (a0,d2.w),d4
-.full_fwm_lwm:
-  cmp.w       #ScreenWidth,d1
-  blt.s       .still_visible
-  tst.l       b_eol_frame(a1)
-  bne.s       .exit
-  move.l      d0,d1
-  addq.l      #2,d1
-  move.l      d1,b_eol_frame(a1)
+
+.no_mask_right:
+
+  ; check for left mask
+  tst.w       d1
+  bge.s       .no_mask_left
+
+  lea         .mask_left(pc),a0
+  move.w      d1,d2
+  add.w       #TilePixelWidth-1,d2
+  lsl.w       #1,d2
+  move.w      (a0,d2.w),d4
+    
+.no_mask_left:
+  ; TODO: clip top and bottom
+
+  bra.s       .is_visible
+
 .exit:
   rts
 
@@ -151,7 +190,24 @@ bob_draw:
   dc.w        %1100000000000000
   dc.w        %1000000000000000
 
-.still_visible:
+.mask_left:
+  dc.w        %0000000000000001
+  dc.w        %0000000000000011
+  dc.w        %0000000000000111
+  dc.w        %0000000000001111
+  dc.w        %0000000000011111
+  dc.w        %0000000000111111
+  dc.w        %0000000001111111
+  dc.w        %0000000011111111
+  dc.w        %0000000111111111
+  dc.w        %0000001111111111
+  dc.w        %0000011111111111
+  dc.w        %0000111111111111
+  dc.w        %0001111111111111
+  dc.w        %0011111111111111
+  dc.w        %0111111111111111
+
+.is_visible:
 
 ; at this point the scroll routine has altered the bitplane pointers in the copperlist for
 ; the next frame, so we must draw to the same buffer that is pointed to in the copperlist,
