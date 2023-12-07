@@ -246,6 +246,13 @@ pse_size:                      rs.b       0
 ; other constants
 PseMaxAnimCount             equ 7
 
+; Enemy
+                               rsreset
+enemy_bob:                     rs.b       b_size
+enemy_size:                    rs.b       0
+; other constants
+EnemyMaxCount               equ 2
+
 ; Player
                                rsreset
 pl_xpos:                       rs.w       1                                                ; x-position on screen (hardware coordinates)
@@ -311,6 +318,7 @@ ig_om_padding_byte:            rs.b       1
 ig_om_player                   rs.b       pl_size
 ig_om_playershots:             rs.b       ps_size*PsMaxCount                               ; playershots
 ig_om_playershot_explosion:    rs.b       pse_size
+ig_om_enemies:                 rs.b       enemy_size*EnemyMaxCount                         ; enemies
 ig_om_starfield:               rs.l       NumberOfStars                                    ; first word contains x-pos, second word contains value that is subtracted each frame
 ig_om_f003:                    rs.b       f003_size
 ig_om_size:                    rs.b       0

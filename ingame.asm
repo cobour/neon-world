@@ -53,6 +53,8 @@ ig_start:
                 jsr         panel_init
                 jsr         sf_init
 
+                jsr         enemies_init
+
                 move.l      #LevelScreenBufferWidthBytes,d0
                 jsr         cc_init
 
@@ -133,7 +135,7 @@ ig_lvl3_handler:
                 ; otherwise BOBs will be drawn to visible buffer, may cause flickering)
                 jsr         pf_scroll
 
-                ; restore background for ALL bobs
+                ; restore background for ALL bobs (playershots, playershot-explosion, enemies)
                 jsr         bob_restore
 
                 ; read firebutton 
@@ -142,6 +144,9 @@ ig_lvl3_handler:
                 ; update all currently active playershots
                 jsr         ps_update
 
+                ; update all currently active enemies
+                jsr         enemies_update
+                
                 ; increment frame counter
                 add.l       #1,ig_om_frame_counter(a4)
 
