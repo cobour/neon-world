@@ -46,11 +46,11 @@ DONE    convert todo.txt and all readme.txt's to markdown
 
         check error codes after os calls
 
-DONE    scroll: switch buffers even when there is no more scrolling
+...     scroll: switch buffers even when there is no more scrolling // BUG: implemented, but when no more scrolling is performed, bobs are drawn to visible buffer
 
 DONE    playershots: shots are bobs and do not collide in the first place
 DOME    playershots: collision detection with bitplanes
 DONE    playershots: switch to small explosion
 
-        bob.asm: clip blits (top, bottom, left)
+DONE    bob.asm: clip blits (top, bottom, left)
         bob.asm: refactor to use pointerlist to ALL bob's, so no special treatment is necessary when restoring (playershots, playershot-explosion...)

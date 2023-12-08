@@ -112,7 +112,7 @@ bob_restore:
 
 ; a1 - pointer to bob-structure (see constant.i)
 ; d0 - odd/even-counter indicating which framebuffer must be drawn to (only bit 0 is used, register is overwritten)
-; uses a0,a2,d1-d5
+; uses a0,a2,d1-d6
 ;
 ; assumptions:
 ;    all BOBs are 16 pixel wide
@@ -120,28 +120,31 @@ bob_restore:
 ;    all BOBs are drawn to ingame screenbuffers (LevelScreenBufferWidthBytes wide)
   xdef        bob_draw
 bob_draw:
+  move.l      d7,-(sp)                                   ; often used for loops calling this code
 
   ; first check if bob is (at least partly) visible
 
   move.w      b_xpos(a1),d1
   cmp.w       #ScreenWidth,d1
-  bgt.s       .exit
+  bgt         .exit
   add.w       b_width(a1),d1
   tst.w       d1
-  blt.s       .exit
+  blt         .exit
   move.w      b_ypos(a1),d1
   cmp.w       #ScreenHeight,d1
-  bgt.s       .exit
+  bgt         .exit
   add.w       b_height(a1),d1
   tst.w       d1
-  blt.s       .exit
+  blt         .exit
 
-  ; check for need of clipping
+  ; check for need of masking left or right (both at the same time is not possible)
+  ; result:
+  ;  d4.w - BLTAFWM and BLTALWM ( same because all bobs are 16 pixel wide )
 
   move.w      b_xpos(a1),d1
   move.w      #ScreenWidth,d5
-  sub.w       b_width(a1),d5                                  ; max x-pos without need for using a mask
-  move.w      #$ffff,d4                                       ; BLTAFWM and BLTALWM
+  sub.w       b_width(a1),d5                             ; max x-pos without need for using a mask
+  move.w      #$ffff,d4
 
   ; check for right mask
   cmp.w       d5,d1
@@ -166,12 +169,66 @@ bob_draw:
   move.w      (a0,d2.w),d4
     
 .no_mask_left:
-  ; TODO: clip top and bottom
 
+  ; check for need of clipping top or bottom (both at the same time is not possible)
+  ; results:
+  ;  d5.w - adjusted height
+  ;  d6.w - diff to ypos ( +0 - +15 )
+  ;  d7.l - add to source pointer
+
+  ; check for top clip
+  move.w      b_ypos(a1),d1
+  tst.w       d1
+  bge.s       .no_top_clip
+  move.w      d1,d5
+  add.w       #1,d5
+  add.w       b_height(a1),d5                            ; d5 = adjusted height of bob
+  move.w      d1,d6
+  neg.w       d6                                         ; d6 = add to ypos of bob
+  move.w      d6,d7
+  sub.w       #1,d7
+  lsl.w       #2,d7
+  lea.l       .source_offsets(pc),a0
+  move.l      (a0,d7.w),d7                               ; d7 = add to source pointer
+  bra         .is_visible                                ; bottom clip not possible
+
+.source_offsets:
+  dc.l        TilesWidthBytes*TilesBitplanes*0
+  dc.l        TilesWidthBytes*TilesBitplanes*1
+  dc.l        TilesWidthBytes*TilesBitplanes*2
+  dc.l        TilesWidthBytes*TilesBitplanes*3
+  dc.l        TilesWidthBytes*TilesBitplanes*4
+  dc.l        TilesWidthBytes*TilesBitplanes*5
+  dc.l        TilesWidthBytes*TilesBitplanes*6
+  dc.l        TilesWidthBytes*TilesBitplanes*7
+  dc.l        TilesWidthBytes*TilesBitplanes*8
+  dc.l        TilesWidthBytes*TilesBitplanes*9
+  dc.l        TilesWidthBytes*TilesBitplanes*10
+  dc.l        TilesWidthBytes*TilesBitplanes*11
+  dc.l        TilesWidthBytes*TilesBitplanes*12
+  dc.l        TilesWidthBytes*TilesBitplanes*13
+  dc.l        TilesWidthBytes*TilesBitplanes*14
+  dc.l        TilesWidthBytes*TilesBitplanes*15
+
+.no_top_clip:
+
+  ; check for bottom clip
+  add.w       b_height(a1),d1
+  cmp.w       #ScreenHeight,d1
+  blt.s       .no_bottom_clip
+  move.w      d1,d5
+  sub.w       #ScreenHeight,d5
+  neg.w       d5
+  add.w       b_height(a1),d5                            ; d5 = adjusted height of bob
+  moveq.l     #0,d6                                      ; d6 = no add to ypos of bob
+  moveq.l     #0,d7                                      ; d7 = no add to source pointer
   bra.s       .is_visible
 
-.exit:
-  rts
+.no_bottom_clip:
+  move.w      b_height(a1),d5                            ; d5 = height of bob
+  moveq.l     #0,d6                                      ; d6 = no add to ypos of bob
+  moveq.l     #0,d7                                      ; d7 = no add to source pointer
+  bra.s       .is_visible
 
 .mask_right:
   dc.w        %1111111111111110
@@ -230,6 +287,7 @@ bob_draw:
 
   move.w      b_xpos(a1),d0
   move.w      b_ypos(a1),d1
+  add.w       d6,d1                                      ; add to ypos ( because of vertical clipping )
   move.w      ig_om_scroll_xpos_frbuf(a4),d2
   jsr         cc_scr_to_bplptr
 
@@ -245,11 +303,13 @@ bob_draw:
   move.l      a5,d3
   add.l       #ig_cm_f002+f002_dat_tiles_iff_mask,d3
   add.l       b_tiles_offset(a1),d3
+  add.l       d7,d3                                      ; add offset due to clipping
   move.l      d3,BLTAPTH(a6)
   ; b-ptr (gfx)
   move.l      a5,d3
   add.l       #ig_cm_f002+f002_dat_tiles_iff,d3
   add.l       b_tiles_offset(a1),d3
+  add.l       d7,d3                                      ; add offset due to clipping
   move.l      d3,BLTBPTH(a6)
 
   ; check for pixel shift
@@ -272,17 +332,21 @@ bob_draw:
   move.w      d0,BLTDMOD(a6)
   move.w      d0,bb_bltmod(a2)
 
-  cmp.w       #TilePixelHeight,b_width(a1)
+  cmp.w       #TilePixelHeight,b_height(a1)
   beq.s       .2a
-  move.w      #(TilePixelHeight/2*ScreenBitPlanes<<6)+1,d0
+  lea.l       .bltsizes_half_height_no_shift(pc),a0
   bra.s       .2b
 .2a:
-  move.w      #(TilePixelHeight*ScreenBitPlanes<<6)+1,d0
+  lea.l       .bltsizes_full_height_no_shift(pc),a0
 .2b:  
-  move.w      d0,bb_bltsize(a2)
-  move.w      d0,BLTSIZE(a6)
+  sub.w       #1,d5
+  lsl.w       #1,d5
+  move.w      (a0,d5.w),d1
+  move.w      d1,bb_bltsize(a2)
+  move.w      d1,BLTSIZE(a6)
 
-  rts
+  bra.s       .exit
+
 .3:
   ; d0 = bits to be shifted
   ror.w       #4,d0
@@ -304,14 +368,75 @@ bob_draw:
   move.w      d0,BLTDMOD(a6)
   move.w      d0,bb_bltmod(a2)
 
-  cmp.w       #TilePixelHeight,b_width(a1)
+  cmp.w       #TilePixelHeight,b_height(a1)
   beq.s       .3a
-  move.w      #(TilePixelHeight/2*ScreenBitPlanes<<6)+2,d0
+  lea.l       .bltsizes_half_height_with_shift(pc),a0
   bra.s       .3b
 .3a:
-  move.w      #(TilePixelHeight*ScreenBitPlanes<<6)+2,d0
-.3b:  
-  move.w      d0,bb_bltsize(a2)
-  move.w      d0,BLTSIZE(a6)
+  lea.l       .bltsizes_full_height_with_shift(pc),a0
+.3b:
+  sub.w       #1,d5
+  lsl.w       #1,d5
+  move.w      (a0,d5.w),d1
+  move.w      d1,bb_bltsize(a2)
+  move.w      d1,BLTSIZE(a6)
 
+.exit:
+  move.l      (sp)+,d7
   rts
+
+.bltsizes_full_height_no_shift:
+  dc.w        (1*ScreenBitPlanes<<6)+1
+  dc.w        (2*ScreenBitPlanes<<6)+1
+  dc.w        (3*ScreenBitPlanes<<6)+1
+  dc.w        (4*ScreenBitPlanes<<6)+1
+  dc.w        (5*ScreenBitPlanes<<6)+1
+  dc.w        (6*ScreenBitPlanes<<6)+1
+  dc.w        (7*ScreenBitPlanes<<6)+1
+  dc.w        (8*ScreenBitPlanes<<6)+1
+  dc.w        (9*ScreenBitPlanes<<6)+1
+  dc.w        (10*ScreenBitPlanes<<6)+1
+  dc.w        (11*ScreenBitPlanes<<6)+1
+  dc.w        (12*ScreenBitPlanes<<6)+1
+  dc.w        (13*ScreenBitPlanes<<6)+1
+  dc.w        (14*ScreenBitPlanes<<6)+1
+  dc.w        (15*ScreenBitPlanes<<6)+1
+  dc.w        (16*ScreenBitPlanes<<6)+1
+
+.bltsizes_half_height_no_shift:
+  dc.w        (1*ScreenBitPlanes<<6)+1
+  dc.w        (2*ScreenBitPlanes<<6)+1
+  dc.w        (3*ScreenBitPlanes<<6)+1
+  dc.w        (4*ScreenBitPlanes<<6)+1
+  dc.w        (5*ScreenBitPlanes<<6)+1
+  dc.w        (6*ScreenBitPlanes<<6)+1
+  dc.w        (7*ScreenBitPlanes<<6)+1
+  dc.w        (8*ScreenBitPlanes<<6)+1
+
+.bltsizes_full_height_with_shift:
+  dc.w        (1*ScreenBitPlanes<<6)+2
+  dc.w        (2*ScreenBitPlanes<<6)+2
+  dc.w        (3*ScreenBitPlanes<<6)+2
+  dc.w        (4*ScreenBitPlanes<<6)+2
+  dc.w        (5*ScreenBitPlanes<<6)+2
+  dc.w        (6*ScreenBitPlanes<<6)+2
+  dc.w        (7*ScreenBitPlanes<<6)+2
+  dc.w        (8*ScreenBitPlanes<<6)+2
+  dc.w        (9*ScreenBitPlanes<<6)+2
+  dc.w        (10*ScreenBitPlanes<<6)+2
+  dc.w        (11*ScreenBitPlanes<<6)+2
+  dc.w        (12*ScreenBitPlanes<<6)+2
+  dc.w        (13*ScreenBitPlanes<<6)+2
+  dc.w        (14*ScreenBitPlanes<<6)+2
+  dc.w        (15*ScreenBitPlanes<<6)+2
+  dc.w        (16*ScreenBitPlanes<<6)+2
+
+.bltsizes_half_height_with_shift:
+  dc.w        (1*ScreenBitPlanes<<6)+2
+  dc.w        (2*ScreenBitPlanes<<6)+2
+  dc.w        (3*ScreenBitPlanes<<6)+2
+  dc.w        (4*ScreenBitPlanes<<6)+2
+  dc.w        (5*ScreenBitPlanes<<6)+2
+  dc.w        (6*ScreenBitPlanes<<6)+2
+  dc.w        (7*ScreenBitPlanes<<6)+2
+  dc.w        (8*ScreenBitPlanes<<6)+2
