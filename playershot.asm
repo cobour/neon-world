@@ -67,7 +67,7 @@ ps_update:
   move.l     a5,a3
   move.l     ig_om_frame_counter(a4),d0
   btst       #0,d0
-  beq.s      .1
+  bne.s      .1
   add.l      #ig_cm_screenbuffer0,a3
   bra.s      .2
 .1:

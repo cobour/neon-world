@@ -9,7 +9,7 @@ bob_restore:
   move.l      a5,d2
   move.l      ig_om_frame_counter(a4),d4
   btst        #0,d4
-  beq.s       .1
+  bne.s       .1
   add.l       #ig_cm_screenbuffer0,d2
   move.w      #b_b_0,d3
   bra.s       .2
@@ -270,11 +270,9 @@ bob_draw:
 ; the next frame, so we must draw to the same buffer that is pointed to in the copperlist,
 ; because that is the buffer that is currently NOT displayed, but prepared for the next frame
 ; to be displayed.
-; since the framecounter is incremented at the very end of the lvl3-irq routine, we choose
-; the buffer zero for the odd counts and vice versa.
   move.l      a5,d3
   btst        #0,d0
-  beq.s       .1
+  bne.s       .1
   add.l       #ig_cm_screenbuffer0,d3
   lea.l       b_b_0(a1),a2
   bra.s       .2

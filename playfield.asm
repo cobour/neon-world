@@ -110,7 +110,7 @@ pf_scroll:
                 ; just switch buffers
                 lea.l         ig_cop_scroll,a0
                 lea.l         ig_om_bpl_offsets(a4),a1
-                move.l        ig_om_frame_counter(a4),d0
+                move.l        ig_om_frame_counter(a4),d1
                 bra           pf_update_copperlist
  
 ; checks, if further scrolling is possible and if so, scrolls playfield by 1 pixel
@@ -170,6 +170,7 @@ pf_set_scroll_vars_in_coplist:
 .pssv_no_reset:
                 lea.l         ig_cop_scroll,a0
                 lea.l         ig_om_bpl_offsets(a4),a1
+                move.l        ig_om_frame_counter(a4),d1
                 bsr.s         pf_update_copperlist
 
 ; again check for word boundary
@@ -207,10 +208,10 @@ pf_set_scroll_vars_in_coplist:
 ; switches buffers and updates copperlist accordingly
 ; a0   - copperlist area with setting of scroll registers (BPLCON1...)
 ; a1   - list of bitplane pointer offsets
-; d0.b - counter indicating odd or even frame
+; d1   - counter indicating odd or even frame
 pf_update_copperlist:
                 lea.l         ig_cop_bplpt,a2
-                btst          #0,d0
+                btst          #0,d1
                 bne.s         .1
                 move.l        #ig_cm_screenbuffer0+m_cm_area,d2
                 bra.s         .2
