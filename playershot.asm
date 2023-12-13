@@ -61,8 +61,8 @@ ps_new_shot:
   jmp        sfx_shot
 
 ; updates active playershots each frame
-  xdef       ps_update
-ps_update:
+  xdef       ps_update_pos_and_state
+ps_update_pos_and_state:
   ; get pointer to target screenbuffer
   move.l     a5,a3
   move.l     ig_om_frame_counter(a4),d0
@@ -116,7 +116,7 @@ ps_update:
   move.l     (a0,d0.w),d2
   and.l      d2,d3
   tst.l      d3
-  beq.s      .draw_shot
+  beq.s      .go_on
 
   ; shot hit background
   jsr        sfx_explosion_small
@@ -137,14 +137,26 @@ ps_update:
 
   move.b     #0,pse_anim_count(a2)
 
-  bra.s      .go_on
-
-.draw_shot:
-  move.l     ig_om_frame_counter(a4),d0
-  jsr        bob_draw
 .go_on:
   add.l      #ps_size,a1
   dbf        d7,.loop
+
+  rts
+
+  xdef       ps_draw
+ps_draw:
+  lea.l      ig_om_playershots(a4),a1
+  moveq.l    #PsMaxCount-1,d7
+.pd_loop:
+  tst.l      b_eol_frame(a1)
+  bne.s      .pd_loop_next
+  btst       #BobActive,b_bools(a1)
+  beq.s      .pd_loop_next
+  move.l     ig_om_frame_counter(a4),d0
+  jsr        bob_draw
+.pd_loop_next:
+  add.l      #ps_size,a1
+  dbf        d7,.pd_loop
 
   ; draw playershot-explosion
   lea.l      ig_om_playershot_explosion(a4),a1

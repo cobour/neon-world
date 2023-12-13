@@ -141,12 +141,18 @@ ig_lvl3_handler:
                 ; read firebutton 
                 jsr         player_firebutton
                 
-                ; update all currently active playershots
-                jsr         ps_update
+                ; update all currently active playershots and playershot-explosion
+                jsr         ps_update_pos_and_state
 
-                ; update all currently active enemies
-                jsr         enemies_update
-                
+                ; update position and state of all currently active enemies
+                jsr         enemies_update_pos_and_state
+
+                ; draw all currently active playershots and playershot-explosion
+                jsr         ps_draw
+
+                ; draw all currently active enemies
+                jsr         enemies_draw
+
                 ; increment frame counter
                 add.l       #1,ig_om_frame_counter(a4)
 

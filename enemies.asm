@@ -42,8 +42,8 @@ enemies_init:
 
   rts
 
-  xdef       enemies_update
-enemies_update:
+  xdef       enemies_update_pos_and_state
+enemies_update_pos_and_state:
   ; no deactivation for now, so no b_eol_frame ever set
 
   ; update first enemy position
@@ -55,8 +55,10 @@ enemies_update:
   move.w     #ScreenWidth-1,d0
 .1:
   move.w     d0,b_xpos(a0)
+  rts
 
-.update_anim:
+  xdef       enemies_draw
+enemies_draw:
   lea.l      ig_om_enemies(a4),a1
   moveq.l    #EnemyMaxCount-1,d7
 .ua_loop:
