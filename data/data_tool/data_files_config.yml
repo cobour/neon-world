@@ -51,5 +51,9 @@ targetFiles:
         tilesFilename: tiles.iff
       - filename: tiled/explosion_anim.tmx
         tilesFilename: tiles.iff
+      - filename: tiled/green_face_red_eye_anim.tmx
+        tilesFilename: tiles.iff
+      - filename: tiled/orange_face_anim.tmx
+        tilesFilename: tiles.iff
       - filename: universe.mod
       - filename: movements/simple.ods
