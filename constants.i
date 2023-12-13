@@ -249,9 +249,18 @@ PseMaxAnimCount             equ 7
 ; Enemy
                                rsreset
 enemy_bob:                     rs.b       b_size
+enemy_descriptor               rs.l       1                                                ; points to enemy descriptor
+enemy_anim_step:               rs.w       1                                                ; actual displayed anim step
+enemy_anim_delay:              rs.w       1                                                ; actual anim delay counter
 enemy_size:                    rs.b       0
 ; other constants
 EnemyMaxCount               equ 2
+
+; Enemy Descriptor (contains static values that are the same for every instance of the specific enemy type)
+                               rsreset
+ed_anim:                       rs.l       1                                                ; anim data, offset in othermem area
+ed_anim_steps:                 rs.w       1
+ed_anim_delay:                 rs.w       1
 
 ; Player
                                rsreset
