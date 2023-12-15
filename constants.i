@@ -261,13 +261,21 @@ enemy_size:                    rs.b       0
 ; bits for enemy_bools
 EnemyActive                 equ 0                                                          ; slight difference to BobActive (EnemyActive clears when enemy is hit or leaves visible screen to the left, BobActive clears 2 frames later, when restoration to both buffers is done)
 ; other constants
-EnemyMaxCount               equ 2
+EnemyMaxCount               equ 16
 
 ; Enemy Descriptor (contains static values that are the same for every instance of the specific enemy type)
                                rsreset
 ed_anim:                       rs.l       1                                                ; anim data, offset in othermem area
-ed_anim_steps:                 rs.w       1
-ed_anim_delay:                 rs.w       1
+ed_anim_steps:                 rs.w       1                                                ; number of anim steps
+ed_anim_delay:                 rs.w       1                                                ; delay in frames between anim steps
+ed_size:                       rs.b       0
+
+
+; Enemy Movement Descriptor (contains static values that are the same for every instance of the specific movement type)
+                               rsreset
+mvd_steps:                     rs.l       1                                                ; movement data, in pairs of x- and y-adds
+mvd_max_step:                  rs.w       1                                                ; number of movement steps
+mvd_size:                      rs.b       0
 
 ; Player
                                rsreset
