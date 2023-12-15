@@ -249,10 +249,17 @@ PseMaxAnimCount             equ 7
 ; Enemy
                                rsreset
 enemy_bob:                     rs.b       b_size
+enemy_bools:                   rs.b       1                                                ; flags
+enemy_padding_byte:            rs.b       1
 enemy_descriptor               rs.l       1                                                ; points to enemy descriptor
 enemy_anim_step:               rs.w       1                                                ; actual displayed anim step
 enemy_anim_delay:              rs.w       1                                                ; actual anim delay counter
+enemy_movement:                rs.l       1
+enemy_movement_max_step:       rs.w       1
+enemy_movement_actual_step:    rs.w       1
 enemy_size:                    rs.b       0
+; bits for enemy_bools
+EnemyActive                 equ 0                                                          ; slight difference to BobActive (EnemyActive clears when enemy is hit or leaves visible screen to the left, BobActive clears 2 frames later, when restoration to both buffers is done)
 ; other constants
 EnemyMaxCount               equ 2
 

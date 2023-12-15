@@ -57,6 +57,6 @@ DONE    bob.asm: clip blits (top, bottom, left)
 
 DONE    split update for playershots and enemies in position-update and drawing (because collision detection will later happen between these two steps)
         read enemy metadata from level file (no hard-coding of spawning, position, type of enemy etc.)
-        move enemies by movement-schemes (ods)
+DONE    move enemies by movement-schemes (ods)
         collision detection playershots to enemies
           enemy-dies-explosion as special bob
