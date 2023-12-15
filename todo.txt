@@ -60,3 +60,5 @@ DONE    split update for playershots and enemies in position-update and drawing 
 DONE    move enemies by movement-schemes (ods)
         collision detection playershots to enemies
           enemy-dies-explosion as special bob
+
+        REFACTOR: alloc chip and other mem through exec.library (not sections in code)
