@@ -66,13 +66,28 @@ bob_restore:
 
 .pse_end:
 
-  ; restore enemies (always active for now, so no check for b_eol_frame)
+  ; restore enemies
 
   lea.l       ig_om_enemies(a4),a0
   moveq.l     #EnemyMaxCount-1,d7
 .enemy_loop:
+  move.b      b_bools(a0),d0
+
+  tst.l       b_eol_frame(a0)
+  beq.s       .enemy_go_on
+  cmp.l       b_eol_frame(a0),d4
+  ble.s       .enemy_go_on
+  
+  bclr        #BobActive,d0
+  move.b      d0,b_bools(a0)
+  clr.l       b_eol_frame(a0)
+  bra.s       .enemy_loop_next
+
+.enemy_go_on:
   lea.l       (a0,d3.w),a1
   bsr.s       .restore_one_bob
+
+.enemy_loop_next:
   add.l       #enemy_size,a0
   dbf         d7,.enemy_loop
 

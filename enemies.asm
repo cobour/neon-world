@@ -168,6 +168,9 @@ enemies_update_pos_and_state:
   cmp.w      #-TilePixelWidth-4,d0
   bge.s      .ups_loop_next
   bclr       #EnemyActive,enemy_bools(a0)
+  move.l     ig_om_frame_counter(a4),d0
+  addq.l     #2,d0
+  move.l     d0,b_eol_frame(a0)
 .ups_loop_next:  
   add.l      #enemy_size,a0
   dbf        d7,.ups_loop
