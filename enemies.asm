@@ -5,6 +5,12 @@
   xdef       enemies_init
 enemies_init:
 
+  ; init values for object descriptors
+  lea.l      ig_om_f003+f003_dat_level1_tmx_objects(a4),a0
+  move.l     a0,ig_om_next_object_desc(a4)
+  add.l      #f003_dat_level1_tmx_objects_size,a0
+  move.l     a0,ig_om_end_object_desc(a4)
+
   ; init enemy descriptor index
   lea.l      enemy_descriptors_index(pc),a0
   lea.l      first_enemy_descriptor(pc),a1
@@ -40,21 +46,34 @@ enemies_init:
   add.l      #enemy_size,a0
   dbf        d7,.ei_struct_loop
 
-  ; just two dummy enemies for now (REMOVE WHEN READ FROM LEVEL FILE)
+  rts
 
-  ; moving enemy
-  move.w     #320,d0
-  move.w     #60,d1
-  moveq.l    #0,d2
-  moveq.l    #0,d3
-  bsr.s      spawn_new_enemy
+  xdef       enemies_spawn
+enemies_spawn:
+  move.l     ig_om_next_object_desc(a4),a2
+.es_loop:
+  ; check if any remaining object descriptors to process
+  cmp.l      ig_om_end_object_desc(a4),a2
+  beq.s      .es_exit
 
-  ; not-moving enemy
-  move.w     #252,d0
-  move.w     #160,d1
-  moveq.l    #1,d2
-  moveq.l    #1,d3
+  ; check if frame count is reached
+  move.l     ig_om_frame_counter(a4),d0
+  cmp.l      obj_spawn_frame(a2),d0
+  blt.s      .es_exit
+
+  ; spawn new enemy
+  move.w     obj_xpos(a2),d0
+  move.w     obj_ypos(a2),d1
+  move.w     obj_enemy_desc(a2),d2
+  move.w     obj_enemy_movement_desc(a2),d3
   bsr.s      spawn_new_enemy
+  
+  ; maybe more than one enemy must be spawned in this frame
+  add.l      #obj_size,a2
+  bra.s      .es_loop
+.es_exit:
+  ; save pointer (may have been incremented)
+  move.l     a2,ig_om_next_object_desc(a4)
 
   rts
 
@@ -65,7 +84,7 @@ enemies_init:
 ; d3 - number of movement descriptor (starting with zero)
 ;
 ; uses:
-; d4-d5,d7
+; d4-d5,d7,a1
 ;
 ; out:
 ; a0 - pointer to enemy struct or zero, if no free enemy slot was available

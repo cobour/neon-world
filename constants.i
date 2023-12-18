@@ -263,6 +263,15 @@ EnemyActive                 equ 0                                               
 ; other constants
 EnemyMaxCount               equ 16
 
+; Enemy Object Descriptor (read from level file)
+                               rsreset
+obj_spawn_frame:               rs.l       1
+obj_xpos:                      rs.w       1
+obj_ypos:                      rs.w       1
+obj_enemy_desc:                rs.w       1
+obj_enemy_movement_desc:       rs.w       1
+obj_size:                      rs.b       0                                                ; MUST be the same value that is added in de.spozzfroin.amiga.datafilecreator.converters.TiledSourceFileConverter#writeObjects
+
 ; Enemy Descriptor (contains static values that are the same for every instance of the specific enemy type)
                                rsreset
 ed_anim:                       rs.l       1                                                ; anim data, offset in othermem area
@@ -343,6 +352,8 @@ ig_om_player                   rs.b       pl_size
 ig_om_playershots:             rs.b       ps_size*PsMaxCount                               ; playershots
 ig_om_playershot_explosion:    rs.b       pse_size
 ig_om_enemies:                 rs.b       enemy_size*EnemyMaxCount                         ; enemies
+ig_om_next_object_desc:        rs.l       1                                                ; next possible object descriptor (enemy to be spawned) - points to a list that is sorted by frame counter
+ig_om_end_object_desc:         rs.l       1                                                ; pointer directly behind last valid object descriptor (if ig_om_next_object_desc equals this, then there is no more object descriptor to process)
 ig_om_starfield:               rs.l       NumberOfStars                                    ; first word contains x-pos, second word contains value that is subtracted each frame
 ig_om_f003:                    rs.b       f003_size
 ig_om_size:                    rs.b       0

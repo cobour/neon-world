@@ -153,6 +153,9 @@ ig_lvl3_handler:
                 ; draw all currently active enemies
                 jsr         enemies_draw
 
+                ; spawn new enemies (data read from level file)
+                jsr         enemies_spawn
+
                 ; increment frame counter
                 add.l       #1,ig_om_frame_counter(a4)
 

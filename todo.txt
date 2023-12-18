@@ -56,7 +56,9 @@ DONE    bob.asm: clip blits (top, bottom, left)
         bob.asm: refactor to use pointerlist to ALL bob's, so no special treatment is necessary when restoring (playershots, playershot-explosion...)
 
 DONE    split update for playershots and enemies in position-update and drawing (because collision detection will later happen between these two steps)
-        read enemy metadata from level file (no hard-coding of spawning, position, type of enemy etc.)
+DONE    read enemy metadata from level file (no hard-coding of spawning, position, type of enemy etc.)
+           add "multiplier", so more enemies get spawned by one object in tmx file (delay in frames and counter in properties in tmx object)
+        correctly deactivate bob of enemy
 DONE    move enemies by movement-schemes (ods)
         collision detection playershots to enemies
           enemy-dies-explosion as special bob
