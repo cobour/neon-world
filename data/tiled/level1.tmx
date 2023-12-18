@@ -22,6 +22,13 @@
 </data>
  </layer>
  <objectgroup id="2" name="enemies layer">
+  <object id="3" gid="181" x="1526" y="120" width="16" height="16">
+   <properties>
+    <property name="enemy_desc" type="int" value="1"/>
+    <property name="movement_desc" type="int" value="0"/>
+    <property name="spawn_frame" type="int" value="1204"/>
+   </properties>
+  </object>
   <object id="2" gid="181" x="480" y="64" width="16" height="16">
    <properties>
     <property name="enemy_desc" type="int" value="1"/>
@@ -34,13 +41,6 @@
     <property name="enemy_desc" type="int" value="0"/>
     <property name="movement_desc" type="int" value="0"/>
     <property name="spawn_frame" type="int" value="1"/>
-   </properties>
-  </object>
-  <object id="3" gid="181" x="1526" y="120" width="16" height="16">
-   <properties>
-    <property name="enemy_desc" type="int" value="1"/>
-    <property name="movement_desc" type="int" value="0"/>
-    <property name="spawn_frame" type="int" value="1204"/>
    </properties>
   </object>
  </objectgroup>
