@@ -60,3 +60,8 @@ The only change by me is that VBLANK_MUSIC is set to 1 and source is reformatted
 
 **inflate.asm** (downloaded [here](https://raw.githubusercontent.com/keirf/Amiga-Stuff/master/inflate/inflate.asm) on 2022-11-23)  
 The only thing added by me is the "xdef inflate" directive and source is reformatted by Amiga Assembly (VSC plugin).
+
+## State of development
+
+Playership can move and fire shots. Shots collide with background. There is no collision detection between shots and enemies. Player dies on collision with background or enemies.
+
