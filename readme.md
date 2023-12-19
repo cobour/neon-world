@@ -63,5 +63,6 @@ The only thing added by me is the "xdef inflate" directive and source is reforma
 
 ## State of development
 
-Playership can move and fire shots. Shots collide with background. There is no collision detection between shots and enemies. Player dies on collision with background or enemies.
+Playership can move and fire shots. Shots collide with background. There is no collision detection between shots and enemies. Player dies on collision with background or enemies.  
 
+(https://github.com/cobour/neon-world/blob/main/media/NeonWorld_state_of_dev.mp4)  
