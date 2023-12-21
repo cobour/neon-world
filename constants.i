@@ -226,7 +226,8 @@ b_b_0:                         rs.b       bb_size                               
 b_b_1:                         rs.b       bb_size                                          ; backup-structure for framebuffer 1
 b_size:                        rs.b       0
 ; bits for b_bools
-BobActive                   equ 0
+BobActive                   equ 0                                                          ; must be drawn/restored?
+BobCanCollide               equ 1                                                          ; can collide with other bobs?
 
 ; PlayerShot
                                rsreset
@@ -277,6 +278,10 @@ obj_size:                      rs.b       0                                     
 ed_anim:                       rs.l       1                                                ; anim data, offset in othermem area
 ed_anim_steps:                 rs.w       1                                                ; number of anim steps
 ed_anim_delay:                 rs.w       1                                                ; delay in frames between anim steps
+ed_coldet_x1:                  rs.w       1                                                ; add-value for left border of area for collision detection (must be added to xpos)
+ed_coldet_y1:                  rs.w       1                                                ; add-value for top border of area for collision detection (must be added to ypos)
+ed_coldet_x2:                  rs.w       1                                                ; add-value for right border of area for collision detection (must be added to xpos)
+ed_coldet_y2:                  rs.w       1                                                ; add-value for bottom border of area for collision detection (must be added to ypos)
 ed_size:                       rs.b       0
 
 
@@ -350,8 +355,10 @@ ig_om_bools:                   rs.b       1
 ig_om_padding_byte:            rs.b       1
 ig_om_player                   rs.b       pl_size
 ig_om_playershots:             rs.b       ps_size*PsMaxCount                               ; playershots
+ig_om_playershots_end:         rs.b       0                                                ; marker for end of playershot-structs
 ig_om_playershot_explosion:    rs.b       pse_size
 ig_om_enemies:                 rs.b       enemy_size*EnemyMaxCount                         ; enemies
+ig_om_enemies_end:             rs.b       0                                                ; marker for end of enemy-structs
 ig_om_next_object_desc:        rs.l       1                                                ; next possible object descriptor (enemy to be spawned) - points to a list that is sorted by frame counter
 ig_om_end_object_desc:         rs.l       1                                                ; pointer directly behind last valid object descriptor (if ig_om_next_object_desc equals this, then there is no more object descriptor to process)
 ig_om_starfield:               rs.l       NumberOfStars                                    ; first word contains x-pos, second word contains value that is subtracted each frame

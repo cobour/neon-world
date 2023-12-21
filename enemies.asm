@@ -113,6 +113,7 @@ spawn_new_enemy:
 
   move.b     d4,b_bools(a0)
   bset       #BobActive,b_bools(a0)
+  bset       #BobCanCollide,b_bools(a0)
   move.l     d4,b_eol_frame(a0)
   move.w     d0,b_xpos(a0)
   move.w     d1,b_ypos(a0)
@@ -171,6 +172,7 @@ enemies_update_pos_and_state:
   move.l     ig_om_frame_counter(a4),d0
   addq.l     #2,d0
   move.l     d0,b_eol_frame(a0)
+  bclr       #BobCanCollide,b_bools(a0)
 .ups_loop_next:  
   add.l      #enemy_size,a0
   dbf        d7,.ups_loop
@@ -248,13 +250,15 @@ green_face_red_eye_descriptor:
   dc.l       ig_om_f003+f003_dat_green_face_red_eye_anim_tmx
   dc.w       f003_dat_green_face_red_eye_anim_tmx_tiles_width
   dc.w       3
+  dc.w       0,0,15,15
 orange_face_descriptor:
   dc.l       ig_om_f003+f003_dat_orange_face_anim_tmx
   dc.w       f003_dat_orange_face_anim_tmx_tiles_width
   dc.w       2
+  dc.w       0,0,15,15
 
 ; movement descriptors and index
-MovementDescCount equ 2
+MovementDescCount equ 3
 movement_descriptors_index:
   dcb.l      MovementDescCount
 ; see constants.i -> mvd_*
@@ -263,5 +267,8 @@ first_movement_descriptor:
   dc.l       ig_om_f003+f003_dat_wave_ods
   dc.w       f003_dat_wave_ods_steps
   ; 1
+  dc.l       ig_om_f003+f003_dat_just_scroll_ods
+  dc.w       f003_dat_just_scroll_ods_steps
+  ; 2
   dc.l       ig_om_f003+f003_dat_do_not_move_ods
   dc.w       f003_dat_do_not_move_ods_steps

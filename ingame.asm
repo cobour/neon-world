@@ -147,6 +147,9 @@ ig_lvl3_handler:
                 ; update position and state of all currently active enemies
                 jsr         enemies_update_pos_and_state
 
+                ; check for collisions between playershots and enemies
+                jsr         cd_check
+
                 ; draw all currently active playershots and playershot-explosion
                 jsr         ps_draw
 

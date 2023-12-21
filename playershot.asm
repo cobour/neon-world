@@ -38,6 +38,7 @@ ps_new_shot:
 
 .go_on:
   bset       #BobActive,b_bools(a1)
+  bset       #BobCanCollide,b_bools(a1)
   clr.l      b_eol_frame(a1)
 
   move.w     ig_om_player+pl_xpos(a4),d0
@@ -92,6 +93,7 @@ ps_update_pos_and_state:
   move.l     ig_om_frame_counter(a4),d1
   addq.l     #2,d1
   move.l     d1,b_eol_frame(a1)
+  bclr       #BobCanCollide,b_bools(a1)
   bra.s      .go_on
 
   ; check for collision with background between old and new position
