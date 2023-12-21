@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="100" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="4">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="100" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="5">
  <tileset firstgid="1" source="Tileset.tsx"/>
  <layer id="1" name="playfield layer" width="100" height="16">
   <data encoding="csv">
@@ -27,6 +27,13 @@
     <property name="enemy_desc" type="int" value="1"/>
     <property name="movement_desc" type="int" value="0"/>
     <property name="spawn_frame" type="int" value="1204"/>
+   </properties>
+  </object>
+  <object id="4" gid="181" x="1500" y="187" width="16" height="16">
+   <properties>
+    <property name="enemy_desc" type="int" value="1"/>
+    <property name="movement_desc" type="int" value="2"/>
+    <property name="spawn_frame" type="int" value="1300"/>
    </properties>
   </object>
   <object id="2" gid="181" x="480" y="64" width="16" height="16">
