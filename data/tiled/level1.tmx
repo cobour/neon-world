@@ -29,13 +29,6 @@
     <property name="spawn_frame" type="int" value="1204"/>
    </properties>
   </object>
-  <object id="4" gid="181" x="1500" y="187" width="16" height="16">
-   <properties>
-    <property name="enemy_desc" type="int" value="1"/>
-    <property name="movement_desc" type="int" value="2"/>
-    <property name="spawn_frame" type="int" value="1300"/>
-   </properties>
-  </object>
   <object id="2" gid="181" x="480" y="64" width="16" height="16">
    <properties>
     <property name="enemy_desc" type="int" value="1"/>
