@@ -38,7 +38,7 @@ bob_restore:
   btst        #BobActive,d0
   beq.s       .ps_loop_next
   lea.l       (a0,d3.w),a1
-  bsr.s       .restore_one_bob
+  bsr         .restore_one_bob
 
 .ps_loop_next:
   add.l       #ps_size,a0
@@ -90,6 +90,29 @@ bob_restore:
 .enemy_loop_next:
   add.l       #enemy_size,a0
   dbf         d7,.enemy_loop
+
+  ; restore enemy explosion
+
+  lea.l       ig_om_enemy_explosion(a4),a0
+  move.b      b_bools(a0),d0
+
+  tst.l       b_eol_frame(a0)
+  beq.s       .ene_go_on
+  cmp.l       b_eol_frame(a0),d4
+  ble.s       .ene_go_on
+  bclr        #BobActive,d0
+  move.b      d0,b_bools(a0)
+  moveq.l     #0,d0
+  move.l      d0,b_eol_frame(a0)
+  bra.s       .ene_end
+
+.ene_go_on:
+  btst        #BobActive,d0
+  beq.s       .ene_end
+  lea.l       (a0,d3.w),a1
+  bsr.s       .restore_one_bob
+
+.ene_end:
 
   rts
 

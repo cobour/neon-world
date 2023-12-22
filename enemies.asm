@@ -46,6 +46,20 @@ enemies_init:
   add.l      #enemy_size,a0
   dbf        d7,.ei_struct_loop
 
+  ; init enemy explosion
+  lea.l      ig_om_enemy_explosion(a4),a0
+  moveq.l    #1,d0
+  move.l     d0,b_b_0+bb_bltptr(a0)
+  move.l     d0,b_b_1+bb_bltptr(a0)
+  move.w     #TilePixelWidth,b_width(a0)
+  move.w     #TilePixelHeight,b_height(a0)
+  move.l     a4,d0
+  add.l      #ig_om_f003+f003_dat_explosion_anim_tmx,d0
+  move.l     d0,exp_anim_step_ptr(a0)
+  moveq.l    #0,d0
+  move.b     d0,b_bools(a0)
+  move.b     d0,exp_anim_count(a0)
+
   rts
 
   xdef       enemies_spawn
@@ -238,6 +252,49 @@ enemies_draw:
   add.l      #enemy_size,a1
   dbf        d7,.de_loop
 
+  ;
+  ; draw enemy-explosion
+  ;
+  lea.l      ig_om_enemy_explosion(a4),a1
+  btst       #BobActive,b_bools(a1)
+  beq.s      .exit
+
+  cmp.b      #ExpMaxAnimCount,exp_anim_count(a1)
+  bne.s      .ene_update_anim_count
+
+  ; anim ended
+  ; check if eol already set
+  tst.l      b_eol_frame(a1)
+  bne.s      .exit
+  ; set eol
+  move.l     ig_om_frame_counter(a4),d0
+  addq.l     #2,d0
+  move.l     d0,b_eol_frame(a1)
+  bra.s      .exit
+
+.ene_update_anim_count:
+  moveq.l    #0,d0
+  moveq.l    #1,d1
+  add.b      d1,exp_anim_count_delay(a1)
+  cmp.b      #ExpAnimStepChange,exp_anim_count_delay(a1)
+  bne.s      .ene_no_anim_frame_update
+  add.b      d1,exp_anim_count(a1)
+  move.b     d0,exp_anim_count_delay(a1)
+.ene_no_anim_frame_update:
+  move.b     exp_anim_count(a1),d0
+  add.w      d0,d0
+  move.l     exp_anim_step_ptr(a1),a0
+  move.w     (a0,d0.w),d0
+  move.l     d0,b_tiles_offset(a1)
+  
+  move.l     ig_om_frame_counter(a4),d0
+  jsr        bob_draw
+
+  btst       #IgPerformScroll,ig_om_bools(a4)
+  beq.s      .exit
+  sub.w      #1,b_xpos(a1)
+
+.exit:
   rts
 
 ; enemy descriptors and index

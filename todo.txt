@@ -61,7 +61,9 @@ DONE    read enemy metadata from level file (no hard-coding of spawning, positio
 DONE    correctly deactivate bob of enemy
 DONE    move enemies by movement-schemes (ods)
 DONE    collision detection playershots to enemies
-          enemy-dies-explosion as special bob
+DONE      enemy-dies-explosion as special bob
+
+        faster shots? lower delay between shots? means more shots at a time.
 
         score and lives counter
 

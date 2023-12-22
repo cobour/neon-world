@@ -16,12 +16,12 @@ cd_check:
   lea.l      ig_om_playershots(a4),a0
 .ps_outer_loop:
   btst       #BobCanCollide,b_bools(a0)
-  beq.s      .next_ps
+  beq        .next_ps
 
   lea.l      ig_om_enemies(a4),a1
 .en_inner_loop:
   btst       #BobCanCollide,b_bools(a1)
-  beq.s      .next_en
+  beq        .next_en
 
   ; check for collision between playershot (a0) and enemy (a1)
   move.l     enemy_descriptor(a1),a2
@@ -68,12 +68,20 @@ cd_check:
   move.l     a0,a2
   jsr        sfx_explosion
   move.l     a2,a0
-  ; TODO - spawn enemy explosion (special bob, no collision detection)
+  ; spawn enemy explosion (special bob, no collision detection, only one at a time)
+  lea.l      ig_om_enemy_explosion(a4),a2
+  bset       #BobActive,b_bools(a2)
+  moveq.l    #0,d0
+  move.l     d0,b_eol_frame(a2)
+  ; do NOT reset bb_bltptr's since explosion may be reused while playing anim
+  move.w     b_xpos(a1),b_xpos(a2)
+  move.w     b_ypos(a1),b_ypos(a2)
+  move.w     d0,exp_anim_count(a2)           ; includes exp_anim_count_delay
 
 .next_en:
   add.l      d6,a1
   cmp.l      d4,a1
-  bne.s      .en_inner_loop
+  bne        .en_inner_loop
 .next_ps:
   add.l      d7,a0
   cmp.l      d5,a0

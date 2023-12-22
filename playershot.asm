@@ -137,7 +137,7 @@ ps_update_pos_and_state:
   add.w      #4,b_xpos(a2)
   add.w      #4,b_ypos(a2)
 
-  move.b     #0,pse_anim_count(a2)
+  move.b     #0,exp_anim_count(a2)
 
 .go_on:
   add.l      #ps_size,a1
@@ -165,7 +165,7 @@ ps_draw:
   btst       #BobActive,b_bools(a1)
   beq.s      .exit
 
-  cmp.b      #PseMaxAnimCount,pse_anim_count(a1)
+  cmp.b      #ExpMaxAnimCount,exp_anim_count(a1)
   bne.s      .pse_update_anim_count
 
   ; anim ended
@@ -181,10 +181,10 @@ ps_draw:
 .pse_update_anim_count:
   btst       #0,ig_om_frame_counter+3(a4)
   bne.s      .pse_no_anim_frame_update
-  add.b      #1,pse_anim_count(a1)
+  add.b      #1,exp_anim_count(a1)
 .pse_no_anim_frame_update:
   moveq.l    #0,d0
-  move.b     pse_anim_count(a1),d0
+  move.b     exp_anim_count(a1),d0
   lsl.w      #1,d0
   lea.l      pse_tiles_offsets(pc),a0
   move.w     (a0,d0.w),d0

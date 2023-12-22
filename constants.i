@@ -237,15 +237,16 @@ ps_size:                       rs.b       0
 PsMaxCount                  equ 5                                                          ; maximum count of playershots active
 PsSpeed                     equ 4                                                          ; movement speed each frame
 
-; PlayShot-Explosion (just one active)
+; Explosion
                                rsreset
-pse_bob:                       rs.b       b_size
-pse_anim_step_ptr:             rs.l       1
-pse_anim_count:                rs.b       1
-pse_padding_byte               rs.b       1
-pse_size:                      rs.b       0
+exp_bob:                       rs.b       b_size
+exp_anim_step_ptr:             rs.l       1
+exp_anim_count:                rs.b       1
+exp_anim_count_delay:          rs.b       1
+exp_size:                      rs.b       0
 ; other constants
-PseMaxAnimCount             equ 7
+ExpMaxAnimCount             equ 7
+ExpAnimStepChange           equ 4
 
 ; Enemy
                                rsreset
@@ -356,9 +357,10 @@ ig_om_padding_byte:            rs.b       1
 ig_om_player                   rs.b       pl_size
 ig_om_playershots:             rs.b       ps_size*PsMaxCount                               ; playershots
 ig_om_playershots_end:         rs.b       0                                                ; marker for end of playershot-structs
-ig_om_playershot_explosion:    rs.b       pse_size
+ig_om_playershot_explosion:    rs.b       exp_size                                         ; only one (is reused when still playing and a new one is spawned)
 ig_om_enemies:                 rs.b       enemy_size*EnemyMaxCount                         ; enemies
 ig_om_enemies_end:             rs.b       0                                                ; marker for end of enemy-structs
+ig_om_enemy_explosion:         rs.b       exp_size                                         ; only one (is reused when still playing and a new one is spawned)
 ig_om_next_object_desc:        rs.l       1                                                ; next possible object descriptor (enemy to be spawned) - points to a list that is sorted by frame counter
 ig_om_end_object_desc:         rs.l       1                                                ; pointer directly behind last valid object descriptor (if ig_om_next_object_desc equals this, then there is no more object descriptor to process)
 ig_om_starfield:               rs.l       NumberOfStars                                    ; first word contains x-pos, second word contains value that is subtracted each frame
