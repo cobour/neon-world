@@ -125,6 +125,7 @@ ps_update_pos_and_state:
   move.l     ig_om_frame_counter(a4),d0
   addq.l     #2,d0
   move.l     d0,b_eol_frame(a1)
+  bclr       #BobCanCollide,b_bools(a1)
 
   ; spawn small explosion (only one at a time is enough)
   lea.l      ig_om_playershot_explosion(a4),a2
