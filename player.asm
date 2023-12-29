@@ -137,6 +137,8 @@ player_update:
   move.w     #$0f00,COLOR00(a6)
   else
   bset       #IgPlayerDead,ig_om_bools(a4)
+  sub.b      #1,g_om_lives(a4)
+  bset       #IgPanelUpdate,ig_om_bools(a4)
   move.l     #ig_om_f003+f003_dat_explosion_anim_tmx+m_om_area,pl_anim(a3)
   clr.b      pl_animstep(a3)
   move.b     #f003_dat_explosion_anim_tmx_tiles_width,pl_max_animstep(a3)

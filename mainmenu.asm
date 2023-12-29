@@ -78,7 +78,13 @@ mm_start:
  
   cmp.b         #MmOptionStart,mm_om_option(a4)
   bne.s         .exit_program
-  move.b        #1,g_om_level(a4)
+
+  moveq.l       #0,d0
+  move.l        d0,g_om_score(a4)
+  moveq.l       #1,d0
+  move.b        d0,g_om_level(a4)
+  move.b        d0,g_om_lives(a4)
+
   rts
 .exit_program:
   bset          #GExit,g_om_bools(a4)

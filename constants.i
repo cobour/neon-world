@@ -279,6 +279,7 @@ obj_size:                      rs.b       0                                     
 ed_anim:                       rs.l       1                                                ; anim data, offset in othermem area
 ed_anim_steps:                 rs.w       1                                                ; number of anim steps
 ed_anim_delay:                 rs.w       1                                                ; delay in frames between anim steps
+ed_score_add:                  rs.w       1                                                ; value added to players score once enemy is killed
 ed_coldet_x1:                  rs.w       1                                                ; add-value for left border of area for collision detection (must be added to xpos)
 ed_coldet_y1:                  rs.w       1                                                ; add-value for top border of area for collision detection (must be added to ypos)
 ed_coldet_x2:                  rs.w       1                                                ; add-value for right border of area for collision detection (must be added to xpos)
@@ -372,6 +373,7 @@ IgExit                      equ 0                                               
 IgPerformScroll             equ 1                                                          ; perform scrolling? 0 = nope
 IgDrawTiles                 equ 2                                                          ; draw tiles for scrolling? 0 = nope
 IgPlayerDead                equ 3                                                          ; has player died? 0 = nope
+IgPanelUpdate               equ 4                                                          ; needs the score/lives-panel an update? 0 = nope
 
 ; MainMenu ChipMem
                                rsreset

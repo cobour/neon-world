@@ -307,11 +307,13 @@ green_face_red_eye_descriptor:
   dc.l       ig_om_f003+f003_dat_green_face_red_eye_anim_tmx
   dc.w       f003_dat_green_face_red_eye_anim_tmx_tiles_width
   dc.w       3
+  dc.w       $0030
   dc.w       0,0,15,15
 orange_face_descriptor:
   dc.l       ig_om_f003+f003_dat_orange_face_anim_tmx
   dc.w       f003_dat_orange_face_anim_tmx_tiles_width
   dc.w       2
+  dc.w       $0025
   dc.w       0,0,15,15
 
 ; movement descriptors and index

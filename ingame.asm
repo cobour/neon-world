@@ -165,6 +165,9 @@ ig_lvl3_handler:
                 ; call ptplayer for music and sfx
                 jsr         _mt_music
  
+                ; update score/lives-panel (last because now we know if an update is needed and the panel-sprites are already displayed)
+                jsr         panel_update
+
                 ifne        SHOW_BLUE_TIMING
                 clr.w       COLOR00(a6)
                 endif
