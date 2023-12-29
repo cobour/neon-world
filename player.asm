@@ -254,6 +254,10 @@ player_update:
 ; uses a3,d0 
   xdef       player_firebutton
 player_firebutton:
+  ; player cannot shoot when he is dead
+  btst       #IgPlayerDead,ig_om_bools(a4)
+  bne.s      .2
+
   lea.l      ig_om_player(a4),a3
   move.w     pl_joystick(a3),d0
 
