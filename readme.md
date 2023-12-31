@@ -70,5 +70,5 @@ The video linked below runs at 50fps. If your monitor runs at a different framer
 
 ## Mentioned in the news
 
-Some kind people mentioned this little project on [Amiga-News](https://www.amiga-news.de/de/news/AN-2023-12-00099-EN.html) and [Indi Retro News](https://www.indieretronews.com/2023/12/neon-world-early-arcade-shooter-for.html).  
+Some kind people mentioned this little project on [Amiga-News](https://www.amiga-news.de/de/news/AN-2023-12-00099-EN.html) and [Indie Retro News](https://www.indieretronews.com/2023/12/neon-world-early-arcade-shooter-for.html).  
 Thank you guys, this definitely boosts my motivation to continue working on the game.
