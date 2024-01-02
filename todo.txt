@@ -57,7 +57,8 @@ DONE    bob.asm: clip blits (top, bottom, left)
 
 DONE    split update for playershots and enemies in position-update and drawing (because collision detection will later happen between these two steps)
 DONE    read enemy metadata from level file (no hard-coding of spawning, position, type of enemy etc.)
-           add "multiplier", so more enemies get spawned by one object in tmx file (delay in frames and counter in properties in tmx object)
+DONE       add "multiplier", so more enemies get spawned by one object in tmx file (delay in frames and counter in properties in tmx object)
+           add offset in movement table for multi-object, so they follow the exact same route through the level
 DONE    correctly deactivate bob of enemy
 DONE    move enemies by movement-schemes (ods)
 DONE    collision detection playershots to enemies

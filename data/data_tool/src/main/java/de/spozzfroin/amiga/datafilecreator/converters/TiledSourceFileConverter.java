@@ -27,9 +27,22 @@ class TiledSourceFileConverter implements SourceFileConverter {
         int spawn_frame = -1;
         int xpos = -1;
         int ypos = -1;
+        int count = -1;
+        int count_spawn_delay = -1;
 
-        boolean allSet() {
-            return enemy_desc != -1 && movement_desc != -1 && spawn_frame != -1 && xpos != -1 && ypos != -1;
+        boolean isValid() {
+            return enemy_desc != -1 && movement_desc != -1 && spawn_frame != -1 && xpos != -1 && ypos != -1
+                    && ((count == -1 && count_spawn_delay == -1) || (count > 0 && count_spawn_delay > 0));
+        }
+
+        LevelObject duplicate() {
+            var o = new LevelObject();
+            o.enemy_desc = this.enemy_desc;
+            o.movement_desc = this.movement_desc;
+            o.spawn_frame = this.spawn_frame;
+            o.xpos = this.xpos;
+            o.ypos = this.ypos;
+            return o;
         }
     }
 
@@ -202,11 +215,17 @@ class TiledSourceFileConverter implements SourceFileConverter {
                         levelObject.spawn_frame = Integer.parseInt(property.getAttribute("value"));
                         levelObject.xpos -= levelObject.spawn_frame; // convert level-xpos to screen-xpos
                         break;
+                    case "count":
+                        levelObject.count = Integer.parseInt(property.getAttribute("value"));
+                        break;
+                    case "count_spawn_delay":
+                        levelObject.count_spawn_delay = Integer.parseInt(property.getAttribute("value"));
+                        break;
                     default:
                         throw new IllegalArgumentException("unknown property: " + propertyName);
                 }
             }
-            if (!levelObject.allSet()) {
+            if (!levelObject.isValid()) {
                 throw new IllegalStateException("not all attributes set in level object!");
             }
             levelObjects.add(levelObject);
@@ -235,6 +254,16 @@ class TiledSourceFileConverter implements SourceFileConverter {
     }
 
     private void writeObjects(OutputStream data) throws IOException {
+        // add multiplied objects (count, count_spawn_delay)
+        var objectsToAdd = new ArrayList<LevelObject>();
+        levelObjects.stream().filter(o -> o.count > 0).forEach(o -> {
+            for (int i = 0; i < o.count; i++) {
+                var other = o.duplicate();
+                other.spawn_frame = o.spawn_frame + o.count_spawn_delay;
+                objectsToAdd.add(other);
+            }
+        });
+        levelObjects.addAll(objectsToAdd);
         // sort by spawn_frame
         levelObjects.sort(new Comparator<LevelObject>() {
             @Override
