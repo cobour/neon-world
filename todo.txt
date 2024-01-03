@@ -66,6 +66,6 @@ DONE      enemy-dies-explosion as special bob
 
 DONE    faster shots? lower delay between shots? means more shots at a time.
 
-        score and lives counter
+DONE    score and lives counter
 
         REFACTOR: alloc chip and other mem through exec.library (not sections in code)
