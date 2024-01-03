@@ -64,7 +64,7 @@ DONE    move enemies by movement-schemes (ods)
 DONE    collision detection playershots to enemies
 DONE      enemy-dies-explosion as special bob
 
-        faster shots? lower delay between shots? means more shots at a time.
+DONE    faster shots? lower delay between shots? means more shots at a time.
 
         score and lives counter
 
