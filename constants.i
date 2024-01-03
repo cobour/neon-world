@@ -234,8 +234,8 @@ BobCanCollide               equ 1                                               
 ps_bob:                        rs.b       b_size                                           ; bob-structure
 ps_size:                       rs.b       0
 ; other constants
-PsMaxCount                  equ 5                                                          ; maximum count of playershots active
-PsSpeed                     equ 4                                                          ; movement speed each frame
+PsMaxCount                  equ 8                                                          ; maximum count of playershots active
+PsSpeed                     equ 5                                                          ; movement speed each frame
 
 ; Explosion
                                rsreset
