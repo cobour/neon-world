@@ -272,7 +272,7 @@ player_firebutton:
   btst       #JsFire,d0
   ble.s      .2
   jsr        ps_new_shot
-  move.b     #pl_shot_delay,pl_frames_till_next_shot(a3)
+  move.b     #PlShotDelay,pl_frames_till_next_shot(a3)
 
 .2:
   rts

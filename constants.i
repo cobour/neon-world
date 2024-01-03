@@ -304,7 +304,7 @@ pl_frames_till_next_shot:      rs.b       1                                     
 pl_padding_byte                rs.b       1
 pl_joystick:                   rs.w       1                                                ; joystick state from current frame
 pl_size:                       rs.b       0
-pl_shot_delay               equ 16                                                         ; minimum frames between two shots fired
+PlShotDelay                 equ 12                                                         ; minimum frames between two shots fired
 
 ; General OtherMem (MUST always be included at the beginning of EVERY OtherMem-structure)
                                rsreset
