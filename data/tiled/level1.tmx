@@ -38,7 +38,7 @@
   </object>
   <object id="1" gid="141" x="322" y="120" width="16" height="16">
    <properties>
-    <property name="count" type="int" value="2"/>
+    <property name="count" type="int" value="10"/>
     <property name="count_spawn_delay" type="int" value="12"/>
     <property name="enemy_desc" type="int" value="0"/>
     <property name="movement_desc" type="int" value="0"/>
