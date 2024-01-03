@@ -257,9 +257,9 @@ class TiledSourceFileConverter implements SourceFileConverter {
         // add multiplied objects (count, count_spawn_delay)
         var objectsToAdd = new ArrayList<LevelObject>();
         levelObjects.stream().filter(o -> o.count > 0).forEach(o -> {
-            for (int i = 0; i < o.count; i++) {
+            for (int i = 1; i < o.count; i++) {
                 var other = o.duplicate();
-                other.spawn_frame = o.spawn_frame + o.count_spawn_delay;
+                other.spawn_frame = o.spawn_frame + (i * o.count_spawn_delay);
                 objectsToAdd.add(other);
             }
         });
