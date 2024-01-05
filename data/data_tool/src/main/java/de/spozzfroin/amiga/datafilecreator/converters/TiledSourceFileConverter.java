@@ -29,6 +29,7 @@ class TiledSourceFileConverter implements SourceFileConverter {
         int ypos = -1;
         int count = -1;
         int count_spawn_delay = -1;
+        boolean add_xpos = false;
 
         boolean isValid() {
             return enemy_desc != -1 && movement_desc != -1 && spawn_frame != -1 && xpos != -1 && ypos != -1
@@ -221,6 +222,9 @@ class TiledSourceFileConverter implements SourceFileConverter {
                     case "count_spawn_delay":
                         levelObject.count_spawn_delay = Integer.parseInt(property.getAttribute("value"));
                         break;
+                    case "add_xpos":
+                        levelObject.add_xpos = Boolean.parseBoolean(property.getAttribute("value"));
+                        break;
                     default:
                         throw new IllegalArgumentException("unknown property: " + propertyName);
                 }
@@ -259,6 +263,9 @@ class TiledSourceFileConverter implements SourceFileConverter {
         levelObjects.stream().filter(o -> o.count > 0).forEach(o -> {
             for (int i = 1; i < o.count; i++) {
                 var other = o.duplicate();
+                if (o.add_xpos) {
+                    other.xpos -= i * o.count_spawn_delay;
+                }
                 other.spawn_frame = o.spawn_frame + (i * o.count_spawn_delay);
                 objectsToAdd.add(other);
             }

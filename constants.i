@@ -263,7 +263,7 @@ enemy_size:                    rs.b       0
 ; bits for enemy_bools
 EnemyActive                 equ 0                                                          ; slight difference to BobActive (EnemyActive clears when enemy is hit or leaves visible screen to the left, BobActive clears 2 frames later, when restoration to both buffers is done)
 ; other constants
-EnemyMaxCount               equ 16
+EnemyMaxCount               equ 32
 
 ; Enemy Object Descriptor (read from level file)
                                rsreset

@@ -56,6 +56,6 @@ targetFiles:
       - filename: tiled/orange_face_anim.tmx
         tilesFilename: tiles.iff
       - filename: universe.mod
-      - filename: movements/do_not_move.ods
       - filename: movements/just_scroll.ods
       - filename: movements/wave.ods
+      - filename: movements/down_then_left.ods

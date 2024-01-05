@@ -329,5 +329,5 @@ first_movement_descriptor:
   dc.l       ig_om_f003+f003_dat_just_scroll_ods
   dc.w       f003_dat_just_scroll_ods_steps
   ; 2
-  dc.l       ig_om_f003+f003_dat_do_not_move_ods
-  dc.w       f003_dat_do_not_move_ods_steps
+  dc.l       ig_om_f003+f003_dat_down_then_left_ods
+  dc.w       f003_dat_down_then_left_ods_steps
