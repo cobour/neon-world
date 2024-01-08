@@ -31,10 +31,20 @@ class OdsSourceFileConverter implements SourceFileConverter {
         //
         var lastX = ((Double) source.getCell(0, 0).getValue()).intValue();
         var lastY = ((Double) source.getCell(0, 1).getValue()).intValue();
+        //
+        int adjustX = 0;
+        try {
+            var cellAdjustX = source.getCell(0, 2);
+            if (cellAdjustX != null) {
+                adjustX = ((Double) cellAdjustX.getValue()).intValue();
+            }
+        } catch (IndexOutOfBoundsException e) {
+            // empty
+        }
         for (int actRow = 1, actByte = 0; actRow < source.getNumRows(); actRow++) {
             var newX = ((Double) source.getCell(actRow, 0).getValue()).intValue();
             var newY = ((Double) source.getCell(actRow, 1).getValue()).intValue();
-            var diffX = newX - lastX;
+            var diffX = newX - lastX + adjustX;
             var diffY = newY - lastY;
             diffY *= -1; // convert from bottom-up to top-down
             //
