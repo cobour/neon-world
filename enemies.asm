@@ -298,20 +298,26 @@ enemies_draw:
   rts
 
 ; enemy descriptors and index
-EnemyDescCount    equ 2
+EnemyDescCount    equ 3
 enemy_descriptors_index:
   dcb.l      EnemyDescCount
 ; see constants.i -> ed_*
 first_enemy_descriptor:
-green_face_red_eye_descriptor:
+  ; 0
   dc.l       ig_om_f003+f003_dat_green_face_red_eye_anim_tmx
   dc.w       f003_dat_green_face_red_eye_anim_tmx_tiles_width
   dc.w       3
   dc.w       $0030
   dc.w       0,0,15,15
-orange_face_descriptor:
+  ; 1
   dc.l       ig_om_f003+f003_dat_orange_face_anim_tmx
   dc.w       f003_dat_orange_face_anim_tmx_tiles_width
+  dc.w       2
+  dc.w       $0025
+  dc.w       0,0,15,15
+  ; 2
+  dc.l       ig_om_f003+f003_dat_green_face_anim_tmx
+  dc.w       f003_dat_green_face_anim_tmx_tiles_width
   dc.w       2
   dc.w       $0025
   dc.w       0,0,15,15
