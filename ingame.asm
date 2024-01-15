@@ -168,12 +168,46 @@ ig_lvl3_handler:
                 ; update score/lives-panel (last because now we know if an update is needed and the panel-sprites are already displayed)
                 jsr         panel_update
 
+                ; check if level is over
+                bsr.s       check_end_condition
+
                 ifne        SHOW_BLUE_TIMING
                 clr.w       COLOR00(a6)
                 endif
 
                 movem.l     (sp)+,d0-d7/a0-a6
                 rte
+
+check_end_condition:
+                ; exit already in progress?
+                btst        #IgExit,ig_om_bools(a4)
+                bne.s       .exit
+
+                ; first condition: no more scrolling
+                btst        #IgPerformScroll,ig_om_bools(a4)
+                bne.s       .exit
+
+                ; second condition: no more enemies to spawn
+                move.l      ig_om_next_object_desc(a4),a0
+                cmp.l       ig_om_end_object_desc(a4),a0
+                bne.s       .exit
+
+                ; third condition: all enemies dead
+                lea.l       ig_om_enemies(a4),a0
+                move.l      #enemy_size,d0
+                moveq.l     #EnemyMaxCount-1,d7
+.all_dead_loop:
+                btst        #EnemyActive,enemy_bools(a0)
+                bne.s       .exit
+                add.l       d0,a0
+                dbf         d7,.all_dead_loop
+
+                ; level is over
+                moveq.l     #1,d0
+                jsr         fade_out_init
+                bset        #IgExit,ig_om_bools(a4)
+.exit:
+                rts
 
                 section     IngameChipData,data_c
 

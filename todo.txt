@@ -68,6 +68,6 @@ DONE    faster shots? lower delay between shots? means more shots at a time.
 
 DONE    score and lives counter
 
-        end condition: no more scrolling, no more enemies to spawn, all enemies dead
+DONE    end condition: no more scrolling, no more enemies to spawn, all enemies dead
 
         REFACTOR: alloc chip and other mem through exec.library (not sections in code)
