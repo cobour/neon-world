@@ -26,22 +26,22 @@ class OdsSourceFileConverter implements SourceFileConverter {
     public void convertToRawData(Config config, OutputStream data) throws IOException {
         var spread = new SpreadSheet(new File(this.sourceFile.getFullFilename(config)));
         var source = spread.getSheet(0).getDataRange();
-        var rowCount = source.getNumRows() - 1; // first is base row for diffs
+        var rowCount = source.getNumRows() - 2; // first is for parameters, second is base row for diffs
         this.raw = new byte[rowCount * 4];
         //
-        var lastX = ((Double) source.getCell(0, 0).getValue()).intValue();
-        var lastY = ((Double) source.getCell(0, 1).getValue()).intValue();
+        var lastX = ((Double) source.getCell(1, 0).getValue()).intValue();
+        var lastY = ((Double) source.getCell(1, 1).getValue()).intValue();
         //
         int adjustX = 0;
         try {
-            var cellAdjustX = source.getCell(0, 2);
+            var cellAdjustX = source.getCell(0, 1);
             if (cellAdjustX != null) {
                 adjustX = ((Double) cellAdjustX.getValue()).intValue();
             }
         } catch (IndexOutOfBoundsException e) {
             // empty
         }
-        for (int actRow = 1, actByte = 0; actRow < source.getNumRows(); actRow++) {
+        for (int actRow = 2, actByte = 0; actRow < source.getNumRows(); actRow++) {
             var newX = ((Double) source.getCell(actRow, 0).getValue()).intValue();
             var newY = ((Double) source.getCell(actRow, 1).getValue()).intValue();
             var diffX = newX - lastX + adjustX;
