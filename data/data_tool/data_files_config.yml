@@ -57,7 +57,11 @@ targetFiles:
         tilesFilename: tiles.iff
       - filename: tiled/green_face_anim.tmx
         tilesFilename: tiles.iff
+      - filename: tiled/blue_robot_anim.tmx
+        tilesFilename: tiles.iff
       - filename: universe.mod
       - filename: movements/just_scroll.ods
       - filename: movements/wave.ods
       - filename: movements/down_then_left.ods
+      - filename: movements/left_down_left.ods
+      - filename: movements/up.ods

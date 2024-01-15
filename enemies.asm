@@ -80,6 +80,7 @@ enemies_spawn:
   move.w     obj_ypos(a2),d1
   move.w     obj_enemy_desc(a2),d2
   move.w     obj_enemy_movement_desc(a2),d3
+  move.w     obj_start_offset_movement(a2),d4
   bsr.s      spawn_new_enemy
   
   ; maybe more than one enemy must be spawned in this frame
@@ -96,9 +97,10 @@ enemies_spawn:
 ; d1 - ypos
 ; d2 - number of enemy descriptor (starting with zero)
 ; d3 - number of movement descriptor (starting with zero)
+; d4 - start offset for movement (steps)
 ;
 ; uses:
-; d4-d5,d7,a1
+; d5-d7,a1
 ;
 ; out:
 ; a0 - pointer to enemy struct or zero, if no free enemy slot was available
@@ -122,29 +124,29 @@ spawn_new_enemy:
 
 .init:
   ; second: initialize enemy struct
-  moveq.l    #0,d4
-  moveq.l    #1,d5
+  moveq.l    #0,d5
+  moveq.l    #1,d6
 
-  move.b     d4,b_bools(a0)
+  move.b     d5,b_bools(a0)
   bset       #BobActive,b_bools(a0)
   bset       #BobCanCollide,b_bools(a0)
-  move.l     d4,b_eol_frame(a0)
+  move.l     d5,b_eol_frame(a0)
   move.w     d0,b_xpos(a0)
   move.w     d1,b_ypos(a0)
   move.w     #TilePixelWidth,b_width(a0)
   move.w     #TilePixelHeight,b_height(a0)
-  move.l     d5,b_b_0+bb_bltptr(a0)
-  move.l     d5,b_b_1+bb_bltptr(a0)
+  move.l     d6,b_b_0+bb_bltptr(a0)
+  move.l     d6,b_b_1+bb_bltptr(a0)
 
-  move.b     d4,enemy_bools(a0)
+  move.b     d5,enemy_bools(a0)
   bset       #EnemyActive,enemy_bools(a0)
 
   lea.l      enemy_descriptors_index(pc),a1
   lsl.w      #2,d2
   move.l     (a1,d2.w),a1
   move.l     a1,enemy_descriptor(a0)
-  move.w     d4,enemy_anim_step(a0)
-  move.w     d4,enemy_anim_delay(a0)
+  move.w     d5,enemy_anim_step(a0)
+  move.w     d5,enemy_anim_delay(a0)
 
   lea.l      movement_descriptors_index(pc),a1
   lsl.w      #2,d3
@@ -178,10 +180,22 @@ enemies_update_pos_and_state:
   add.w      d1,b_xpos(a0)
   add.w      d2,b_ypos(a0)
   add.w      #1,enemy_movement_actual_step(a0)
-  ; check still visible
+  ; check still visible (top of screen)
+  move.w     b_ypos(a0),d0
+  cmp.w      #-TilePixelWidth-4,d0
+  blt.s      .ups_deactivate_enemy
+  ; check still visible (bottom of screen)
+  cmp.w      #ScreenHeight+4,d0
+  bgt.s      .ups_deactivate_enemy
+  ; check still visible (right of screen)
   move.w     b_xpos(a0),d0
+  cmp.w      #ScreenWidth+4,d0
+  bgt.s      .ups_deactivate_enemy
+  ; check still visible (left of screen)
   cmp.w      #-TilePixelWidth-4,d0
   bge.s      .ups_loop_next
+  ; enemy has left visible playarea => deactivate
+.ups_deactivate_enemy:
   bclr       #EnemyActive,enemy_bools(a0)
   move.l     ig_om_frame_counter(a4),d0
   addq.l     #2,d0
@@ -298,7 +312,7 @@ enemies_draw:
   rts
 
 ; enemy descriptors and index
-EnemyDescCount    equ 3
+EnemyDescCount    equ 4
 enemy_descriptors_index:
   dcb.l      EnemyDescCount
 ; see constants.i -> ed_*
@@ -321,9 +335,15 @@ first_enemy_descriptor:
   dc.w       2
   dc.w       $0025
   dc.w       0,0,15,15
+  ; 3
+  dc.l       ig_om_f003+f003_dat_blue_robot_anim_tmx
+  dc.w       f003_dat_blue_robot_anim_tmx_tiles_width
+  dc.w       5
+  dc.w       $0025
+  dc.w       0,0,15,15
 
 ; movement descriptors and index
-MovementDescCount equ 3
+MovementDescCount equ 5
 movement_descriptors_index:
   dcb.l      MovementDescCount
 ; see constants.i -> mvd_*
@@ -337,3 +357,9 @@ first_movement_descriptor:
   ; 2
   dc.l       ig_om_f003+f003_dat_down_then_left_ods
   dc.w       f003_dat_down_then_left_ods_steps
+  ; 3
+  dc.l       ig_om_f003+f003_dat_left_down_left_ods
+  dc.w       f003_dat_left_down_left_ods_steps
+  ; 4
+  dc.l       ig_om_f003+f003_dat_up_ods
+  dc.w       f003_dat_up_ods_steps

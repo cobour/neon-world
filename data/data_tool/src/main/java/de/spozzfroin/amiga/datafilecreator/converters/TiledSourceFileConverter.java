@@ -30,6 +30,14 @@ class TiledSourceFileConverter implements SourceFileConverter {
         int count = -1;
         int count_spawn_delay = -1;
         boolean add_xpos = false;
+        int movement_start_offset = 0;
+
+        void calcSpawnFrameIfNotSet() {
+            if (spawn_frame == -1) {
+                spawn_frame = xpos - 322;
+                xpos -= spawn_frame; // convert level-xpos to screen-xpos
+            }
+        }
 
         boolean isValid() {
             return enemy_desc != -1 && movement_desc != -1 && spawn_frame != -1 && xpos != -1 && ypos != -1
@@ -225,10 +233,15 @@ class TiledSourceFileConverter implements SourceFileConverter {
                     case "add_xpos":
                         levelObject.add_xpos = Boolean.parseBoolean(property.getAttribute("value"));
                         break;
+                    case "movement_start_offset":
+                        levelObject.movement_start_offset = Integer.parseInt(property.getAttribute("value"));
+                        break;
                     default:
                         throw new IllegalArgumentException("unknown property: " + propertyName);
                 }
             }
+            //
+            levelObject.calcSpawnFrameIfNotSet();
             if (!levelObject.isValid()) {
                 throw new IllegalStateException("not all attributes set in level object!");
             }
@@ -261,12 +274,22 @@ class TiledSourceFileConverter implements SourceFileConverter {
         // add multiplied objects (count, count_spawn_delay)
         var objectsToAdd = new ArrayList<LevelObject>();
         levelObjects.stream().filter(o -> o.count > 0).forEach(o -> {
+            // start-offset in movement-table
+            if (o.movement_start_offset > 0) {
+                o.movement_start_offset = o.count * 7;
+            }
+            int mov_so = o.movement_start_offset;
+            // create dependendant objects
             for (int i = 1; i < o.count; i++) {
                 var other = o.duplicate();
                 if (o.add_xpos) {
                     other.xpos -= i * o.count_spawn_delay;
                 }
                 other.spawn_frame = o.spawn_frame + (i * o.count_spawn_delay);
+                if (o.movement_start_offset > 0) {
+                    mov_so -= 7;
+                    other.movement_start_offset = mov_so;
+                }
                 objectsToAdd.add(other);
             }
         });
@@ -287,7 +310,8 @@ class TiledSourceFileConverter implements SourceFileConverter {
             writeWord(lo.ypos, data);
             writeWord(lo.enemy_desc, data);
             writeWord(lo.movement_desc, data);
-            objectsSize += 12; // see obj_size in constants.i (MUST be the same value)
+            writeWord(lo.movement_start_offset, data);
+            objectsSize += 14; // see obj_size in constants.i (MUST be the same value)
         }
     }
 

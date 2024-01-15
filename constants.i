@@ -272,6 +272,7 @@ obj_xpos:                      rs.w       1
 obj_ypos:                      rs.w       1
 obj_enemy_desc:                rs.w       1
 obj_enemy_movement_desc:       rs.w       1
+obj_start_offset_movement:     rs.w       1
 obj_size:                      rs.b       0                                                ; MUST be the same value that is added in de.spozzfroin.amiga.datafilecreator.converters.TiledSourceFileConverter#writeObjects
 
 ; Enemy Descriptor (contains static values that are the same for every instance of the specific enemy type)
