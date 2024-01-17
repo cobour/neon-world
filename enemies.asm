@@ -304,10 +304,6 @@ enemies_draw:
   move.l     ig_om_frame_counter(a4),d0
   jsr        bob_draw
 
-  btst       #IgPerformScroll,ig_om_bools(a4)
-  beq.s      .exit
-  sub.w      #1,b_xpos(a1)
-
 .exit:
   rts
 
