@@ -308,7 +308,7 @@ enemies_draw:
   rts
 
 ; enemy descriptors and index
-EnemyDescCount    equ 4
+EnemyDescCount    equ 6
 enemy_descriptors_index:
   dcb.l      EnemyDescCount
 ; see constants.i -> ed_*
@@ -337,6 +337,19 @@ first_enemy_descriptor:
   dc.w       5
   dc.w       $0025
   dc.w       0,0,15,15
+  ; 4
+  dc.l       ig_om_f003+f003_dat_green_rocket_anim_tmx
+  dc.w       f003_dat_green_rocket_anim_tmx_tiles_width
+  dc.w       2
+  dc.w       $0020
+  dc.w       0,0,12,12
+  ; 5
+  dc.l       ig_om_f003+f003_dat_green_robot_anim_tmx
+  dc.w       f003_dat_green_robot_anim_tmx_tiles_width
+  dc.w       5
+  dc.w       $0025
+  dc.w       0,0,15,15
+
 
 ; movement descriptors and index
 MovementDescCount equ 5

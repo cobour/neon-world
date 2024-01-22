@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="100" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="9">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="100" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="11">
  <tileset firstgid="1" source="Tileset.tsx"/>
  <layer id="1" name="playfield layer" width="100" height="16">
   <data encoding="csv">
@@ -22,9 +22,16 @@
 </data>
  </layer>
  <objectgroup id="2" name="enemies layer">
-  <object id="3" gid="181" x="1526" y="120" width="16" height="16">
+  <object id="3" gid="181" x="1520" y="104" width="16" height="16">
    <properties>
     <property name="enemy_desc" type="int" value="1"/>
+    <property name="movement_desc" type="int" value="0"/>
+    <property name="spawn_frame" type="int" value="1196"/>
+   </properties>
+  </object>
+  <object id="9" gid="104" x="1516" y="129" width="16" height="16">
+   <properties>
+    <property name="enemy_desc" type="int" value="3"/>
     <property name="movement_desc" type="int" value="0"/>
     <property name="spawn_frame" type="int" value="1204"/>
    </properties>
@@ -39,7 +46,7 @@
     <property name="spawn_frame" type="int" value="75"/>
    </properties>
   </object>
-  <object id="1" gid="141" x="323" y="160" width="16" height="16">
+  <object id="1" gid="141" x="323" y="128" width="16" height="16">
    <properties>
     <property name="count" type="int" value="10"/>
     <property name="count_spawn_delay" type="int" value="12"/>
@@ -56,14 +63,20 @@
     <property name="movement_start_offset" type="int" value="7"/>
    </properties>
   </object>
-  <object id="8" gid="104" x="904" y="273" width="16" height="16">
+  <object id="8" gid="84" x="904" y="273" width="16" height="16">
    <properties>
     <property name="add_xpos" type="bool" value="true"/>
     <property name="count" type="int" value="20"/>
     <property name="count_spawn_delay" type="int" value="12"/>
-    <property name="enemy_desc" type="int" value="3"/>
+    <property name="enemy_desc" type="int" value="4"/>
     <property name="movement_desc" type="int" value="4"/>
     <property name="spawn_frame" type="int" value="582"/>
+   </properties>
+  </object>
+  <object id="10" gid="161" x="666" y="150" width="16" height="16">
+   <properties>
+    <property name="enemy_desc" type="int" value="5"/>
+    <property name="movement_desc" type="int" value="1"/>
    </properties>
   </object>
  </objectgroup>
