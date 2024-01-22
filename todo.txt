@@ -70,4 +70,14 @@ DONE    score and lives counter
 
 DONE    end condition: no more scrolling, no more enemies to spawn, all enemies dead
 
+        pause key
+        
+        build some kind of level warp for testing purposes 
+                limit to offsets where start of buffer is shown => simpler to calc
+                adjust values from "ig_om_frame_counter" till "ig_om_next_tile_col_right" and "ig_om_next_object_desc"; anything else?
+
+        more lives than one: respawn mechanism
+
+        highscore table? at least show score at end of level
+
         REFACTOR: alloc chip and other mem through exec.library (not sections in code)
