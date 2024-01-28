@@ -339,13 +339,13 @@ mm_update_lightning_anim:
   rts
 
 credits_0:
-  dc.b          "  MUSIC AND SFX BY KRZYSZTOF ODACHOWSKI ",0
+  dc.b          "      MUSIC BY KRZYSZTOF ODACHOWSKI     ",0
   even
 credits_1:
   dc.b          "       GRAPHICS BY KEVIN SAUNDERS       ",0
   even
 credits_2:
-  dc.b          "          CODE BY FRANK NEUMANN         ",0
+  dc.b          "      CODE AND SFX BY FRANK NEUMANN     ",0
   even
 
   section       MainmenuChipData,data_c
