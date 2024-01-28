@@ -78,6 +78,6 @@ DONE    end condition: no more scrolling, no more enemies to spawn, all enemies 
 
         more lives than one: respawn mechanism
 
-        highscore table? at least show score at end of level
+        highscore table? at least show score at end of level (use revenge of earth mod for that)
 
         REFACTOR: alloc chip and other mem through exec.library (not sections in code)
