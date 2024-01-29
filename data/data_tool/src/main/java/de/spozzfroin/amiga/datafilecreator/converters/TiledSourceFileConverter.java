@@ -274,9 +274,10 @@ class TiledSourceFileConverter implements SourceFileConverter {
         // add multiplied objects (count, count_spawn_delay)
         var objectsToAdd = new ArrayList<LevelObject>();
         levelObjects.stream().filter(o -> o.count > 0).forEach(o -> {
+            var mso = o.movement_start_offset;
             // start-offset in movement-table
             if (o.movement_start_offset > 0) {
-                o.movement_start_offset = o.count * 7;
+                o.movement_start_offset = o.count * mso;
             }
             int mov_so = o.movement_start_offset;
             // create dependendant objects
@@ -287,7 +288,7 @@ class TiledSourceFileConverter implements SourceFileConverter {
                 }
                 other.spawn_frame = o.spawn_frame + (i * o.count_spawn_delay);
                 if (o.movement_start_offset > 0) {
-                    mov_so -= 7;
+                    mov_so -= mso;
                     other.movement_start_offset = mov_so;
                 }
                 objectsToAdd.add(other);
