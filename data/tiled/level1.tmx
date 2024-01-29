@@ -73,10 +73,13 @@
     <property name="spawn_frame" type="int" value="582"/>
    </properties>
   </object>
-  <object id="10" gid="161" x="666" y="150" width="16" height="16">
+  <object id="10" gid="161" x="754" y="98" width="16" height="16">
    <properties>
+    <property name="count" type="int" value="16"/>
+    <property name="count_spawn_delay" type="int" value="12"/>
     <property name="enemy_desc" type="int" value="5"/>
-    <property name="movement_desc" type="int" value="1"/>
+    <property name="movement_desc" type="int" value="5"/>
+    <property name="movement_start_offset" type="int" value="5"/>
    </properties>
   </object>
  </objectgroup>

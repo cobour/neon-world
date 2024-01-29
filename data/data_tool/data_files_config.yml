@@ -69,3 +69,4 @@ targetFiles:
       - filename: movements/down_then_left.ods
       - filename: movements/left_down_left.ods
       - filename: movements/up.ods
+      - filename: movements/Little_down_little_up.ods
