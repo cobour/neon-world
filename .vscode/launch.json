@@ -30,6 +30,7 @@
             "type": "amiga-assembly",
             "request": "launch",
             "name": "FS-UAE Run",
+            "noDebug": true,
             "program": "${workspaceFolder}/uae/dh0_adf/NeonWorld",
             "emulatorType": "fs-uae",
             "emulatorArgs": [
