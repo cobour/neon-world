@@ -144,6 +144,15 @@ spawn_new_enemy:
   lea.l      enemy_descriptors_index(pc),a1
   lsl.w      #2,d2
   move.l     (a1,d2.w),a1
+
+  tst.l      ed_coldet_x2(a1)
+  bne.s      .can_die
+  ; x2,y2 of bounding box are zero => enemy can not die when shot
+  bclr       #BobCanCollide,b_bools(a0)
+  bset       #BobAnimatedBackground,b_bools(a0)
+  move.b     ed_coldet_x1+1(a1),enemy_drawing_layer(a0)
+.can_die:
+
   move.l     a1,enemy_descriptor(a0)
   move.w     d5,enemy_anim_step(a0)
   move.w     d5,enemy_anim_delay(a0)
@@ -207,6 +216,52 @@ enemies_update_pos_and_state:
 
   rts
 
+  xdef       background_enemies_draw
+background_enemies_draw:
+  ; first: update anim step
+  lea.l      ig_om_enemies(a4),a1
+  moveq.l    #EnemyMaxCount-1,d7
+.ua_loop:
+  btst       #BobAnimatedBackground,b_bools(a1)
+  beq.s      .ua_loop_next
+  btst       #EnemyActive,enemy_bools(a1)
+  beq.s      .ua_loop_next
+  bsr        ed_update_anim_step
+.ua_loop_next:  
+  add.l      #enemy_size,a1
+  dbf        d7,.ua_loop
+
+.draw_enemies:
+  ; second: draw bobs - lower
+  lea.l      ig_om_enemies(a4),a1
+  moveq.l    #EnemyMaxCount-1,d7
+.del_loop:
+  btst       #BobAnimatedBackground,b_bools(a1)
+  beq.s      .del_loop_next
+  btst       #EnemyActive,enemy_bools(a1)
+  beq.s      .del_loop_next
+  tst.b      enemy_drawing_layer(a1)
+  bne.s      .del_loop_next
+  bsr        ed_draw_bob
+.del_loop_next:
+  add.l      #enemy_size,a1
+  dbf        d7,.del_loop
+  ; second: draw bobs - upper
+  lea.l      ig_om_enemies(a4),a1
+  moveq.l    #EnemyMaxCount-1,d7
+.deu_loop:
+  btst       #BobAnimatedBackground,b_bools(a1)
+  beq.s      .deu_loop_next
+  btst       #EnemyActive,enemy_bools(a1)
+  beq.s      .deu_loop_next
+  tst.b      enemy_drawing_layer(a1)
+  beq.s      .deu_loop_next
+  bsr        ed_draw_bob
+.deu_loop_next:
+  add.l      #enemy_size,a1
+  dbf        d7,.deu_loop
+  rts
+
   xdef       enemies_draw
 enemies_draw:
   ; first: update anim step
@@ -215,29 +270,9 @@ enemies_draw:
 .ua_loop:
   btst       #EnemyActive,enemy_bools(a1)
   beq.s      .ua_loop_next
-  ; check anim delay
-  move.l     enemy_descriptor(a1),a2
-  move.w     enemy_anim_delay(a1),d0
-  add.w      #1,d0
-  cmp.w      ed_anim_delay(a2),d0
-  beq.s      .ua_anim_frame_update
-  move.w     d0,enemy_anim_delay(a1)
-  bra.s      .ua_loop_next
-.ua_anim_frame_update:
-  clr.w      enemy_anim_delay(a1)
-
-  ; check and set next anim step
-  move.w     enemy_anim_step(a1),d0
-  add.w      #1,d0
-  cmp.w      ed_anim_steps(a2),d0
-  bne.s      .ua_next_anim_frame
-  ; reset to first anim frame
-  clr.w      enemy_anim_step(a1)
-  bra.s      .ua_loop_next
-.ua_next_anim_frame:
-  ; set next anim step
-  move.w     d0,enemy_anim_step(a1)
-
+  btst       #BobAnimatedBackground,b_bools(a1)
+  bne.s      .ua_loop_next
+  bsr        ed_update_anim_step
 .ua_loop_next:  
   add.l      #enemy_size,a1
   dbf        d7,.ua_loop
@@ -249,19 +284,9 @@ enemies_draw:
 .de_loop:
   btst       #EnemyActive,enemy_bools(a1)
   beq.s      .de_loop_next
-  ; set anim frame
-  moveq.l    #0,d0
-  move.l     enemy_descriptor(a1),a0
-  move.l     ed_anim(a0),a0
-  add.l      a4,a0
-  move.w     enemy_anim_step(a1),d0
-  lsl.w      #1,d0
-  move.w     (a0,d0.w),d0
-  move.l     d0,b_tiles_offset(a1)
-
-  ; draw bob
-  move.l     ig_om_frame_counter(a4),d0
-  jsr        bob_draw
+  btst       #BobAnimatedBackground,b_bools(a1)
+  bne.s      .de_loop_next
+  bsr        ed_draw_bob
 .de_loop_next:
   add.l      #enemy_size,a1
   dbf        d7,.de_loop
@@ -307,8 +332,47 @@ enemies_draw:
 .exit:
   rts
 
+ed_update_anim_step:
+  ; check anim delay
+  move.l     enemy_descriptor(a1),a2
+  move.w     enemy_anim_delay(a1),d0
+  add.w      #1,d0
+  cmp.w      ed_anim_delay(a2),d0
+  beq.s      .ua_anim_frame_update
+  move.w     d0,enemy_anim_delay(a1)
+  rts
+.ua_anim_frame_update:
+  clr.w      enemy_anim_delay(a1)
+
+  ; check and set next anim step
+  move.w     enemy_anim_step(a1),d0
+  add.w      #1,d0
+  cmp.w      ed_anim_steps(a2),d0
+  bne.s      .ua_next_anim_frame
+  ; reset to first anim frame
+  clr.w      enemy_anim_step(a1)
+  rts
+.ua_next_anim_frame:
+  ; set next anim step
+  move.w     d0,enemy_anim_step(a1)
+  rts
+
+ed_draw_bob:
+  ; set anim frame
+  moveq.l    #0,d0
+  move.l     enemy_descriptor(a1),a0
+  move.l     ed_anim(a0),a0
+  add.l      a4,a0
+  move.w     enemy_anim_step(a1),d0
+  lsl.w      #1,d0
+  move.w     (a0,d0.w),d0
+  move.l     d0,b_tiles_offset(a1)
+  ; draw bob
+  move.l     ig_om_frame_counter(a4),d0
+  jmp        bob_draw
+
 ; enemy descriptors and index
-EnemyDescCount    equ 6
+EnemyDescCount    equ 11
 enemy_descriptors_index:
   dcb.l      EnemyDescCount
 ; see constants.i -> ed_*
@@ -349,6 +413,36 @@ first_enemy_descriptor:
   dc.w       5
   dc.w       $0025
   dc.w       0,0,15,15
+  ; 6
+  dc.l       ig_om_f003+f003_dat_blue_barrier_upper_anim_tmx
+  dc.w       f003_dat_blue_barrier_upper_anim_tmx_tiles_width
+  dc.w       50
+  dc.w       $0000
+  dc.w       1,0,0,0
+  ; 7
+  dc.l       ig_om_f003+f003_dat_blue_barrier_lower_anim_tmx
+  dc.w       f003_dat_blue_barrier_lower_anim_tmx_tiles_width
+  dc.w       50
+  dc.w       $0000
+  dc.w       1,0,0,0
+  ; 8
+  dc.l       ig_om_f003+f003_dat_blue_lightning_upper_anim_tmx
+  dc.w       f003_dat_blue_lightning_upper_anim_tmx_tiles_width
+  dc.w       10
+  dc.w       $0000
+  dc.w       0,0,0,0
+  ; 9
+  dc.l       ig_om_f003+f003_dat_blue_lightning_middle_anim_tmx
+  dc.w       f003_dat_blue_lightning_middle_anim_tmx_tiles_width
+  dc.w       10
+  dc.w       $0000
+  dc.w       0,0,0,0
+  ; 10
+  dc.l       ig_om_f003+f003_dat_blue_lightning_lower_anim_tmx
+  dc.w       f003_dat_blue_lightning_lower_anim_tmx_tiles_width
+  dc.w       10
+  dc.w       $0000
+  dc.w       0,0,0,0
 
 
 ; movement descriptors and index
@@ -358,8 +452,8 @@ movement_descriptors_index:
 ; see constants.i -> mvd_*
 first_movement_descriptor:
   ; 0
-  dc.l       ig_om_f003+f003_dat_wave_ods
-  dc.w       f003_dat_wave_ods_steps
+  dc.l       ig_om_f003+f003_dat_speed_up_ods
+  dc.w       f003_dat_speed_up_ods_steps
   ; 1
   dc.l       ig_om_f003+f003_dat_just_scroll_ods
   dc.w       f003_dat_just_scroll_ods_steps

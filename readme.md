@@ -14,15 +14,15 @@ LibreOffice Calc for definition of object movements
 
 ## Test systems
 
-The game is tested using FS-UAE (v3.1.66) and vAmiga (v2.3) on macOS.  
-Also tested on my Amiga 500 (rev. 6a) using Kickstart 1.3 and 2.0 with 1 MB Chip-RAM and 1,5 MB Slow-RAM.  
+The game is tested using FS-UAE (v3.1.66) and vAmiga (v2.5) on macOS.  
+Also tested on my Amiga 500 (rev. 6a) using Kickstart 1.3 and 2.0 with 1 MB Chip-RAM and 1.5 MB Slow-RAM.  
 
 ## Target systems
 
 Should run on any PAL-Amiga with at least 512kb Chip-RAM.  
 When using Kickstart v2.x or higher and/or external floppy drives or hard drives are connected, additional 512 kb RAM of any type may be necessary.  
 The game uses a DOS disk, so it should be no problem to install the game on a harddisk.  
-When running the game in an emulator there could be some slight stuttering. This is a problem because of most modern systems having a framerate higher than 50Hz. The game runs at 50 Hz and on my Amiga 500 the scrolling and sprite movements are totally smooth.  
+When running the game in an emulator there could be some slight stuttering. This is a problem because of most modern systems having a framerate higher than 50Hz. The game runs at 50 Hz and on my Amiga 500 and external monitor (that supports 50Hz) the scrolling and sprite movements are totally smooth.  
 
 ## Important note
 
@@ -30,7 +30,7 @@ Before program can be assembled and run you must run the Java Application found 
 It produces necessary asm and binary files from the source files of the various formats.  
 An installed and ready-to-use JDK 21+ is required.  
 
-CD into the folder "data/data_tool" and issue the following command:
+CD into the folder "data/data_tool" and issue the following command or use the VSCode-Tasks for building.
 ```
 ./mvnw spring-boot:run -Dspring-boot.run.arguments="./data_files_config.yml"
 ```

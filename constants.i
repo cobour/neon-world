@@ -228,6 +228,7 @@ b_size:                        rs.b       0
 ; bits for b_bools
 BobActive                   equ 0                                                          ; must be drawn/restored?
 BobCanCollide               equ 1                                                          ; can collide with other bobs?
+BobAnimatedBackground       equ 2                                                          ; is animated background (must be drawn before playershot collision detection)
 
 ; PlayerShot
                                rsreset
@@ -252,7 +253,7 @@ ExpAnimStepChange           equ 4
                                rsreset
 enemy_bob:                     rs.b       b_size
 enemy_bools:                   rs.b       1                                                ; flags
-enemy_padding_byte:            rs.b       1
+enemy_drawing_layer:           rs.b       1                                                ; used for background enemies
 enemy_descriptor               rs.l       1                                                ; points to enemy descriptor
 enemy_anim_step:               rs.w       1                                                ; actual displayed anim step
 enemy_anim_delay:              rs.w       1                                                ; actual anim delay counter
@@ -285,6 +286,7 @@ ed_coldet_x1:                  rs.w       1                                     
 ed_coldet_y1:                  rs.w       1                                                ; add-value for top border of area for collision detection (must be added to ypos)
 ed_coldet_x2:                  rs.w       1                                                ; add-value for right border of area for collision detection (must be added to xpos)
 ed_coldet_y2:                  rs.w       1                                                ; add-value for bottom border of area for collision detection (must be added to ypos)
+; when ed_coldet_x2 and ed_coldet_y2 are zero, the bob is indestructable, then ed_coldet_x1 indicates the layer (possible values 0 means lower and 1 means upper; important for drawing order)
 ed_size:                       rs.b       0
 
 

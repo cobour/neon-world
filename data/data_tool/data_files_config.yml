@@ -63,6 +63,16 @@ targetFiles:
         tilesFilename: tiles.iff
       - filename: tiled/green_robot_anim.tmx
         tilesFilename: tiles.iff
+      - filename: tiled/blue_barrier_upper_anim.tmx
+        tilesFilename: tiles.iff
+      - filename: tiled/blue_barrier_lower_anim.tmx
+        tilesFilename: tiles.iff
+      - filename: tiled/blue_lightning_upper_anim.tmx
+        tilesFilename: tiles.iff
+      - filename: tiled/blue_lightning_middle_anim.tmx
+        tilesFilename: tiles.iff
+      - filename: tiled/blue_lightning_lower_anim.tmx
+        tilesFilename: tiles.iff
       - filename: universe.mod
       - filename: movements/just_scroll.ods
       - filename: movements/wave.ods
@@ -70,3 +80,4 @@ targetFiles:
       - filename: movements/left_down_left.ods
       - filename: movements/up.ods
       - filename: movements/Little_down_little_up.ods
+      - filename: movements/speed_up.ods

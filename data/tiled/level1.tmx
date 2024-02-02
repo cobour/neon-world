@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="100" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="11">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="100" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="16">
  <tileset firstgid="1" source="Tileset.tsx"/>
  <layer id="1" name="playfield layer" width="100" height="16">
   <data encoding="csv">
@@ -17,8 +17,8 @@
 1,1,1,1,1,1,1,1,1,1,1,1,177,178,1,1,1,1,1,1,1,1,1,1,1,1,1,1,10,11,55,14,14,14,14,38,1,1,1,1,1,1,1,1,1,8,55,14,14,40,14,14,54,9,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,10,11,17,17,17,17,18,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,36,
 1,1,1,1,1,1,10,11,17,17,17,17,17,17,17,12,13,1,1,1,1,1,1,1,1,1,10,11,55,14,14,118,14,14,14,38,1,1,1,1,1,1,1,1,8,55,14,14,14,14,14,20,14,54,9,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,10,11,55,14,14,14,14,97,38,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,36,
 1,1,1,1,10,11,55,14,14,40,14,14,14,14,14,118,54,12,13,1,1,1,1,1,10,11,55,14,20,14,14,14,14,59,14,38,1,1,1,1,1,1,1,8,55,14,14,60,14,14,14,14,14,14,54,18,1,1,16,17,17,17,18,1,1,1,1,1,1,1,1,1,10,11,55,14,14,20,14,14,14,14,38,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,36,
-1,1,10,11,55,14,60,14,14,14,14,14,14,40,14,14,14,14,54,17,17,17,17,17,55,14,14,14,14,14,40,14,14,14,14,38,1,1,1,1,1,1,8,55,14,14,14,14,59,14,14,14,40,14,14,38,1,1,36,14,14,20,38,1,1,1,1,1,1,1,10,11,55,14,14,40,14,14,14,14,20,14,38,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,36,
-10,11,55,14,14,14,14,14,14,14,14,97,14,14,14,14,14,14,14,14,14,60,14,14,14,14,14,14,14,14,14,14,14,14,14,54,17,17,17,17,17,17,55,14,14,118,14,14,14,14,14,14,14,14,14,38,1,1,36,97,14,14,54,17,17,17,17,17,17,17,55,14,14,59,14,14,14,14,14,14,14,14,54,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,55
+1,1,10,11,55,14,60,14,14,14,14,14,14,40,14,14,14,14,54,17,17,17,17,17,55,14,14,14,14,14,40,14,14,14,14,38,1,1,1,1,1,1,8,55,14,14,14,14,59,14,14,14,40,14,14,38,1,1,36,14,14,20,38,1,1,1,1,16,17,17,17,17,55,14,14,40,14,14,14,14,20,14,38,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,36,
+10,11,55,14,14,14,14,14,14,14,14,97,14,14,14,14,14,14,14,14,14,60,14,14,14,14,14,14,14,14,14,14,14,14,14,54,17,17,17,17,17,17,55,14,14,118,14,14,14,14,14,14,14,14,14,38,1,1,36,97,14,14,54,17,17,17,17,55,14,14,14,14,14,59,14,14,14,14,14,14,14,14,54,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,55
 </data>
  </layer>
  <objectgroup id="2" name="enemies layer">
@@ -46,7 +46,7 @@
     <property name="spawn_frame" type="int" value="75"/>
    </properties>
   </object>
-  <object id="1" gid="141" x="323" y="128" width="16" height="16">
+  <object id="1" gid="141" x="323" y="150" width="16" height="16">
    <properties>
     <property name="count" type="int" value="10"/>
     <property name="count_spawn_delay" type="int" value="12"/>
@@ -80,6 +80,36 @@
     <property name="enemy_desc" type="int" value="5"/>
     <property name="movement_desc" type="int" value="5"/>
     <property name="movement_start_offset" type="int" value="5"/>
+   </properties>
+  </object>
+  <object id="11" gid="278" x="1096" y="192" width="16" height="16">
+   <properties>
+    <property name="enemy_desc" type="int" value="6"/>
+    <property name="movement_desc" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="12" gid="297" x="1096" y="224" width="16" height="16">
+   <properties>
+    <property name="enemy_desc" type="int" value="7"/>
+    <property name="movement_desc" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="13" gid="273" x="1096" y="192" width="16" height="16">
+   <properties>
+    <property name="enemy_desc" type="int" value="8"/>
+    <property name="movement_desc" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="14" gid="274" x="1096" y="208" width="16" height="16">
+   <properties>
+    <property name="enemy_desc" type="int" value="9"/>
+    <property name="movement_desc" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="15" gid="275" x="1096" y="224" width="16" height="16">
+   <properties>
+    <property name="enemy_desc" type="int" value="10"/>
+    <property name="movement_desc" type="int" value="1"/>
    </properties>
   </object>
  </objectgroup>
