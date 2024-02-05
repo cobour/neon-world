@@ -304,10 +304,11 @@ pl_anim:                       rs.l       1                                     
 pl_animstep:                   rs.b       1                                                ; actual animstep (0 - ..)
 pl_max_animstep:               rs.b       1                                                ; max animstep (1 - ..)
 pl_frames_till_next_shot:      rs.b       1                                                ; frames until next shot can be fired (0 - pl_shot_delay)
-pl_padding_byte                rs.b       1
+pl_no_col_det_frames:          rs.b       1                                                ; framecounter indicating that no collision for player should be detected
 pl_joystick:                   rs.w       1                                                ; joystick state from current frame
 pl_size:                       rs.b       0
 PlShotDelay                 equ 12                                                         ; minimum frames between two shots fired
+PlNoColDetAfterHitFrames    equ 40                                                         ; after being hit and loss of one live, how many frames is the player "safe"?
 
 ; General OtherMem (MUST always be included at the beginning of EVERY OtherMem-structure)
                                rsreset

@@ -76,7 +76,7 @@ DONE    end condition: no more scrolling, no more enemies to spawn, all enemies 
                 limit to offsets where start of buffer is shown => simpler to calc
                 adjust values from "ig_om_frame_counter" till "ig_om_next_tile_col_right" and "ig_om_next_object_desc"; anything else?
 
-        more lives than one: respawn mechanism
+DONE    more lives than one: respawn mechanism (implemented very simple for now; problem is that player can "ghost" into the background; think of solution for this)
 
         highscore table? at least show score at end of level (use revenge of earth mod for that)
 

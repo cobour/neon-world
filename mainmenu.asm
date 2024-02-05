@@ -83,6 +83,7 @@ mm_start:
   move.l        d0,g_om_score(a4)
   moveq.l       #1,d0
   move.b        d0,g_om_level(a4)
+  moveq.l       #3,d0
   move.b        d0,g_om_lives(a4)
 
   rts

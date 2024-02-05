@@ -9,10 +9,13 @@ player_init:
 ; init player-struct
   lea.l      ig_om_f003+f003_dat_player_anim_horizontal_tmx(a4),a1
   lea.l      ig_om_player(a4),a3
-  move.w     #$00a0,pl_xpos(a3)
-  move.w     #$00a0,pl_ypos(a3)
+  move.w     #$00a0,d0
+  move.w     d0,pl_xpos(a3)
+  move.w     d0,pl_ypos(a3)
   move.l     a1,pl_anim(a3)
-  clr.b      pl_animstep(a3)
+  moveq.l    #0,d0
+  move.b     d0,pl_animstep(a3)
+  move.b     d0,pl_no_col_det_frames(a3)
   move.b     #f003_dat_player_anim_horizontal_tmx_tiles_width,pl_max_animstep(a3)
 ; calc gfx source pointer
   moveq.l    #0,d1
@@ -108,6 +111,20 @@ copy_animstep:
   dbf        d7,.loop
   rts
 
+; a2 - sprite 0 structure (gfx data)
+; a3 - sprite 1 structure (gfx data)
+; uses d0,d7
+empty_animstep:
+  moveq.l    #0,d0
+  moveq.l    #TilePixelHeight-1,d7
+.loop:
+  move.w     d0,(a2)+
+  move.w     d0,(a2)+
+  move.w     d0,(a3)+
+  move.w     d0,(a3)+
+  dbf        d7,.loop
+  rts
+
 ; updates player position and animation
 ; uses d0-d2,a1-a3
   xdef       player_update
@@ -117,7 +134,13 @@ player_update:
 ; when player has died, only anim must be updated 
   btst       #IgPlayerDead,ig_om_bools(a4)
   bne        .update_anim
- 
+
+; check pl_no_col_det_frames and decrement if necessary
+  tst.b      pl_no_col_det_frames(a3)
+  beq.s      .do_sprite_coldet
+  sub.b      #1,pl_no_col_det_frames(a3)
+
+.do_sprite_coldet:
 ; first of all - check for collision
 ; sprite 0+1 collide with first bitplane?
   move.w     #%0001000001000001,CLXCON(a6)
@@ -136,13 +159,23 @@ player_update:
   ifne       SHOW_COLLISION_RED
   move.w     #$0f00,COLOR00(a6)
   else
-  bset       #IgPlayerDead,ig_om_bools(a4)
-  sub.b      #1,g_om_lives(a4)
+  ; indestructable after being hit
+  tst.b      pl_no_col_det_frames(a3)
+  bne.s      .coll_check_end
+  ; being hit and decrement lives-counter
+  jsr        sfx_explosion
   bset       #IgPanelUpdate,ig_om_bools(a4)
+  sub.b      #1,g_om_lives(a4)
+  tst.b      g_om_lives(a4)
+  beq.s      .coll_check_play_dead
+  move.b     #PlNoColDetAfterHitFrames,pl_no_col_det_frames(a3)
+  bra.s      .coll_check_end
+.coll_check_play_dead:
+  ; last life lost => player dead
+  bset       #IgPlayerDead,ig_om_bools(a4)
   move.l     #ig_om_f003+f003_dat_explosion_anim_tmx+m_om_area,pl_anim(a3)
   clr.b      pl_animstep(a3)
   move.b     #f003_dat_explosion_anim_tmx_tiles_width,pl_max_animstep(a3)
-  jsr        sfx_explosion
 
   moveq.l    #1,d0
   jsr        fade_out_init
@@ -210,7 +243,9 @@ player_update:
 .update_anim:
   btst       #0,ig_om_frame_counter+3(a4)
   beq.s      .1 
-  rts
+  moveq.l    #0,d0
+  move.b     pl_animstep(a3),d0
+  bra.s      .draw_anim
 .1:
 ; inc and wrap animstep
   moveq.l    #0,d0
@@ -227,6 +262,7 @@ player_update:
 .3:
   move.b     d0,pl_animstep(a3)
 
+.draw_anim:
 ; calc animstep pointer
   lea.l      ig_cm_f002+f002_dat_tiles_iff(a5),a1
   move.l     pl_anim(a3),a2
@@ -238,7 +274,8 @@ player_update:
 
 ; calc and set control words
   bsr        calc_control_words
-  
+  move.b     pl_no_col_det_frames(a3),d1
+
   lea.l      ig_cm_player(a5),a2
   lea.l      ig_cm_player+72(a5),a3
 
@@ -246,9 +283,13 @@ player_update:
   move.l     d0,(a3)+
 
 ; draw animstep
-  bsr        copy_animstep
-  
-  rts
+  btst       #0,d1
+  bne.s      .empty_animstep
+  bra        copy_animstep
+.empty_animstep
+  bra        empty_animstep
+; implicit rts
+
 
 ; checks if player has pressed firebutton and spawns playershot
 ; uses a3,d0 
