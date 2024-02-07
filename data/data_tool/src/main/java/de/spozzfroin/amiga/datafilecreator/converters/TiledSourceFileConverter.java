@@ -59,6 +59,7 @@ class TiledSourceFileConverter implements SourceFileConverter {
 
     private int size;
     private int objectsSize = 0; // optional
+    private int respawnInfoSize = 0; // optional
     private String width; // number of tiles
     private String height; // number of tiles
 
@@ -83,6 +84,10 @@ class TiledSourceFileConverter implements SourceFileConverter {
             label = generateLabel(sourceFile.getFilename(), "objects");
             index.add(new SimpleEntry<>(label, Long.valueOf(objectsSize)));
         }
+        if (respawnInfoSize > 0) {
+            label = generateLabel(sourceFile.getFilename(), "respawn_info");
+            index.add(new SimpleEntry<>(label, Long.valueOf(respawnInfoSize)));
+        }
         //
         label = generateLabel(sourceFile.getFilename(), "tiles_width");
         constants.add(new SimpleEntry<>(label, width));
@@ -95,6 +100,10 @@ class TiledSourceFileConverter implements SourceFileConverter {
             constants.add(new SimpleEntry<>(label, Integer.toString(objectsSize)));
             label = generateLabel(sourceFile.getFilename(), "objects_count");
             constants.add(new SimpleEntry<>(label, Integer.toString(levelObjects.size())));
+        }
+        if (respawnInfoSize > 0) {
+            label = generateLabel(sourceFile.getFilename(), "respawn_info_size");
+            constants.add(new SimpleEntry<>(label, Integer.toString(respawnInfoSize)));
         }
     }
 
@@ -111,6 +120,12 @@ class TiledSourceFileConverter implements SourceFileConverter {
             readObjectList(document);
             if (!levelObjects.isEmpty()) {
                 writeObjects(data);
+            }
+            //
+            if (this.sourceFile.isCreateRespawnInfo()) {
+                Node respawnNode = getRespawnDataNode(document);
+                List<List<Integer>> allRespawnOffsets = readAndConvert(respawnNode);
+                writeRespawnInfo(allRespawnOffsets, data);
             }
         } catch (IOException e) {
             throw e;
@@ -157,8 +172,30 @@ class TiledSourceFileConverter implements SourceFileConverter {
     }
 
     private Node getDataNode(Document document) {
-        Node dataNode = document.getElementsByTagName("data").item(0);
-        String encoding = dataNode.getAttributes().getNamedItem("encoding").getTextContent();
+        // TODO: when more than one layer in file, than look for "playfield layer"
+        var dataNode = document.getElementsByTagName("data").item(0);
+        var encoding = dataNode.getAttributes().getNamedItem("encoding").getTextContent();
+        if (!"csv".equalsIgnoreCase(encoding)) {
+            throw new IllegalArgumentException("invalid encoding");
+        }
+        return dataNode;
+    }
+
+    private Node getRespawnDataNode(Document document) {
+        var dataNodes = document.getElementsByTagName("data");
+        Node dataNode = null;
+        for (int i = 0; i < dataNodes.getLength(); i++) {
+            var aNode = dataNodes.item(i);
+            var layerName = aNode.getParentNode().getAttributes().getNamedItem("name").getTextContent();
+            if (layerName.equals("respawn layer")) {
+                dataNode = aNode;
+                break;
+            }
+        }
+        if (dataNode == null) {
+            throw new IllegalArgumentException("respawn layer not found");
+        }
+        var encoding = dataNode.getAttributes().getNamedItem("encoding").getTextContent();
         if (!"csv".equalsIgnoreCase(encoding)) {
             throw new IllegalArgumentException("invalid encoding");
         }
@@ -252,6 +289,17 @@ class TiledSourceFileConverter implements SourceFileConverter {
     private void write(List<List<Integer>> allOffsets, OutputStream data) throws IOException {
         byte[] allBytes = createByteArray(allOffsets);
         data.write(allBytes);
+    }
+
+    private void writeRespawnInfo(List<List<Integer>> allOffsets, OutputStream data) throws IOException {
+        respawnInfoSize = allOffsets.size() * 2; // one word value for each column/row
+        for (var v : allOffsets) {
+            int index = -1;
+            do {
+                index++;
+            } while (v.get(index) == -2);
+            writeWord((index * 16) + 44, data); // magic value 44 = ScreenStartY (because the player is a hardware sprite and no bob)
+        }
     }
 
     private byte[] createByteArray(List<List<Integer>> allOffsets) {

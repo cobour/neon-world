@@ -15,7 +15,7 @@ player_init:
   move.l     a1,pl_anim(a3)
   moveq.l    #0,d0
   move.b     d0,pl_animstep(a3)
-  move.b     d0,pl_no_col_det_frames(a3)
+  move.w     d0,pl_no_col_det_frames(a3)
   move.b     #f003_dat_player_anim_horizontal_tmx_tiles_width,pl_max_animstep(a3)
 ; calc gfx source pointer
   moveq.l    #0,d1
@@ -136,9 +136,9 @@ player_update:
   bne        .update_anim
 
 ; check pl_no_col_det_frames and decrement if necessary
-  tst.b      pl_no_col_det_frames(a3)
+  tst.w      pl_no_col_det_frames(a3)
   beq.s      .do_sprite_coldet
-  sub.b      #1,pl_no_col_det_frames(a3)
+  sub.w      #1,pl_no_col_det_frames(a3)
 
 .do_sprite_coldet:
 ; first of all - check for collision
@@ -160,22 +160,24 @@ player_update:
   move.w     #$0f00,COLOR00(a6)
   else
   ; indestructable after being hit
-  tst.b      pl_no_col_det_frames(a3)
+  tst.w      pl_no_col_det_frames(a3)
   bne.s      .coll_check_end
   ; being hit and decrement lives-counter
   jsr        sfx_explosion
+
+  move.l     #ig_om_f003+f003_dat_explosion_anim_tmx+m_om_area,pl_anim(a3)
+  clr.b      pl_animstep(a3)
+  move.b     #f003_dat_explosion_anim_tmx_tiles_width,pl_max_animstep(a3)
+
   bset       #IgPanelUpdate,ig_om_bools(a4)
   sub.b      #1,g_om_lives(a4)
   tst.b      g_om_lives(a4)
   beq.s      .coll_check_play_dead
-  move.b     #PlNoColDetAfterHitFrames,pl_no_col_det_frames(a3)
+  move.w     #PlNoColDetFramesTotal,pl_no_col_det_frames(a3)
   bra.s      .coll_check_end
 .coll_check_play_dead:
   ; last life lost => player dead
   bset       #IgPlayerDead,ig_om_bools(a4)
-  move.l     #ig_om_f003+f003_dat_explosion_anim_tmx+m_om_area,pl_anim(a3)
-  clr.b      pl_animstep(a3)
-  move.b     #f003_dat_explosion_anim_tmx_tiles_width,pl_max_animstep(a3)
 
   moveq.l    #1,d0
   jsr        fade_out_init
@@ -184,6 +186,22 @@ player_update:
   bra        .update_anim
   endif
 .coll_check_end:
+
+; set player position after explosion is shown
+  cmp.w      #PlNoColDetFramesWoExpl,pl_no_col_det_frames(a3)
+  bne.s      .read_joystick
+  move.w     #ScreenStartX,pl_xpos(a3)
+  move.l     a4,a2
+  add.l      #ig_om_f003+f003_dat_level1_tmx_respawn_info,a2
+  move.l     ig_om_scroll_xpos(a4),d0
+  lsr.l      #4,d0                                                                    ; xpos of level / 16
+  add.l      d0,d0                                                                    ; * 2 because the ypos are WORD values
+  move.w     (a2,d0.w),pl_ypos(a3)
+
+.read_joystick:
+; do not read joystick when not visible
+  cmp.w      #PlNoColDetAfterVisible,pl_no_col_det_frames(a3)
+  bgt        .update_anim
 
 ; check joystick
   jsr        js_read
@@ -274,7 +292,7 @@ player_update:
 
 ; calc and set control words
   bsr        calc_control_words
-  move.b     pl_no_col_det_frames(a3),d1
+  move.w     pl_no_col_det_frames(a3),d1
 
   lea.l      ig_cm_player(a5),a2
   lea.l      ig_cm_player+72(a5),a3
@@ -283,12 +301,16 @@ player_update:
   move.l     d0,(a3)+
 
 ; draw animstep
+; 1 - draw explosion
+  cmp.b      #PlNoColDetFramesWoExpl,d1
+  bgt        copy_animstep                                                            ; implicit rts
+; 2 - player not visible
+  cmp.b      #PlNoColDetAfterVisible,d1
+  bgt        empty_animstep                                                           ; implicit rts
+; 3 - player visible but eventually indestructible
   btst       #0,d1
-  bne.s      .empty_animstep
-  bra        copy_animstep
-.empty_animstep
-  bra        empty_animstep
-; implicit rts
+  bne        empty_animstep                                                           ; implicit rts
+  bra        copy_animstep                                                            ; implicit rts
 
 
 ; checks if player has pressed firebutton and spawns playershot
@@ -299,7 +321,11 @@ player_firebutton:
   btst       #IgPlayerDead,ig_om_bools(a4)
   bne.s      .2
 
+  ; player cannot shoot when explosion is shown or player is invisible
   lea.l      ig_om_player(a4),a3
+  cmp.w      #PlNoColDetAfterVisible,pl_no_col_det_frames(a3)
+  bgt.s      .2
+
   move.w     pl_joystick(a3),d0
 
 ; update shot delay if necessary

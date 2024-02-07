@@ -43,6 +43,7 @@ targetFiles:
       - filename: tiled/level1.tmx
         tilesFilename: tiles.iff
         columnOrientation: true
+        createRespawnInfo: true
       - filename: tiled/player_anim_horizontal.tmx
         tilesFilename: tiles.iff
       - filename: tiled/player_anim_up.tmx

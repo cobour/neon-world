@@ -304,11 +304,16 @@ pl_anim:                       rs.l       1                                     
 pl_animstep:                   rs.b       1                                                ; actual animstep (0 - ..)
 pl_max_animstep:               rs.b       1                                                ; max animstep (1 - ..)
 pl_frames_till_next_shot:      rs.b       1                                                ; frames until next shot can be fired (0 - pl_shot_delay)
-pl_no_col_det_frames:          rs.b       1                                                ; framecounter indicating that no collision for player should be detected
+pl_padding_byte:               rs.b       1
+pl_no_col_det_frames:          rs.w       1                                                ; framecounter indicating that no collision for player should be detected
 pl_joystick:                   rs.w       1                                                ; joystick state from current frame
 pl_size:                       rs.b       0
 PlShotDelay                 equ 12                                                         ; minimum frames between two shots fired
-PlNoColDetAfterHitFrames    equ 40                                                         ; after being hit and loss of one live, how many frames is the player "safe"?
+PlExplosion                 equ (f003_dat_explosion_anim_tmx_tiles_width*2)-2              ; frames showing player explosion
+PlNotVisibleAfterExpl       equ 25                                                         ; after being hit, how many frames is the player not visible?
+PlNoColDetAfterVisible      equ 100                                                        ; after being hit and visible again, how many frames is the player "safe"?
+PlNoColDetFramesWoExpl      equ PlNotVisibleAfterExpl+PlNoColDetAfterVisible               ; frames without collision detection after the explosion
+PlNoColDetFramesTotal       equ PlExplosion+PlNotVisibleAfterExpl+PlNoColDetAfterVisible   ; frames without collision detection total
 
 ; General OtherMem (MUST always be included at the beginning of EVERY OtherMem-structure)
                                rsreset
