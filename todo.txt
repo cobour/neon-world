@@ -82,5 +82,6 @@ DONE            find suitable y-pos for player (check leveldata ?)
 
         highscore table? at least show score at end of level (use revenge of earth mod for that)
 
-        TODO in TiledSourceFileConverter.getDataNode
+DONE    TODO in TiledSourceFileConverter.getDataNode
+
         REFACTOR: alloc chip and other mem through exec.library (not sections in code)

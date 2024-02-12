@@ -5,9 +5,13 @@ import de.spozzfroin.amiga.datafilecreator.config.SourceFile;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
 import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -171,9 +175,22 @@ class TiledSourceFileConverter implements SourceFileConverter {
         return document;
     }
 
-    private Node getDataNode(Document document) {
-        // TODO: when more than one layer in file, than look for "playfield layer"
-        var dataNode = document.getElementsByTagName("data").item(0);
+    private Node getDataNode(Document document) throws XPathExpressionException {
+        var xPathFactory = XPathFactory.newInstance();
+        var layerExpression = xPathFactory.newXPath().compile("/map/layer");
+        var layers = (NodeList) layerExpression.evaluate(document, XPathConstants.NODESET);
+        var dataNodeExpression = xPathFactory.newXPath().compile("//data");
+        Node dataNode = null;
+        if (layers.getLength() > 1) {
+            var playfieldLayerExpression = xPathFactory.newXPath().compile("//layer[@name='playfield layer']");
+            var playfieldLayer = (NodeList) playfieldLayerExpression.evaluate(document, XPathConstants.NODESET);
+            if (playfieldLayer.getLength() != 1) {
+                throw new IllegalStateException("playfield layer not found");
+            }
+            dataNode = (Node) dataNodeExpression.evaluate(playfieldLayer.item(0), XPathConstants.NODE);
+        } else {
+            dataNode = (Node) dataNodeExpression.evaluate(layers.item(0), XPathConstants.NODE);
+        }
         var encoding = dataNode.getAttributes().getNamedItem("encoding").getTextContent();
         if (!"csv".equalsIgnoreCase(encoding)) {
             throw new IllegalArgumentException("invalid encoding");
