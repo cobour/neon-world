@@ -319,7 +319,7 @@ PlNoColDetFramesTotal       equ PlExplosion+PlNotVisibleAfterExpl+PlNoColDetAfte
                                rsreset
 g_om_bools:                    rs.b       1
 g_om_lives:                    rs.b       1
-g_om_level:                    rs.b       1                                                ; 0 = mainmenu, 1 = level 1 etc.
+g_om_level:                    rs.b       1                                                ; 0 = mainmenu, 1 = level 1 etc., $7f = gameover
 g_om_padding_byte:             rs.b       1
 g_om_score:                    rs.l       1
 g_om_fade_fi_ptr:              rs.l       1                                                ; fade-in pointer
@@ -329,6 +329,7 @@ g_om_fade_interval:            rs.b       1                                     
 g_om_fade_act_intvl:           rs.b       1                                                ; actual countdown for next interval
 g_om_fade_padding_byte:        rs.b       1
 g_om_size:                     rs.b       0
+GGameOver                   equ $7f
 ; bits for g_om_bools
 GExit                       equ 0                                                          ; exit game completely? 0 = nope
 GFadeIn                     equ 1                                                          ; should we fade in? 0 = nope
@@ -401,6 +402,18 @@ mm_om_credits_delay:           rs.w       1                                     
 mm_om_lightning_anim_offsets:  rs.l       f001_dat_mm_lightning_anim_tmx_tiles_height      ; offset pointers to anim steps for lightning
 mm_om_f001:                    rs.b       f001_size
 mm_om_size:                    rs.b       0
+
+; GameOver ChipMem
+                               rsreset
+go_cm_f004:                    rs.b       f004_size
+go_cm_screenbuffer:            rs.b       ScreenWidthBytes*ScreenBitPlanes*ScreenHeight
+go_cm_size:                    rs.b       0
+
+; GameOver OtherMem
+                               rsreset
+go_om_general:                 rs.b       g_om_size
+go_om_f005:                    rs.b       f005_size
+go_om_size:                    rs.b       0
 
 ; values for mm_om_option
 MmOptionStart               equ 1

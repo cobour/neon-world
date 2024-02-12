@@ -83,3 +83,16 @@ targetFiles:
       - filename: movements/Little_down_little_up.ods
       - filename: movements/speed_up.ods
       - filename: movements/speed_up_2.ods
+  - filename: F004
+    memoryType: CHIP
+    sourceFiles:
+      - filename: revenge_of_earth.mod
+      - filename: tiles.iff
+        withoutMask: true
+      - filename: sfxr/enter.wav
+  - filename: F005
+    memoryType: OTHER
+    sourceFiles:
+      - filename: tiled/gameover.tmx
+        tilesFilename: tiles.iff
+      - filename: revenge_of_earth.mod

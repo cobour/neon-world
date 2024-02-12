@@ -52,16 +52,24 @@ m_cleanup_ptplayer:
 m_init_next:
   tst.b       g_om_level(a4)
   beq.s       .1
+  cmp.b       #GGameOver,g_om_level(a4)
+  beq.s       .2
   jmp         ig_init
 .1:
   jmp         mm_init
+.2:
+  jmp         go_init
 
 m_start_next:
   tst.b       g_om_level(a4)
   beq.s       .1
+  cmp.b       #GGameOver,g_om_level(a4)
+  beq.s       .2
   jmp         ig_start
 .1:
   jmp         mm_start
+.2:
+  jmp         go_start
  
   include     "files_descriptor.i"
 

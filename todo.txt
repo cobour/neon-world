@@ -80,7 +80,7 @@ DONE    more lives than one: respawn mechanism (implemented very simple for now;
 DONE            show explosion, show no player ship for a second or so, than respawn player ship blinking for another seond or so 
 DONE            find suitable y-pos for player (check leveldata ?)
 
-        highscore table? at least show score at end of level (use revenge of earth mod for that)
+DONE    highscore table? at least show score at end of level (use revenge of earth mod for that)
 
 DONE    TODO in TiledSourceFileConverter.getDataNode
 

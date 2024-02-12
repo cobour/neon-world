@@ -73,8 +73,8 @@ ig_start:
                 
                 bsr.s       .cleanup_music
 
-                ; for now always return to mainmenu
-                clr.b       g_om_level(a4)
+                ; for now always switch to gameover-screen
+                move.b      #GGameOver,g_om_level(a4)
 
                 rts
 
