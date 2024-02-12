@@ -35,6 +35,14 @@ text_init:
   addq.l     #1,a0
   dbf        d7,.uz_loop
 
+  ; 0 - 9
+  add.l      #(TilesWidthBytes*TilesBitplanes*8)-6,a0
+  moveq.l    #9,d7
+.09_loop:
+  move.l     a0,(a1)+
+  addq.l     #1,a0
+  dbf        d7,.09_loop
+
   rts
 
   xdef       text_print
@@ -59,7 +67,14 @@ text_print:
   move.l     (a1),a2
   bra.s      .tp_loop_print_sign
 .tp_loop_letter:
+  ; char or number?
+  cmp.b      #65,d1
+  bge.s      .tp_char
+  sub.b      #21,d1
+  bra.s      .tp_get_pointer
+.tp_char:
   sub.b      #64,d1
+.tp_get_pointer:
   move.l     d1,d2
   lsl.l      #2,d2
   move.l     (a1,d2),a2
@@ -79,6 +94,6 @@ text_print:
 .tp_exit:
   rts
 
-; pointers to space and A-Z (byte-exact - may be odd)
+; pointers to space, A-Z and 0-9 (byte-exact - may be odd)
 sign_pointers:
-  dcb.l      27
+  dcb.l      37
