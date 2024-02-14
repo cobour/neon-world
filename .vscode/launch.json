@@ -44,6 +44,24 @@
                 "--fullscreen=0"
             ],
             "preLaunchTask": "amigaassembly: build for ADF"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Run FS-UAE 3",
+            "args": [
+                "--fullscreen",
+                "--monitor=right",
+                "--chip-memory=512",
+                "--slow-memory=0",
+                "--hard-drive-0=${workspaceFolder}/uae/dh0_adf",
+                "--amiga-model=A500",
+                "--joystick-port-1=keyboard",
+                "--video-sync=1"
+            ],
+            "runtimeExecutable": "/Applications/FS-UAE.app/Contents/MacOS/fs-uae",
+            "console": "integratedTerminal",
+            "preLaunchTask": "amigaassembly: build for ADF"
         }
     ]
 }
