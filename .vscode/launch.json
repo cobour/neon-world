@@ -4,10 +4,49 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+        // 1. switch to extension v1.6.0
+        // 2. Settings -> Extensions -> Amiga Assembly -> Bin Dir = 
+        //    /Users/frank/Library/Application Support/Code/User/globalStorage/prb28.amiga-assembly/downloads/vscode-amiga-assembly-binaries-@-1.6.0/prb28-vscode-amiga-assembly-binaries-6f94123
+        {
+            "type": "fs-uae",
+            "request": "launch",
+            "name": "Debug (Extension v1.6.0)",
+            "stopOnEntry": false,
+            "serverName": "localhost",
+            "serverPort": 6860,
+            "trace": false,
+            "startEmulator": true,
+            "windows": {
+                "emulator": "${config:amiga-assembly.binDir}/fs-uae.exe"
+            },
+            "osx": {
+                "emulator": "${config:amiga-assembly.binDir}/fs-uae"
+            },
+            "linux": {
+                "emulator": "${config:amiga-assembly.binDir}/fs-uae"
+            },
+            "emulatorWorkingDir": "${config:amiga-assembly.binDir}",
+            "program": "${workspaceFolder}/uae/dh0/NeonWorld",
+            "options": [
+                "--chip_memory=512",
+                "--slow_memory=0",
+                "--hard_drive_0=${workspaceFolder}/uae/dh0",
+                "--automatic_input_grab=0",
+                "--joystick_port_1=keyboard",
+                "--amiga_model=A500",
+                "--automatic_input_grab=0",
+                "--video_sync=0",
+                "--fullscreen=0"
+            ],
+            "preLaunchTask": "amigaassembly: build"
+        },
+        // 1. switch to extension v1.8.2
+        // 2. Settings -> Extensions -> Amiga Assembly -> Bin Dir = 
+        //    ${extensionResourcesFolder}/bin/${platformName}
         {
             "type": "amiga-assembly",
             "request": "launch",
-            "name": "FS-UAE Debug",
+            "name": "Debug (Extension v1.8.2)",
             "stopOnEntry": false,
             "trace": true,
             "program": "${workspaceFolder}/uae/dh0/NeonWorld",
@@ -26,10 +65,13 @@
             ],
             "preLaunchTask": "amigaassembly: build"
         },
+        // 1. switch to extension v1.8.2
+        // 2. Settings -> Extensions -> Amiga Assembly -> Bin Dir = 
+        //    ${extensionResourcesFolder}/bin/${platformName}
         {
             "type": "amiga-assembly",
             "request": "launch",
-            "name": "FS-UAE Run",
+            "name": "Run (Extension v1.8.2)",
             "noDebug": true,
             "program": "${workspaceFolder}/uae/dh0_adf/NeonWorld",
             "emulatorType": "fs-uae",
@@ -45,10 +87,13 @@
             ],
             "preLaunchTask": "amigaassembly: build for ADF"
         },
+        //
+        // Uses unpatched FS-UAE installed to Applications-Folder
+        //
         {
             "type": "node",
             "request": "launch",
-            "name": "Run FS-UAE 3",
+            "name": "Run (unpatched FS-UAE v3.x)",
             "args": [
                 "--fullscreen",
                 "--monitor=right",
@@ -60,7 +105,7 @@
                 "--video-sync=1"
             ],
             "runtimeExecutable": "/Applications/FS-UAE.app/Contents/MacOS/fs-uae",
-            "console": "integratedTerminal",
+            "console": "internalConsole",
             "preLaunchTask": "amigaassembly: build for ADF"
         }
     ]
