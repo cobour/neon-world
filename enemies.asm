@@ -416,31 +416,31 @@ first_enemy_descriptor:
   ; 6
   dc.l       ig_om_f003+f003_dat_blue_barrier_upper_anim_tmx
   dc.w       f003_dat_blue_barrier_upper_anim_tmx_tiles_width
-  dc.w       50
+  dc.w       60
   dc.w       $0000
   dc.w       1,0,0,0
   ; 7
   dc.l       ig_om_f003+f003_dat_blue_barrier_lower_anim_tmx
   dc.w       f003_dat_blue_barrier_lower_anim_tmx_tiles_width
-  dc.w       50
+  dc.w       60
   dc.w       $0000
   dc.w       1,0,0,0
   ; 8
   dc.l       ig_om_f003+f003_dat_blue_lightning_upper_anim_tmx
   dc.w       f003_dat_blue_lightning_upper_anim_tmx_tiles_width
-  dc.w       10
+  dc.w       12
   dc.w       $0000
   dc.w       0,0,0,0
   ; 9
   dc.l       ig_om_f003+f003_dat_blue_lightning_middle_anim_tmx
   dc.w       f003_dat_blue_lightning_middle_anim_tmx_tiles_width
-  dc.w       10
+  dc.w       12
   dc.w       $0000
   dc.w       0,0,0,0
   ; 10
   dc.l       ig_om_f003+f003_dat_blue_lightning_lower_anim_tmx
   dc.w       f003_dat_blue_lightning_lower_anim_tmx_tiles_width
-  dc.w       10
+  dc.w       12
   dc.w       $0000
   dc.w       0,0,0,0
 
