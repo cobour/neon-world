@@ -200,6 +200,7 @@ JsFire                      equ 4
 SHOW_BLUE_TIMING            equ 0
 SHOW_FREE_RAM               equ 0
 SHOW_COLLISION_RED          equ 0
+MANY_LIVES                  equ 0
 
 ; Structures
 
