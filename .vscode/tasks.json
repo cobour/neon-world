@@ -98,7 +98,8 @@
 			},
 			"options": {
 				"cwd": "./data/data_tool"
-			}
+			},
+			"problemMatcher": []
 		}
 	]
 }
