@@ -74,6 +74,14 @@ targetFiles:
         tilesFilename: tiles.iff
       - filename: tiled/blue_lightning_lower_anim.tmx
         tilesFilename: tiles.iff
+      - filename: tiled/fire_down_upper_anim.tmx
+        tilesFilename: tiles.iff
+      - filename: tiled/fire_down_middle_upper_anim.tmx
+        tilesFilename: tiles.iff
+      - filename: tiled/fire_down_middle_lower_anim.tmx
+        tilesFilename: tiles.iff
+      - filename: tiled/fire_down_lower_anim.tmx
+        tilesFilename: tiles.iff
       - filename: universe.mod
       - filename: movements/just_scroll.ods
       - filename: movements/wave.ods
