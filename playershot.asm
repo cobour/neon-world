@@ -221,10 +221,10 @@ mask_background:
 
 pse_tiles_offsets: ; done here because tiles are 16x16 mostly and player shots are 8x8
   dc.w       (7*TilePixelHeight*TilesWidthBytes*TilesBitplanes)+36
+  dc.w       (7*TilePixelHeight*TilesWidthBytes*TilesBitplanes)+36+2
   dc.w       (7*TilePixelHeight*TilesWidthBytes*TilesBitplanes)+(8*TilesWidthBytes*TilesBitplanes)+36
+  dc.w       (7*TilePixelHeight*TilesWidthBytes*TilesBitplanes)+(8*TilesWidthBytes*TilesBitplanes)+36+2
   dc.w       (7*TilePixelHeight*TilesWidthBytes*TilesBitplanes)+(16*TilesWidthBytes*TilesBitplanes)+36
+  dc.w       (7*TilePixelHeight*TilesWidthBytes*TilesBitplanes)+(16*TilesWidthBytes*TilesBitplanes)+36+2
   dc.w       (7*TilePixelHeight*TilesWidthBytes*TilesBitplanes)+(24*TilesWidthBytes*TilesBitplanes)+36
-  dc.w       (7*TilePixelHeight*TilesWidthBytes*TilesBitplanes)+(32*TilesWidthBytes*TilesBitplanes)+36
-  dc.w       (7*TilePixelHeight*TilesWidthBytes*TilesBitplanes)+(40*TilesWidthBytes*TilesBitplanes)+36
-  dc.w       (7*TilePixelHeight*TilesWidthBytes*TilesBitplanes)+(48*TilesWidthBytes*TilesBitplanes)+36
-  dc.w       (7*TilePixelHeight*TilesWidthBytes*TilesBitplanes)+(56*TilesWidthBytes*TilesBitplanes)+36
+  dc.w       (7*TilePixelHeight*TilesWidthBytes*TilesBitplanes)+(24*TilesWidthBytes*TilesBitplanes)+36+2
