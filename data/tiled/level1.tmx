@@ -428,31 +428,31 @@
     <property name="movement_desc" type="int" value="1"/>
    </properties>
   </object>
-  <object id="44" gid="278" x="2032" y="112" width="16" height="16">
+  <object id="44" gid="278" x="2016" y="112" width="16" height="16">
    <properties>
     <property name="enemy_desc" type="int" value="6"/>
     <property name="movement_desc" type="int" value="1"/>
    </properties>
   </object>
-  <object id="45" gid="297" x="2032" y="144" width="16" height="16">
+  <object id="45" gid="297" x="2016" y="144" width="16" height="16">
    <properties>
     <property name="enemy_desc" type="int" value="7"/>
     <property name="movement_desc" type="int" value="1"/>
    </properties>
   </object>
-  <object id="46" gid="273" x="2032" y="112" width="16" height="16">
+  <object id="46" gid="273" x="2016" y="112" width="16" height="16">
    <properties>
     <property name="enemy_desc" type="int" value="8"/>
     <property name="movement_desc" type="int" value="1"/>
    </properties>
   </object>
-  <object id="47" gid="274" x="2032" y="128" width="16" height="16">
+  <object id="47" gid="274" x="2016" y="128" width="16" height="16">
    <properties>
     <property name="enemy_desc" type="int" value="9"/>
     <property name="movement_desc" type="int" value="1"/>
    </properties>
   </object>
-  <object id="48" gid="275" x="2032" y="144" width="16" height="16">
+  <object id="48" gid="275" x="2016" y="144" width="16" height="16">
    <properties>
     <property name="enemy_desc" type="int" value="10"/>
     <property name="movement_desc" type="int" value="1"/>
