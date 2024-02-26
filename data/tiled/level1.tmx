@@ -560,7 +560,7 @@
   </object>
   <object id="126" gid="141" x="6906" y="120" width="16" height="16">
    <properties>
-    <property name="count" type="int" value="12"/>
+    <property name="count" type="int" value="4"/>
     <property name="count_spawn_delay" type="int" value="18"/>
     <property name="enemy_desc" type="int" value="0"/>
     <property name="movement_desc" type="int" value="7"/>
@@ -580,7 +580,7 @@
     <property name="movement_desc" type="int" value="6"/>
    </properties>
   </object>
-  <object id="129" gid="81" x="3546" y="152" width="18" height="16">
+  <object id="129" gid="81" x="3546" y="164" width="18" height="16">
    <properties>
     <property name="enemy_desc" type="int" value="2"/>
     <property name="movement_desc" type="int" value="6"/>
@@ -598,7 +598,7 @@
     <property name="movement_desc" type="int" value="6"/>
    </properties>
   </object>
-  <object id="127" gid="81" x="6325" y="194" width="18" height="16">
+  <object id="127" gid="81" x="6325" y="204" width="18" height="16">
    <properties>
     <property name="enemy_desc" type="int" value="2"/>
     <property name="movement_desc" type="int" value="6"/>
@@ -619,7 +619,7 @@
     <property name="movement_desc" type="int" value="6"/>
    </properties>
   </object>
-  <object id="130" gid="81" x="6250" y="118" width="18" height="16">
+  <object id="130" gid="81" x="6302" y="118" width="18" height="16">
    <properties>
     <property name="enemy_desc" type="int" value="2"/>
     <property name="movement_desc" type="int" value="6"/>
@@ -663,7 +663,7 @@
     <property name="movement_desc" type="int" value="7"/>
    </properties>
   </object>
-  <object id="124" gid="181" x="6632" y="168" width="16" height="16">
+  <object id="124" gid="181" x="6632" y="160" width="16" height="16">
    <properties>
     <property name="count" type="int" value="12"/>
     <property name="count_spawn_delay" type="int" value="14"/>
