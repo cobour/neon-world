@@ -372,7 +372,7 @@ ed_draw_bob:
   jmp        bob_draw
 
 ; enemy descriptors and index
-EnemyDescCount    equ 15
+EnemyDescCount    equ 23
 enemy_descriptors_index:
   dcb.l      EnemyDescCount
 ; see constants.i -> ed_*
@@ -467,9 +467,57 @@ first_enemy_descriptor:
   dc.w       8
   dc.w       $0000
   dc.w       0,0,0,0
+  ; 15
+  dc.l       ig_om_f003+f003_dat_fire_right_left_anim_tmx
+  dc.w       f003_dat_fire_right_left_anim_tmx_tiles_width
+  dc.w       8                                                        ; do not change (or resync with fire right/left anims)
+  dc.w       $0000
+  dc.w       0,0,0,0
+  ; 16
+  dc.l       ig_om_f003+f003_dat_fire_right_middle_left_anim_tmx
+  dc.w       f003_dat_fire_right_middle_left_anim_tmx_tiles_width
+  dc.w       8                                                        ; do not change (or resync with fire right/left anims)
+  dc.w       $0000
+  dc.w       0,0,0,0
+  ; 17
+  dc.l       ig_om_f003+f003_dat_fire_right_middle_right_anim_tmx
+  dc.w       f003_dat_fire_right_middle_right_anim_tmx_tiles_width
+  dc.w       8                                                        ; do not change (or resync with fire right/left anims)
+  dc.w       $0000
+  dc.w       0,0,0,0
+  ; 18
+  dc.l       ig_om_f003+f003_dat_fire_right_right_anim_tmx
+  dc.w       f003_dat_fire_right_right_anim_tmx_tiles_width
+  dc.w       8                                                        ; do not change (or resync with fire right/left anims)
+  dc.w       $0000
+  dc.w       0,0,0,0
+  ; 19
+  dc.l       ig_om_f003+f003_dat_fire_left_left_anim_tmx
+  dc.w       f003_dat_fire_left_left_anim_tmx_tiles_width
+  dc.w       8                                                        ; do not change (or resync with fire right/left anims)
+  dc.w       $0000
+  dc.w       0,0,0,0
+  ; 20
+  dc.l       ig_om_f003+f003_dat_fire_left_middle_left_anim_tmx
+  dc.w       f003_dat_fire_left_middle_left_anim_tmx_tiles_width
+  dc.w       8                                                        ; do not change (or resync with fire right/left anims)
+  dc.w       $0000
+  dc.w       0,0,0,0
+  ; 21
+  dc.l       ig_om_f003+f003_dat_fire_left_middle_right_anim_tmx
+  dc.w       f003_dat_fire_left_middle_right_anim_tmx_tiles_width
+  dc.w       8                                                        ; do not change (or resync with fire right/left anims)
+  dc.w       $0000
+  dc.w       0,0,0,0
+  ; 22
+  dc.l       ig_om_f003+f003_dat_fire_left_right_anim_tmx
+  dc.w       f003_dat_fire_left_right_anim_tmx_tiles_width
+  dc.w       8                                                        ; do not change (or resync with fire right/left anims)
+  dc.w       $0000
+  dc.w       0,0,0,0
 
 ; movement descriptors and index
-MovementDescCount equ 7
+MovementDescCount equ 8
 movement_descriptors_index:
   dcb.l      MovementDescCount
 ; see constants.i -> mvd_*
@@ -495,3 +543,6 @@ first_movement_descriptor:
   ; 6
   dc.l       ig_om_f003+f003_dat_speed_up_2_ods
   dc.w       f003_dat_speed_up_2_ods_steps
+  ; 7
+  dc.l       ig_om_f003+f003_dat_wave_ods
+  dc.w       f003_dat_wave_ods_steps

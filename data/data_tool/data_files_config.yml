@@ -82,6 +82,22 @@ targetFiles:
         tilesFilename: tiles.iff
       - filename: tiled/fire_down_lower_anim.tmx
         tilesFilename: tiles.iff
+      - filename: tiled/fire_right_left_anim.tmx
+        tilesFilename: tiles.iff
+      - filename: tiled/fire_right_middle_left_anim.tmx
+        tilesFilename: tiles.iff
+      - filename: tiled/fire_right_middle_right_anim.tmx
+        tilesFilename: tiles.iff
+      - filename: tiled/fire_right_right_anim.tmx
+        tilesFilename: tiles.iff
+      - filename: tiled/fire_left_left_anim.tmx
+        tilesFilename: tiles.iff
+      - filename: tiled/fire_left_middle_left_anim.tmx
+        tilesFilename: tiles.iff
+      - filename: tiled/fire_left_middle_right_anim.tmx
+        tilesFilename: tiles.iff
+      - filename: tiled/fire_left_right_anim.tmx
+        tilesFilename: tiles.iff
       - filename: universe.mod
       - filename: movements/just_scroll.ods
       - filename: movements/wave.ods
