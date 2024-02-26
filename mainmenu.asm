@@ -350,7 +350,7 @@ credits_1:
   dc.b          "       GRAPHICS BY KEVIN SAUNDERS       ",0
   even
 credits_2:
-  dc.b          "      CODE AND SFX BY FRANK NEUMANN     ",0
+  dc.b          "          CODE BY FRANK NEUMANN         ",0
   even
 
   section       MainmenuChipData,data_c
