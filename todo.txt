@@ -71,6 +71,8 @@ DONE    score and lives counter
 DONE    end condition: no more scrolling, no more enemies to spawn, all enemies dead
 
         pause key
+
+DONE    BUG: sub bcd when >9 
         
         build some kind of level warp for testing purposes 
                 limit to offsets where start of buffer is shown => simpler to calc

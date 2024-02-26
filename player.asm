@@ -170,7 +170,12 @@ player_update:
   move.b     #f003_dat_explosion_anim_tmx_tiles_width,pl_max_animstep(a3)
 
   bset       #IgPanelUpdate,ig_om_bools(a4)
-  sub.b      #1,g_om_lives(a4)
+
+  move.b     g_om_lives(a4),d0
+  move.b     #1,d1
+  sbcd       d1,d0
+  move.b     d0,g_om_lives(a4)
+  
   tst.b      g_om_lives(a4)
   beq.s      .coll_check_play_dead
   move.w     #PlNoColDetFramesTotal,pl_no_col_det_frames(a3)
