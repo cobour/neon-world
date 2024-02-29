@@ -193,6 +193,7 @@ bob_draw:
   sub.w       d5,d2
   lsl.w       #1,d2
   move.w      (a0,d2.w),d4
+  bra.s       .no_mask_left
 
 .no_mask_right:
 
