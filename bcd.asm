@@ -10,6 +10,7 @@
 ; d0 - sum as 32-bit bcd value
   xdef       bcd_add
 bcd_add:
+  move       #0,ccr
   abcd       d1,d0
   ror.l      #8,d0
   ror.l      #8,d1

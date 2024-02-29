@@ -173,6 +173,7 @@ player_update:
 
   move.b     g_om_lives(a4),d1
   moveq.l    #1,d0
+  move       #0,ccr
   sbcd       d0,d1
   move.b     d1,g_om_lives(a4)
 
