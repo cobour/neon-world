@@ -66,7 +66,9 @@ The only thing added by me is the "xdef inflate" directive and source is reforma
 Playership can move and fire shots. Shots collide with background. There is now also collision detection between shots and enemies. Player dies on collision with background or enemies.  
 The video linked below runs at 50fps. If your monitor runs at a different framerate (that is not a multiple of 50) the video will stutter.  
 
-[![You should see the video here](https://img.youtube.com/vi/wujfPsvIEXA/0.jpg)](https://www.youtube.com/watch?v=wujfPsvIEXA)  
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=wujfPsvIEXA" target="_blank">
+  <img src="http://img.youtube.com/vi/wujfPsvIEXA/0.jpg" alt="You should see the video here" width="240" height="180" border="10" />
+</a>
 
 ## Mentioned in the news
 
