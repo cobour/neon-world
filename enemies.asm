@@ -372,7 +372,7 @@ ed_draw_bob:
   jmp        bob_draw
 
 ; enemy descriptors and index
-EnemyDescCount    equ 23
+EnemyDescCount    equ 28
 enemy_descriptors_index:
   dcb.l      EnemyDescCount
 ; see constants.i -> ed_*
@@ -515,9 +515,39 @@ first_enemy_descriptor:
   dc.w       8                                                        ; do not change (or resync with fire right/left anims)
   dc.w       $0000
   dc.w       0,0,0,0
+  ; 23
+  dc.l       ig_om_f003+f003_dat_fire_up_upper_anim_tmx
+  dc.w       f003_dat_fire_up_upper_anim_tmx_tiles_width
+  dc.w       8
+  dc.w       $0000
+  dc.w       0,0,0,0
+  ; 24
+  dc.l       ig_om_f003+f003_dat_fire_up_middle_upper_anim_tmx
+  dc.w       f003_dat_fire_up_middle_upper_anim_tmx_tiles_width
+  dc.w       8
+  dc.w       $0000
+  dc.w       0,0,0,0
+  ; 25
+  dc.l       ig_om_f003+f003_dat_fire_up_middle_lower_anim_tmx
+  dc.w       f003_dat_fire_up_middle_lower_anim_tmx_tiles_width
+  dc.w       8
+  dc.w       $0000
+  dc.w       0,0,0,0
+  ; 26
+  dc.l       ig_om_f003+f003_dat_fire_up_lower_anim_tmx
+  dc.w       f003_dat_fire_up_lower_anim_tmx_tiles_width
+  dc.w       8
+  dc.w       $0000
+  dc.w       0,0,0,0
+  ; 27
+  dc.l       ig_om_f003+f003_dat_red_drop_anim_tmx
+  dc.w       f003_dat_red_drop_anim_tmx_tiles_width
+  dc.w       4
+  dc.w       $0015
+  dc.w       0,2,15,13
 
 ; movement descriptors and index
-MovementDescCount equ 8
+MovementDescCount equ 9
 movement_descriptors_index:
   dcb.l      MovementDescCount
 ; see constants.i -> mvd_*
@@ -546,3 +576,6 @@ first_movement_descriptor:
   ; 7
   dc.l       ig_om_f003+f003_dat_wave_ods
   dc.w       f003_dat_wave_ods_steps
+  ; 8
+  dc.l       ig_om_f003+f003_dat_jellyfish_ods
+  dc.w       f003_dat_jellyfish_ods_steps

@@ -98,6 +98,16 @@ targetFiles:
         tilesFilename: tiles.iff
       - filename: tiled/fire_left_right_anim.tmx
         tilesFilename: tiles.iff
+      - filename: tiled/fire_up_upper_anim.tmx
+        tilesFilename: tiles.iff
+      - filename: tiled/fire_up_middle_upper_anim.tmx
+        tilesFilename: tiles.iff
+      - filename: tiled/fire_up_middle_lower_anim.tmx
+        tilesFilename: tiles.iff
+      - filename: tiled/fire_up_lower_anim.tmx
+        tilesFilename: tiles.iff
+      - filename: tiled/red_drop_anim.tmx
+        tilesFilename: tiles.iff
       - filename: universe.mod
       - filename: movements/just_scroll.ods
       - filename: movements/wave.ods
@@ -107,6 +117,7 @@ targetFiles:
       - filename: movements/Little_down_little_up.ods
       - filename: movements/speed_up.ods
       - filename: movements/speed_up_2.ods
+      - filename: movements/jellyfish.ods
   - filename: F004
     memoryType: CHIP
     sourceFiles:
