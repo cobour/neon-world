@@ -9,6 +9,7 @@ Because many games did not use the full PAL resolution (320x256), I wanted to tr
 
 Visual Studio Code with Amiga Assembly plugin  
 FS-UAE (for running/debugging)  
+Tiled for Level-Editing  
 IntelliJ CE for Tool Development  
 LibreOffice Calc for definition of object movements  
 
