@@ -216,7 +216,7 @@ bb_size:                       rs.b       0
 ; bob-structure
                                rsreset
 b_bools:                       rs.b       1                                                ; flags
-b_padding_byte:                rs.b       1
+b_draw_mask_frames:            rs.b       1                                                ; how many frames the mask will be drawn instead of gfx, see BobDrawMask
 b_eol_frame:                   rs.l       1                                                ; frame after the bob died and the background was restored in both framebuffers
 b_tiles_offset:                rs.l       1                                                ; offset in tiles (for gfx and mask)
 b_xpos:                        rs.w       1                                                ; x-position on screen
@@ -230,6 +230,9 @@ b_size:                        rs.b       0
 BobActive                   equ 0                                                          ; must be drawn/restored?
 BobCanCollide               equ 1                                                          ; can collide with other bobs?
 BobAnimatedBackground       equ 2                                                          ; is animated background (must be drawn before playershot collision detection)
+BobDrawMask                 equ 3                                                          ; draw mask instead of gfx, reset when done
+; other constants
+BobDrawMaskFramesWhenHit    equ 6
 
 ; PlayerShot
                                rsreset
@@ -255,12 +258,13 @@ ExpAnimStepChange           equ 4
 enemy_bob:                     rs.b       b_size
 enemy_bools:                   rs.b       1                                                ; flags
 enemy_drawing_layer:           rs.b       1                                                ; used for background enemies
-enemy_descriptor               rs.l       1                                                ; points to enemy descriptor
+enemy_descriptor:              rs.l       1                                                ; points to enemy descriptor
 enemy_anim_step:               rs.w       1                                                ; actual displayed anim step
 enemy_anim_delay:              rs.w       1                                                ; actual anim delay counter
 enemy_movement:                rs.l       1
 enemy_movement_max_step:       rs.w       1
 enemy_movement_actual_step:    rs.w       1
+enemy_hit_points:              rs.w       1
 enemy_size:                    rs.b       0
 ; bits for enemy_bools
 EnemyActive                 equ 0                                                          ; slight difference to BobActive (EnemyActive clears when enemy is hit or leaves visible screen to the left, BobActive clears 2 frames later, when restoration to both buffers is done)
@@ -283,6 +287,7 @@ ed_anim:                       rs.l       1                                     
 ed_anim_steps:                 rs.w       1                                                ; number of anim steps
 ed_anim_delay:                 rs.w       1                                                ; delay in frames between anim steps
 ed_score_add:                  rs.w       1                                                ; value added to players score once enemy is killed
+ed_hit_points:                 rs.w       1
 ed_coldet_x1:                  rs.w       1                                                ; add-value for left border of area for collision detection (must be added to xpos)
 ed_coldet_y1:                  rs.w       1                                                ; add-value for top border of area for collision detection (must be added to ypos)
 ed_coldet_x2:                  rs.w       1                                                ; add-value for right border of area for collision detection (must be added to xpos)
@@ -308,6 +313,7 @@ pl_frames_till_next_shot:      rs.b       1                                     
 pl_padding_byte:               rs.b       1
 pl_no_col_det_frames:          rs.w       1                                                ; framecounter indicating that no collision for player should be detected
 pl_joystick:                   rs.w       1                                                ; joystick state from current frame
+pl_weapon_strength:            rs.w       1                                                ; how many hit points for the enemy when hit?
 pl_size:                       rs.b       0
 PlShotDelay                 equ 12                                                         ; minimum frames between two shots fired
 PlExplosion                 equ (f003_dat_explosion_anim_tmx_tiles_width*2)-2              ; frames showing player explosion

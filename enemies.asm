@@ -153,6 +153,7 @@ spawn_new_enemy:
   move.b     ed_coldet_x1+1(a1),enemy_drawing_layer(a0)
 .can_die:
 
+  move.w     ed_hit_points(a1),enemy_hit_points(a0)
   move.l     a1,enemy_descriptor(a0)
   move.w     d5,enemy_anim_step(a0)
   move.w     d5,enemy_anim_delay(a0)
@@ -382,168 +383,196 @@ first_enemy_descriptor:
   dc.w       f003_dat_green_face_red_eye_anim_tmx_tiles_width
   dc.w       3
   dc.w       $0030
+  dc.w       1
   dc.w       0,0,15,15
   ; 1
   dc.l       ig_om_f003+f003_dat_orange_face_anim_tmx
   dc.w       f003_dat_orange_face_anim_tmx_tiles_width
   dc.w       2
   dc.w       $0025
+  dc.w       1
   dc.w       0,0,15,15
   ; 2
   dc.l       ig_om_f003+f003_dat_green_face_anim_tmx
   dc.w       f003_dat_green_face_anim_tmx_tiles_width
   dc.w       2
   dc.w       $0025
+  dc.w       1
   dc.w       0,0,15,15
   ; 3
   dc.l       ig_om_f003+f003_dat_blue_robot_anim_tmx
   dc.w       f003_dat_blue_robot_anim_tmx_tiles_width
   dc.w       5
-  dc.w       $0025
+  dc.w       $0045
+  dc.w       2
   dc.w       0,0,15,15
   ; 4
   dc.l       ig_om_f003+f003_dat_green_rocket_anim_tmx
   dc.w       f003_dat_green_rocket_anim_tmx_tiles_width
   dc.w       2
   dc.w       $0020
+  dc.w       1
   dc.w       0,0,12,12
   ; 5
   dc.l       ig_om_f003+f003_dat_green_robot_anim_tmx
   dc.w       f003_dat_green_robot_anim_tmx_tiles_width
   dc.w       5
   dc.w       $0025
+  dc.w       1
   dc.w       0,0,15,15
   ; 6
   dc.l       ig_om_f003+f003_dat_blue_barrier_upper_anim_tmx
   dc.w       f003_dat_blue_barrier_upper_anim_tmx_tiles_width
   dc.w       60
   dc.w       $0000
+  dc.w       0
   dc.w       1,0,0,0
   ; 7
   dc.l       ig_om_f003+f003_dat_blue_barrier_lower_anim_tmx
   dc.w       f003_dat_blue_barrier_lower_anim_tmx_tiles_width
   dc.w       60
   dc.w       $0000
+  dc.w       0
   dc.w       1,0,0,0
   ; 8
   dc.l       ig_om_f003+f003_dat_blue_lightning_upper_anim_tmx
   dc.w       f003_dat_blue_lightning_upper_anim_tmx_tiles_width
   dc.w       12
   dc.w       $0000
+  dc.w       0
   dc.w       0,0,0,0
   ; 9
   dc.l       ig_om_f003+f003_dat_blue_lightning_middle_anim_tmx
   dc.w       f003_dat_blue_lightning_middle_anim_tmx_tiles_width
   dc.w       12
   dc.w       $0000
+  dc.w       0
   dc.w       0,0,0,0
   ; 10
   dc.l       ig_om_f003+f003_dat_blue_lightning_lower_anim_tmx
   dc.w       f003_dat_blue_lightning_lower_anim_tmx_tiles_width
   dc.w       12
   dc.w       $0000
+  dc.w       0
   dc.w       0,0,0,0
   ; 11
   dc.l       ig_om_f003+f003_dat_fire_down_upper_anim_tmx
   dc.w       f003_dat_fire_down_upper_anim_tmx_tiles_width
   dc.w       8
   dc.w       $0000
+  dc.w       0
   dc.w       0,0,0,0
   ; 12
   dc.l       ig_om_f003+f003_dat_fire_down_middle_upper_anim_tmx
   dc.w       f003_dat_fire_down_middle_upper_anim_tmx_tiles_width
   dc.w       8
   dc.w       $0000
+  dc.w       0
   dc.w       0,0,0,0
   ; 13
   dc.l       ig_om_f003+f003_dat_fire_down_middle_lower_anim_tmx
   dc.w       f003_dat_fire_down_middle_lower_anim_tmx_tiles_width
   dc.w       8
   dc.w       $0000
+  dc.w       0
   dc.w       0,0,0,0
   ; 14
   dc.l       ig_om_f003+f003_dat_fire_down_lower_anim_tmx
   dc.w       f003_dat_fire_down_lower_anim_tmx_tiles_width
   dc.w       8
   dc.w       $0000
+  dc.w       0
   dc.w       0,0,0,0
   ; 15
   dc.l       ig_om_f003+f003_dat_fire_right_left_anim_tmx
   dc.w       f003_dat_fire_right_left_anim_tmx_tiles_width
   dc.w       8                                                        ; do not change (or resync with fire right/left anims)
   dc.w       $0000
+  dc.w       0
   dc.w       0,0,0,0
   ; 16
   dc.l       ig_om_f003+f003_dat_fire_right_middle_left_anim_tmx
   dc.w       f003_dat_fire_right_middle_left_anim_tmx_tiles_width
   dc.w       8                                                        ; do not change (or resync with fire right/left anims)
   dc.w       $0000
+  dc.w       0
   dc.w       0,0,0,0
   ; 17
   dc.l       ig_om_f003+f003_dat_fire_right_middle_right_anim_tmx
   dc.w       f003_dat_fire_right_middle_right_anim_tmx_tiles_width
   dc.w       8                                                        ; do not change (or resync with fire right/left anims)
   dc.w       $0000
+  dc.w       0
   dc.w       0,0,0,0
   ; 18
   dc.l       ig_om_f003+f003_dat_fire_right_right_anim_tmx
   dc.w       f003_dat_fire_right_right_anim_tmx_tiles_width
   dc.w       8                                                        ; do not change (or resync with fire right/left anims)
   dc.w       $0000
+  dc.w       0
   dc.w       0,0,0,0
   ; 19
   dc.l       ig_om_f003+f003_dat_fire_left_left_anim_tmx
   dc.w       f003_dat_fire_left_left_anim_tmx_tiles_width
   dc.w       8                                                        ; do not change (or resync with fire right/left anims)
   dc.w       $0000
+  dc.w       0
   dc.w       0,0,0,0
   ; 20
   dc.l       ig_om_f003+f003_dat_fire_left_middle_left_anim_tmx
   dc.w       f003_dat_fire_left_middle_left_anim_tmx_tiles_width
   dc.w       8                                                        ; do not change (or resync with fire right/left anims)
   dc.w       $0000
+  dc.w       0
   dc.w       0,0,0,0
   ; 21
   dc.l       ig_om_f003+f003_dat_fire_left_middle_right_anim_tmx
   dc.w       f003_dat_fire_left_middle_right_anim_tmx_tiles_width
   dc.w       8                                                        ; do not change (or resync with fire right/left anims)
   dc.w       $0000
+  dc.w       0
   dc.w       0,0,0,0
   ; 22
   dc.l       ig_om_f003+f003_dat_fire_left_right_anim_tmx
   dc.w       f003_dat_fire_left_right_anim_tmx_tiles_width
   dc.w       8                                                        ; do not change (or resync with fire right/left anims)
   dc.w       $0000
+  dc.w       0
   dc.w       0,0,0,0
   ; 23
   dc.l       ig_om_f003+f003_dat_fire_up_upper_anim_tmx
   dc.w       f003_dat_fire_up_upper_anim_tmx_tiles_width
   dc.w       8
   dc.w       $0000
+  dc.w       0
   dc.w       0,0,0,0
   ; 24
   dc.l       ig_om_f003+f003_dat_fire_up_middle_upper_anim_tmx
   dc.w       f003_dat_fire_up_middle_upper_anim_tmx_tiles_width
   dc.w       8
   dc.w       $0000
+  dc.w       0
   dc.w       0,0,0,0
   ; 25
   dc.l       ig_om_f003+f003_dat_fire_up_middle_lower_anim_tmx
   dc.w       f003_dat_fire_up_middle_lower_anim_tmx_tiles_width
   dc.w       8
   dc.w       $0000
+  dc.w       0
   dc.w       0,0,0,0
   ; 26
   dc.l       ig_om_f003+f003_dat_fire_up_lower_anim_tmx
   dc.w       f003_dat_fire_up_lower_anim_tmx_tiles_width
   dc.w       8
   dc.w       $0000
+  dc.w       0
   dc.w       0,0,0,0
   ; 27
   dc.l       ig_om_f003+f003_dat_red_drop_anim_tmx
   dc.w       f003_dat_red_drop_anim_tmx_tiles_width
   dc.w       4
   dc.w       $0015
+  dc.w       1
   dc.w       0,2,15,13
 
 ; movement descriptors and index

@@ -343,10 +343,20 @@ bob_draw:
   add.l       d7,d3                                     ; add offset due to clipping
   move.l      d3,BLTAPTH(a6)
   ; b-ptr (gfx)
+
+  ; when BobDrawMask is set, use mask-pointer in channel b as well and reset BobDrawMask
+  btst        #BobDrawMask,b_bools(a1)
+  beq.s       .draw_gfx
+  sub.b       #1,b_draw_mask_frames(a1)
+  tst.b       b_draw_mask_frames(a1)
+  bgt.s       .draw_mask
+  bclr        #BobDrawMask,b_bools(a1)
+.draw_gfx:
   move.l      a5,d3
   add.l       #ig_cm_f002+f002_dat_tiles_iff,d3
   add.l       b_tiles_offset(a1),d3
   add.l       d7,d3                                     ; add offset due to clipping
+.draw_mask:
   move.l      d3,BLTBPTH(a6)
 
   ; check for pixel shift

@@ -17,6 +17,8 @@ player_init:
   move.b     d0,pl_animstep(a3)
   move.w     d0,pl_no_col_det_frames(a3)
   move.b     #f003_dat_player_anim_horizontal_tmx_tiles_width,pl_max_animstep(a3)
+  moveq.l    #1,d0
+  move.w     d0,pl_weapon_strength(a3)
 ; calc gfx source pointer
   moveq.l    #0,d1
   move.w     (a1),d1
