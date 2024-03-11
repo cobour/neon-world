@@ -216,7 +216,7 @@ bb_size:                       rs.b       0
 ; bob-structure
                                rsreset
 b_bools:                       rs.b       1                                                ; flags
-b_draw_mask_frames:            rs.b       1                                                ; how many frames the mask will be drawn instead of gfx, see BobDrawMask
+b_draw_hit_frames:             rs.b       1                                                ; how many frames the mask (or alternative gfx) will be drawn instead of normal gfx, or zero when draw normal gfx
 b_eol_frame:                   rs.l       1                                                ; frame after the bob died and the background was restored in both framebuffers
 b_tiles_offset:                rs.l       1                                                ; offset in tiles (for gfx and mask)
 b_xpos:                        rs.w       1                                                ; x-position on screen
@@ -230,9 +230,8 @@ b_size:                        rs.b       0
 BobActive                   equ 0                                                          ; must be drawn/restored?
 BobCanCollide               equ 1                                                          ; can collide with other bobs?
 BobAnimatedBackground       equ 2                                                          ; is animated background (must be drawn before playershot collision detection)
-BobDrawMask                 equ 3                                                          ; draw mask instead of gfx, reset when done
 ; other constants
-BobDrawMaskFramesWhenHit    equ 6
+BobDrawFramesWhenHit        equ 5
 
 ; PlayerShot
                                rsreset

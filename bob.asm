@@ -344,13 +344,12 @@ bob_draw:
   move.l      d3,BLTAPTH(a6)
   ; b-ptr (gfx)
 
-  ; when BobDrawMask is set, use mask-pointer in channel b as well and reset BobDrawMask
-  btst        #BobDrawMask,b_bools(a1)
+  ; when b_draw_hit_frames is set, use mask-pointer in channel b as well and decrement b_draw_hit_frames
+  tst.b       b_draw_hit_frames(a1)
   beq.s       .draw_gfx
-  sub.b       #1,b_draw_mask_frames(a1)
-  tst.b       b_draw_mask_frames(a1)
+  sub.b       #1,b_draw_hit_frames(a1)
+  tst.b       b_draw_hit_frames(a1)
   bgt.s       .draw_mask
-  bclr        #BobDrawMask,b_bools(a1)
 .draw_gfx:
   move.l      a5,d3
   add.l       #ig_cm_f002+f002_dat_tiles_iff,d3

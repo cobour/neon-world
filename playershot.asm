@@ -12,6 +12,7 @@ ps_init:
 
   ; init playershot explosion
   lea.l      ig_om_playershot_explosion(a4),a2
+  move.b     #0,b_draw_hit_frames(a2)
   moveq.l    #1,d0
   move.l     d0,b_b_0+bb_bltptr(a2)
   move.l     d0,b_b_1+bb_bltptr(a2)

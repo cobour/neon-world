@@ -37,6 +37,7 @@ enemies_init:
 .ei_struct_loop:
   ; reset all flags -> deactivates enemy and its bob
   move.b     d0,b_bools(a0)
+  move.b     d0,b_draw_hit_frames(a0)
   move.b     d0,enemy_bools(a0)
   ; set necessary defaults
   move.l     d0,b_eol_frame(a0)
@@ -58,6 +59,7 @@ enemies_init:
   move.l     d0,exp_anim_step_ptr(a0)
   moveq.l    #0,d0
   move.b     d0,b_bools(a0)
+  move.b     d0,b_draw_hit_frames(a0)
   move.b     d0,exp_anim_count(a0)
 
   rts
