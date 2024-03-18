@@ -92,9 +92,9 @@
 		{
 			"label": "Run data-tool",
 			"type": "shell",
-			"command": "./mvnw spring-boot:run -Dspring-boot.run.arguments=\"./data_files_config.yml\"",
+			"command": "./mvnw spring-boot:run -Dspring-boot.run.arguments=\"config.file=./data_files_config.yml\"",
 			"windows": {
-				"command": ".\\mvnw.cmd spring-boot:run -Dspring-boot.run.arguments=\"./data_files_config.yml\""
+				"command": ".\\mvnw.cmd spring-boot:run -Dspring-boot.run.arguments=\"config.file=./data_files_config.yml\""
 			},
 			"options": {
 				"cwd": "./data/data_tool"
