@@ -7,7 +7,7 @@
         // 1. switch to extension v1.6.0
         // 2. Settings -> Extensions -> Amiga Assembly -> Bin Dir = 
         //    /Users/frank/Library/Application Support/Code/User/globalStorage/prb28.amiga-assembly/downloads/vscode-amiga-assembly-binaries-@-1.6.0/prb28-vscode-amiga-assembly-binaries-6f94123
-        {
+        /*{
             "type": "fs-uae",
             "request": "launch",
             "name": "Debug (Extension v1.6.0)",
@@ -39,14 +39,14 @@
                 "--fullscreen=0"
             ],
             "preLaunchTask": "amigaassembly: build"
-        },
-        // 1. switch to extension v1.8.2
+        },*/
+        // 1. switch to extension v1.8.7
         // 2. Settings -> Extensions -> Amiga Assembly -> Bin Dir = 
         //    ${extensionResourcesFolder}/bin/${platformName}
         {
             "type": "amiga-assembly",
             "request": "launch",
-            "name": "Debug (Extension v1.8.2)",
+            "name": "Debug (Extension v1.8.7)",
             "stopOnEntry": false,
             "trace": true,
             "program": "${workspaceFolder}/uae/dh0/NeonWorld",
@@ -65,13 +65,13 @@
             ],
             "preLaunchTask": "amigaassembly: build"
         },
-        // 1. switch to extension v1.8.2
+        // 1. switch to extension v1.8.7
         // 2. Settings -> Extensions -> Amiga Assembly -> Bin Dir = 
         //    ${extensionResourcesFolder}/bin/${platformName}
         {
             "type": "amiga-assembly",
             "request": "launch",
-            "name": "Run (Extension v1.8.2)",
+            "name": "Run (Extension v1.8.7)",
             "noDebug": true,
             "program": "${workspaceFolder}/uae/dh0_adf/NeonWorld",
             "emulatorType": "fs-uae",
@@ -86,7 +86,7 @@
                 "--fullscreen=0"
             ],
             "preLaunchTask": "amigaassembly: build for ADF"
-        },
+        } /*,
         //
         // Uses unpatched FS-UAE installed to Applications-Folder
         //
@@ -107,6 +107,6 @@
             "runtimeExecutable": "/Applications/FS-UAE.app/Contents/MacOS/fs-uae",
             "console": "internalConsole",
             "preLaunchTask": "amigaassembly: build for ADF"
-        }
+        }*/
     ]
 }
