@@ -48,7 +48,7 @@
             "request": "launch",
             "name": "Debug (Extension v1.8.7)",
             "stopOnEntry": false,
-            "trace": true,
+            "trace": false,
             "program": "${workspaceFolder}/uae/dh0/NeonWorld",
             "remoteProgram": "SYS:NeonWorld",
             "emulatorType": "fs-uae",
