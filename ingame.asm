@@ -54,6 +54,7 @@ ig_start:
                 jsr         sf_init
 
                 jsr         enemies_init
+                jsr         boss_init
 
                 move.l      #LevelScreenBufferWidthBytes,d0
                 jsr         cc_init
@@ -141,8 +142,9 @@ ig_lvl3_handler:
                 ; read firebutton 
                 jsr         player_firebutton
                 
-                ; update position and state of all currently active enemies
+                ; update position and state of all currently active enemies and/or boss
                 jsr         enemies_update_pos_and_state
+                jsr         boss_update_pos_and_state
 
                 ; draw static unkillable enemies before collision detection for playershots
                 jsr         background_enemies_draw
@@ -156,11 +158,15 @@ ig_lvl3_handler:
                 ; draw all currently active playershots and playershot-explosion
                 jsr         ps_draw
 
-                ; draw all currently active enemies
+                ; draw all currently active enemies and/or boss
+                jsr         boss_draw
                 jsr         enemies_draw
 
                 ; spawn new enemies (data read from level file)
                 jsr         enemies_spawn
+
+                ; spawn boss (depending on level position only)
+                jsr         boss_spawn
 
                 ; increment frame counter
                 add.l       #1,ig_om_frame_counter(a4)
@@ -187,23 +193,28 @@ check_end_condition:
                 bne.s       .exit
 
                 ; first condition: no more scrolling
-                btst        #IgPerformScroll,ig_om_bools(a4)
-                bne.s       .exit
+                ;btst        #IgPerformScroll,ig_om_bools(a4)
+                ;bne.s       .exit
 
                 ; second condition: no more enemies to spawn
-                move.l      ig_om_next_object_desc(a4),a0
-                cmp.l       ig_om_end_object_desc(a4),a0
-                bne.s       .exit
+                ;move.l      ig_om_next_object_desc(a4),a0
+                ;cmp.l       ig_om_end_object_desc(a4),a0
+                ;bne.s       .exit
 
                 ; third condition: all enemies dead
-                lea.l       ig_om_enemies(a4),a0
-                move.l      #enemy_size,d0
-                moveq.l     #EnemyMaxCount-1,d7
-.all_dead_loop:
-                btst        #EnemyActive,enemy_bools(a0)
-                bne.s       .exit
-                add.l       d0,a0
-                dbf         d7,.all_dead_loop
+                ;lea.l       ig_om_enemies(a4),a0
+                ;move.l      #enemy_size,d0
+                ;moveq.l     #EnemyMaxCount-1,d7
+;.all_dead_loop:
+                ;btst        #EnemyActive,enemy_bools(a0)
+                ;bne.s       .exit
+                ;add.l       d0,a0
+                ;dbf         d7,.all_dead_loop
+
+                ; fourth condition: boss death anim is over
+                ; condition 1-3 still needed? => NO
+                btst        #IgBossDeathAnimOver,ig_om_bools(a4)
+                beq.s       .exit
 
                 ; level is over
                 moveq.l     #1,d0

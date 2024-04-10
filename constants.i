@@ -267,8 +267,18 @@ enemy_hit_points:              rs.w       1
 enemy_size:                    rs.b       0
 ; bits for enemy_bools
 EnemyActive                 equ 0                                                          ; slight difference to BobActive (EnemyActive clears when enemy is hit or leaves visible screen to the left, BobActive clears 2 frames later, when restoration to both buffers is done)
+EnemyIsBoss                 equ 1                                                          ; boss ( = 1) or normal enemy ( = 0 )
 ; other constants
 EnemyMaxCount               equ 32
+
+; Boss
+                               rsreset
+boss_enemy:                    rs.b       enemy_size
+boss_bob_left_upper:           rs.b       b_size
+boss_bob_right_upper:          rs.b       b_size
+boss_bob_left_lower:           rs.b       b_size
+boss_bob_right_lower:          rs.b       b_size
+boss_size:                     rs.b       0
 
 ; Enemy Object Descriptor (read from level file)
                                rsreset
@@ -378,6 +388,7 @@ ig_om_playershot_explosion:    rs.b       exp_size                              
 ig_om_enemies:                 rs.b       enemy_size*EnemyMaxCount                         ; enemies
 ig_om_enemies_end:             rs.b       0                                                ; marker for end of enemy-structs
 ig_om_enemy_explosion:         rs.b       exp_size                                         ; only one (is reused when still playing and a new one is spawned)
+ig_om_boss:                    rs.b       boss_size                                        ; boss struct
 ig_om_next_object_desc:        rs.l       1                                                ; next possible object descriptor (enemy to be spawned) - points to a list that is sorted by frame counter
 ig_om_end_object_desc:         rs.l       1                                                ; pointer directly behind last valid object descriptor (if ig_om_next_object_desc equals this, then there is no more object descriptor to process)
 ig_om_starfield:               rs.l       NumberOfStars                                    ; first word contains x-pos, second word contains value that is subtracted each frame
@@ -390,6 +401,7 @@ IgPerformScroll             equ 1                                               
 IgDrawTiles                 equ 2                                                          ; draw tiles for scrolling? 0 = nope
 IgPlayerDead                equ 3                                                          ; has player died? 0 = nope
 IgPanelUpdate               equ 4                                                          ; needs the score/lives-panel an update? 0 = nope
+IgBossDeathAnimOver         equ 5                                                          ; the boss was killed and its death anim (multiple explosions?) is over. 0 = nope
 
 ; MainMenu ChipMem
                                rsreset

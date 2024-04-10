@@ -375,7 +375,8 @@ ed_draw_bob:
   jmp        bob_draw
 
 ; enemy descriptors and index
-EnemyDescCount    equ 28
+EnemyDescCount    equ 29
+  xdef       enemy_descriptors_index
 enemy_descriptors_index:
   dcb.l      EnemyDescCount
 ; see constants.i -> ed_*
@@ -576,6 +577,13 @@ first_enemy_descriptor:
   dc.w       $0015
   dc.w       1
   dc.w       0,2,15,13
+  ; 28 BOSS
+  dc.l       0                                                        ; no anim
+  dc.w       0                                                        ; no anim
+  dc.w       0                                                        ; no anim
+  dc.w       $0250
+  dc.w       80
+  dc.w       4,4,30,29
 
 ; movement descriptors and index
 MovementDescCount equ 9

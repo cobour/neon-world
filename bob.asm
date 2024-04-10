@@ -62,7 +62,7 @@ bob_restore:
   btst        #BobActive,d0
   beq.s       .pse_end
   lea.l       (a0,d3.w),a1
-  bsr.s       .restore_one_bob
+  bsr         .restore_one_bob
 
 .pse_end:
 
@@ -114,7 +114,27 @@ bob_restore:
 
 .ene_end:
 
+  ; restore boss
+
+  lea.l       ig_om_boss(a4),a0
+  btst        #EnemyActive,enemy_bools(a0)
+  beq.s       .boss_end
+  lea.l       boss_bob_left_upper(a0),a1
+  lea.l       (a1,d3.w),a1
+  bsr.s       .restore_one_bob
+  lea.l       boss_bob_right_upper(a0),a1
+  lea.l       (a1,d3.w),a1
+  bsr.s       .restore_one_bob
+  lea.l       boss_bob_left_lower(a0),a1
+  lea.l       (a1,d3.w),a1
+  bsr.s       .restore_one_bob
+  lea.l       boss_bob_right_lower(a0),a1
+  lea.l       (a1,d3.w),a1
+  bsr.s       .restore_one_bob
+
+.boss_end:
   rts
+
 
 .restore_one_bob
   ; check if restore is necessary

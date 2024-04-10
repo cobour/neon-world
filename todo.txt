@@ -42,9 +42,7 @@ DONE    sfx.asm
         
 DONE    convert todo.txt and all readme.txt's to markdown
 
-
-
-        check error codes after os calls
+nope    check error codes after os calls
 
 DONE    scroll: switch buffers even when there is no more scrolling
 
@@ -53,7 +51,7 @@ DOME    playershots: collision detection with bitplanes
 DONE    playershots: switch to small explosion
 
 DONE    bob.asm: clip blits (top, bottom, left)
-        bob.asm: refactor to use pointerlist to ALL bob's, so no special treatment is necessary when restoring (playershots, playershot-explosion...)
+nope    bob.asm: refactor to use pointerlist to ALL bob's, so no special treatment is necessary when restoring (playershots, playershot-explosion...)
 
 DONE    split update for playershots and enemies in position-update and drawing (because collision detection will later happen between these two steps)
 DONE    read enemy metadata from level file (no hard-coding of spawning, position, type of enemy etc.)
@@ -70,12 +68,6 @@ DONE    score and lives counter
 
 DONE    end condition: no more scrolling, no more enemies to spawn, all enemies dead
 
-        pause key
-
-        build some kind of level warp for testing purposes 
-                limit to offsets where start of buffer is shown => simpler to calc
-                adjust values from "ig_om_frame_counter" till "ig_om_next_tile_col_right" and "ig_om_next_object_desc"; anything else?
-
 DONE    more lives than one: respawn mechanism (implemented very simple for now; problem is that player can "ghost" into the background; think of solution for this)
 DONE            show explosion, show no player ship for a second or so, than respawn player ship blinking for another seond or so 
 DONE            find suitable y-pos for player (check leveldata ?)
@@ -84,4 +76,14 @@ DONE    highscore table? at least show score at end of level (use revenge of ear
 
 DONE    TODO in TiledSourceFileConverter.getDataNode
 
-        REFACTOR: alloc chip and other mem through exec.library (not sections in code)
+nope    REFACTOR: alloc chip and other mem through exec.library (not sections in code)
+
+        pause key
+
+        build some kind of level warp for testing purposes 
+                limit to offsets where start of buffer is shown => simpler to calc
+                adjust values from "ig_om_frame_counter" till "ig_om_next_tile_col_right" and "ig_om_next_object_desc"; anything else?
+
+        complete boss.asm tasks
+
+        when player dies, do not respawn directly, but fade out, reset to some specified points in level and fade back in (use level warp for this; see above)
