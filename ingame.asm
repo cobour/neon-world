@@ -42,8 +42,9 @@ ig_start:
 
                 moveq.l     #1,d0
                 jsr         fade_in_init
- 
-                clr.l       ig_om_frame_counter(a4)
+
+                moveq.l     #INITIAL_LEVEL_WARP,d0
+                move.l      d0,ig_om_level_warp(a4)
                 jsr         pf_init
 
                 bsr         .init_sprites

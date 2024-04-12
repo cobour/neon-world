@@ -5,9 +5,10 @@
   xdef       enemies_init
 enemies_init:
 
+  jsr        level_warp_enemies
+
   ; init values for object descriptors
   lea.l      ig_om_f003+f003_dat_level1_tmx_objects(a4),a0
-  move.l     a0,ig_om_next_object_desc(a4)
   add.l      #f003_dat_level1_tmx_objects_size,a0
   move.l     a0,ig_om_end_object_desc(a4)
 

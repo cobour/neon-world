@@ -78,12 +78,12 @@ DONE    TODO in TiledSourceFileConverter.getDataNode
 
 nope    REFACTOR: alloc chip and other mem through exec.library (not sections in code)
 
-        pause key
-
-        build some kind of level warp for testing purposes 
-                limit to offsets where start of buffer is shown => simpler to calc
-                adjust values from "ig_om_frame_counter" till "ig_om_next_tile_col_right" and "ig_om_next_object_desc"; anything else?
+DONE    build some kind of level warp for testing purposes 
+DONE            limit to offsets where start of buffer is shown => simpler to calc
+DONE            adjust values from "ig_om_frame_counter" till "ig_om_next_tile_col_right" and "ig_om_next_object_desc"; anything else?
 
         complete boss.asm tasks
 
-        when player dies, do not respawn directly, but fade out, reset to some specified points in level and fade back in (use level warp for this; see above)
+        when player dies, do not respawn directly, but fade out, reset to some specified points in level and fade back in (use level warp for this; see above) => set player ypos according to respawn-layer of level
+
+        pause key

@@ -5,16 +5,18 @@
 ; initializes playfield before first frame
                 xdef          pf_init
 pf_init:
+                move.l        ig_om_level_warp(a4),d0
+                jsr           level_warp_playfield
+
                 bsr.s         .init_scroll_vars
                 bsr           pf_set_scroll_vars_in_coplist
                 bsr.s         .init_screen_buffer
+
                 rts
 
 ; inits scrolling vars
 .init_scroll_vars:
 ; initial absolute x position in level
-                clr.l         ig_om_scroll_xpos(a4)
-                clr.w         ig_om_scroll_xpos_frbuf(a4)
                 bset          #IgPerformScroll,ig_om_bools(a4)
                 bset          #IgDrawTiles,ig_om_bools(a4)
 
@@ -42,21 +44,24 @@ pf_init:
                 BLT_AD_CPY    LevelScreenBufferWidthBytes
 ; a0 = start of tiles in chip mem,  a1 = start of offset table, a2 = start of target buffer in chip mem
                 lea.l         m_cm_area+ig_cm_f002+f002_dat_tiles_iff,a0
+                move.l        ig_om_next_tile_offset(a4),.local_next_tile_offset
 ; first buffer
-                lea.l         m_om_area+ig_om_f003+f003_dat_level1_tmx,a1
+                move.l        .local_next_tile_offset,a1
                 lea.l         m_cm_area+ig_cm_screenbuffer0,a2
                 bsr.s         .draw_to_buffer
 ; second buffer
-                lea.l         m_om_area+ig_om_f003+f003_dat_level1_tmx,a1
+                move.l        .local_next_tile_offset,a1
                 lea.l         m_cm_area+ig_cm_screenbuffer1,a2
                 bsr.s         .draw_to_buffer
 ; third buffer
-                lea.l         m_om_area+ig_om_f003+f003_dat_level1_tmx,a1
+                move.l        .local_next_tile_offset,a1
                 lea.l         m_cm_area+ig_cm_screenbuffer2,a2
                 bsr.s         .draw_to_buffer
 
                 rts
-
+.local_next_tile_offset:
+                dc.l          0
+ 
 .draw_to_buffer
                 move.l        a2,d1
                 move.l        a2,d5
