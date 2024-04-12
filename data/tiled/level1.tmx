@@ -566,7 +566,7 @@
     <property name="movement_desc" type="int" value="7"/>
    </properties>
   </object>
-  <object id="94" gid="141" x="5002" y="141" width="16" height="16">
+  <object id="94" gid="141" x="5018" y="82" width="16" height="16">
    <properties>
     <property name="count" type="int" value="8"/>
     <property name="count_spawn_delay" type="int" value="18"/>
@@ -647,7 +647,7 @@
     <property name="movement_desc" type="int" value="6"/>
    </properties>
   </object>
-  <object id="95" gid="81" x="5146" y="82" width="16" height="16">
+  <object id="95" gid="81" x="5152" y="141" width="16" height="16">
    <properties>
     <property name="count" type="int" value="10"/>
     <property name="count_spawn_delay" type="int" value="18"/>
