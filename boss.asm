@@ -8,7 +8,7 @@
 ; DONE      change gfx when hit (not using mask like for normal enemies)
 ; DONE      when boss dies, set IgBossDeathAnimOver so level can end
 ; DONE boss has four bob structures (used for drawing/restoring)
-;      get spawn position from level file
+; DONE get spawn position from level file
 ; DONE boss does not have predefined movement, but moves with small assembler routine (can react to position of player)
 ;      better boss movement (react to position of player)
 ;      boss does shoot, shots are normal enemies with predefined movement
@@ -63,7 +63,7 @@ boss_init:
   xdef       boss_spawn
 boss_spawn:
   move.l     ig_om_frame_counter(a4),d0
-  cmp.l      #8256,d0                                                                                   ; was: 8256 => TODO: get from level file
+  cmp.l      #f003_dat_level1_tmx_boss_spawn_frame,d0
   beq.s      .do_spawn
   rts
 .do_spawn:

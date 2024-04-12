@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="540" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="145">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="540" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="146">
  <tileset firstgid="1" source="Tileset.tsx"/>
  <layer id="1" name="playfield layer" width="540" height="16">
   <data encoding="csv">
@@ -883,6 +883,11 @@
     <property name="count_spawn_delay" type="int" value="30"/>
     <property name="enemy_desc" type="int" value="27"/>
     <property name="movement_desc" type="int" value="8"/>
+   </properties>
+  </object>
+  <object id="145" gid="219" x="8578" y="116" width="16" height="16">
+   <properties>
+    <property name="boss" type="bool" value="true"/>
    </properties>
   </object>
  </objectgroup>

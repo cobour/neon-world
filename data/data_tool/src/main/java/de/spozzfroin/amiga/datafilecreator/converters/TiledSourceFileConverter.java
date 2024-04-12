@@ -41,17 +41,19 @@ class TiledSourceFileConverter implements SourceFileConverter {
 		int count_spawn_delay = -1;
 		boolean add_xpos = false;
 		int movement_start_offset = 0;
+		boolean boss = false;
 
 		void calcSpawnFrameIfNotSet() {
-			if (spawn_frame == -1) {
-				spawn_frame = xpos - 322;
-				xpos -= spawn_frame; // convert level-xpos to screen-xpos
+			if (this.spawn_frame == -1) {
+				this.spawn_frame = this.xpos - 322;
+				this.xpos -= this.spawn_frame; // convert level-xpos to screen-xpos
 			}
 		}
 
 		boolean isValid() {
-			return enemy_desc != -1 && movement_desc != -1 && spawn_frame != -1 && xpos != -1 && ypos != -1
-					&& ((count == -1 && count_spawn_delay == -1) || (count > 0 && count_spawn_delay > 0));
+			return this.enemy_desc != -1 && this.movement_desc != -1 && this.spawn_frame != -1 && this.xpos != -1
+					&& this.ypos != -1 && ((this.count == -1 && this.count_spawn_delay == -1)
+							|| (this.count > 0 && this.count_spawn_delay > 0));
 		}
 
 		LevelObject duplicate() {
@@ -70,6 +72,7 @@ class TiledSourceFileConverter implements SourceFileConverter {
 	private int size;
 	private int objectsSize = 0; // optional
 	private int respawnInfoSize = 0; // optional
+	private int bossSpawnFrame = 0; // optional
 	private String width; // number of tiles
 	private String height; // number of tiles
 
@@ -88,54 +91,58 @@ class TiledSourceFileConverter implements SourceFileConverter {
 	@Override
 	public void addToIndex(List<SimpleEntry<String, Long>> index, List<SimpleEntry<String, String>> constants)
 			throws IOException {
-		String label = generateLabel(sourceFile.getFilename());
-		index.add(new SimpleEntry<>(label, Long.valueOf(size)));
-		if (!levelObjects.isEmpty()) {
-			label = generateLabel(sourceFile.getFilename(), "objects");
-			index.add(new SimpleEntry<>(label, Long.valueOf(objectsSize)));
+		String label = this.generateLabel(this.sourceFile.getFilename());
+		index.add(new SimpleEntry<>(label, Long.valueOf(this.size)));
+		if (!this.levelObjects.isEmpty()) {
+			label = this.generateLabel(this.sourceFile.getFilename(), "objects");
+			index.add(new SimpleEntry<>(label, Long.valueOf(this.objectsSize)));
 		}
-		if (respawnInfoSize > 0) {
-			label = generateLabel(sourceFile.getFilename(), "respawn_info");
-			index.add(new SimpleEntry<>(label, Long.valueOf(respawnInfoSize)));
+		if (this.respawnInfoSize > 0) {
+			label = this.generateLabel(this.sourceFile.getFilename(), "respawn_info");
+			index.add(new SimpleEntry<>(label, Long.valueOf(this.respawnInfoSize)));
 		}
 		//
-		label = generateLabel(sourceFile.getFilename(), "tiles_width");
-		constants.add(new SimpleEntry<>(label, width));
-		label = generateLabel(sourceFile.getFilename(), "tiles_height");
-		constants.add(new SimpleEntry<>(label, height));
-		label = generateLabel(sourceFile.getFilename(), "size");
-		constants.add(new SimpleEntry<>(label, Integer.toString(size)));
-		if (!levelObjects.isEmpty()) {
-			label = generateLabel(sourceFile.getFilename(), "objects_size");
-			constants.add(new SimpleEntry<>(label, Integer.toString(objectsSize)));
-			label = generateLabel(sourceFile.getFilename(), "objects_count");
-			constants.add(new SimpleEntry<>(label, Integer.toString(levelObjects.size())));
+		label = this.generateLabel(this.sourceFile.getFilename(), "tiles_width");
+		constants.add(new SimpleEntry<>(label, this.width));
+		label = this.generateLabel(this.sourceFile.getFilename(), "tiles_height");
+		constants.add(new SimpleEntry<>(label, this.height));
+		label = this.generateLabel(this.sourceFile.getFilename(), "size");
+		constants.add(new SimpleEntry<>(label, Integer.toString(this.size)));
+		if (!this.levelObjects.isEmpty()) {
+			label = this.generateLabel(this.sourceFile.getFilename(), "objects_size");
+			constants.add(new SimpleEntry<>(label, Integer.toString(this.objectsSize)));
+			label = this.generateLabel(this.sourceFile.getFilename(), "objects_count");
+			constants.add(new SimpleEntry<>(label, Integer.toString(this.levelObjects.size())));
 		}
-		if (respawnInfoSize > 0) {
-			label = generateLabel(sourceFile.getFilename(), "respawn_info_size");
-			constants.add(new SimpleEntry<>(label, Integer.toString(respawnInfoSize)));
+		if (this.respawnInfoSize > 0) {
+			label = this.generateLabel(this.sourceFile.getFilename(), "respawn_info_size");
+			constants.add(new SimpleEntry<>(label, Integer.toString(this.respawnInfoSize)));
+		}
+		if (this.bossSpawnFrame > 0) {
+			label = this.generateLabel(this.sourceFile.getFilename(), "boss_spawn_frame");
+			constants.add(new SimpleEntry<>(label, Integer.toString(this.bossSpawnFrame)));
 		}
 	}
 
 	@Override
 	public void convertToRawData(Config config, OutputStream data) throws IOException {
 		try {
-			readTiles(config);
-			Document document = getDocument(config);
+			this.readTiles(config);
+			Document document = this.getDocument(config);
 			//
-			Node dataNode = getDataNode(document);
-			List<List<Integer>> allOffsets = readAndConvert(dataNode);
-			write(allOffsets, data);
+			Node dataNode = this.getDataNode(document);
+			List<List<Integer>> allOffsets = this.readAndConvert(dataNode);
+			this.write(allOffsets, data);
 			//
-			readObjectList(document);
-			if (!levelObjects.isEmpty()) {
-				writeObjects(data);
+			this.readObjectList(document);
+			if (!this.levelObjects.isEmpty()) {
+				this.writeObjects(data);
 			}
 			//
 			if (this.sourceFile.isCreateRespawnInfo()) {
-				Node respawnNode = getRespawnDataNode(document);
-				List<List<Integer>> allRespawnOffsets = readAndConvert(respawnNode);
-				writeRespawnInfo(allRespawnOffsets, data);
+				Node respawnNode = this.getRespawnDataNode(document);
+				List<List<Integer>> allRespawnOffsets = this.readAndConvert(respawnNode);
+				this.writeRespawnInfo(allRespawnOffsets, data);
 			}
 		} catch (IOException e) {
 			throw e;
@@ -154,7 +161,7 @@ class TiledSourceFileConverter implements SourceFileConverter {
 
 	private Document getDocument(Config config) throws Exception {
 		DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-		Document document = builder.parse(new File(sourceFile.getFullFilename(config)));
+		Document document = builder.parse(new File(this.sourceFile.getFullFilename(config)));
 		document.getDocumentElement().normalize();
 		//
 		Node mapNode = document.getElementsByTagName("map").item(0);
@@ -260,7 +267,7 @@ class TiledSourceFileConverter implements SourceFileConverter {
 
 	private void readObjectList(Document document) {
 		var objects = document.getElementsByTagName("object");
-		levelObjects.clear();
+		this.levelObjects.clear();
 		for (int i = 0; i < objects.getLength(); i++) {
 			var object = (Element) objects.item(i);
 			var levelObject = new LevelObject();
@@ -298,40 +305,47 @@ class TiledSourceFileConverter implements SourceFileConverter {
 				case "movement_start_offset":
 					levelObject.movement_start_offset = Integer.parseInt(property.getAttribute("value"));
 					break;
+				case "boss":
+					levelObject.boss = Boolean.parseBoolean(property.getAttribute("value"));
+					break;
 				default:
 					throw new IllegalArgumentException("unknown property: " + propertyName);
 				}
 			}
 			//
 			levelObject.calcSpawnFrameIfNotSet();
-			if (!levelObject.isValid()) {
-				throw new IllegalStateException("not all attributes set in level object!");
+			if (levelObject.boss) {
+				this.bossSpawnFrame = levelObject.spawn_frame;
+			} else {
+				if (!levelObject.isValid()) {
+					throw new IllegalStateException("not all attributes set in level object!");
+				}
+				this.levelObjects.add(levelObject);
 			}
-			levelObjects.add(levelObject);
 		}
 	}
 
 	private void write(List<List<Integer>> allOffsets, OutputStream data) throws IOException {
-		byte[] allBytes = createByteArray(allOffsets);
+		byte[] allBytes = this.createByteArray(allOffsets);
 		data.write(allBytes);
 	}
 
 	private void writeRespawnInfo(List<List<Integer>> allOffsets, OutputStream data) throws IOException {
-		respawnInfoSize = allOffsets.size() * 2; // one word value for each column/row
+		this.respawnInfoSize = allOffsets.size() * 2; // one word value for each column/row
 		for (var v : allOffsets) {
 			int index = -1;
 			do {
 				index++;
 			} while (v.get(index) == -2);
-			writeWord((index * 16) + 44, data); // magic value 44 = ScreenStartY (because the player is a hardware
-												// sprite and no bob)
+			this.writeWord((index * 16) + 44, data); // magic value 44 = ScreenStartY (because the player is a hardware
+			// sprite and no bob)
 		}
 	}
 
 	private byte[] createByteArray(List<List<Integer>> allOffsets) {
 		List<Integer> flatListAllOffsets = allOffsets.stream().flatMap(List::stream).collect(Collectors.toList());
-		size = flatListAllOffsets.size() * 2;
-		byte[] byteArray = new byte[size];
+		this.size = flatListAllOffsets.size() * 2;
+		byte[] byteArray = new byte[this.size];
 		AtomicInteger index = new AtomicInteger(0);
 		flatListAllOffsets.stream().forEach(offset -> {
 			if (offset.intValue() > 65535) {
@@ -347,7 +361,7 @@ class TiledSourceFileConverter implements SourceFileConverter {
 	private void writeObjects(OutputStream data) throws IOException {
 		// add multiplied objects (count, count_spawn_delay)
 		var objectsToAdd = new ArrayList<LevelObject>();
-		levelObjects.stream().filter(o -> o.count > 0).forEach(o -> {
+		this.levelObjects.stream().filter(o -> o.count > 0).forEach(o -> {
 			var mso = o.movement_start_offset;
 			// start-offset in movement-table
 			if (o.movement_start_offset > 0) {
@@ -368,9 +382,9 @@ class TiledSourceFileConverter implements SourceFileConverter {
 				objectsToAdd.add(other);
 			}
 		});
-		levelObjects.addAll(objectsToAdd);
+		this.levelObjects.addAll(objectsToAdd);
 		// sort by spawn_frame
-		levelObjects.sort(new Comparator<LevelObject>() {
+		this.levelObjects.sort(new Comparator<LevelObject>() {
 			@Override
 			public int compare(LevelObject lo1, LevelObject lo2) {
 				var sf1 = Integer.valueOf(lo1.spawn_frame);
@@ -379,14 +393,14 @@ class TiledSourceFileConverter implements SourceFileConverter {
 			}
 		});
 		// write bytes to data
-		for (LevelObject lo : levelObjects) {
-			writeLong(lo.spawn_frame, data);
-			writeWord(lo.xpos, data);
-			writeWord(lo.ypos, data);
-			writeWord(lo.enemy_desc, data);
-			writeWord(lo.movement_desc, data);
-			writeWord(lo.movement_start_offset, data);
-			objectsSize += 14; // see obj_size in constants.i (MUST be the same value)
+		for (LevelObject lo : this.levelObjects) {
+			this.writeLong(lo.spawn_frame, data);
+			this.writeWord(lo.xpos, data);
+			this.writeWord(lo.ypos, data);
+			this.writeWord(lo.enemy_desc, data);
+			this.writeWord(lo.movement_desc, data);
+			this.writeWord(lo.movement_start_offset, data);
+			this.objectsSize += 14; // see obj_size in constants.i (MUST be the same value)
 		}
 	}
 
