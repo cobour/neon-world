@@ -84,6 +84,7 @@ DONE            adjust values from "ig_om_frame_counter" till "ig_om_next_tile_c
 
         complete boss.asm tasks
 
+        set players ypos always with respawn info (even when the level begins or level warp is used); set xpos always to 0
         when player dies, do not respawn directly, but fade out, reset to some specified points in level and fade back in (use level warp for this; see above) => set player ypos according to respawn-layer of level
 
         pause key
