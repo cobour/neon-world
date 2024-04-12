@@ -27,7 +27,7 @@ public class DataFileCreatorApplication implements ApplicationContextAware, Comm
 
 	@Override
 	public void run(String... args) throws Exception {
-		var configReader = context.getBean(DataFileCreatorService.class);
+		var configReader = this.context.getBean(DataFileCreatorService.class);
 		configReader.run(args);
 	}
 }

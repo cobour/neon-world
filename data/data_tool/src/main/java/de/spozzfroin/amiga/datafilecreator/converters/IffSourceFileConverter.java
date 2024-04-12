@@ -45,7 +45,7 @@ class IffSourceFileConverter implements SourceFileConverter {
 	@Override
 	public void convertToRawData(Config config, OutputStream data) throws IOException {
 		try (FileInputStream fis = new FileInputStream(this.sourceFile.getFullFilename(config))) {
-			readSource(fis);
+			this.readSource(fis);
 		}
 		data.write(this.raw);
 		if (!this.sourceFile.isWithoutMask()) {
@@ -56,10 +56,10 @@ class IffSourceFileConverter implements SourceFileConverter {
 	@Override
 	public void addToIndex(List<SimpleEntry<String, Long>> index, List<SimpleEntry<String, String>> constants)
 			throws IOException {
-		String label = generateLabel(this.sourceFile.getFilename());
+		String label = this.generateLabel(this.sourceFile.getFilename());
 		index.add(new SimpleEntry<>(label, Long.valueOf(this.raw.length)));
 		if (!this.sourceFile.isWithoutMask()) {
-			label = generateLabel(this.sourceFile.getFilename(), "mask");
+			label = this.generateLabel(this.sourceFile.getFilename(), "mask");
 			index.add(new SimpleEntry<>(label, Long.valueOf(this.mask.length)));
 		}
 	}
@@ -102,7 +102,7 @@ class IffSourceFileConverter implements SourceFileConverter {
 
 		@Override
 		public void process(FileInputStream src, IffSourceFileConverter uow) throws IOException {
-			int chunkSize = readLong(src);
+			int chunkSize = IffSourceFileConverter.readLong(src);
 			src.skip(chunkSize);
 		}
 	}
@@ -115,7 +115,7 @@ class IffSourceFileConverter implements SourceFileConverter {
 
 		@Override
 		public void process(FileInputStream src, IffSourceFileConverter uow) throws IOException {
-			int chunkSize = readLong(src);
+			int chunkSize = IffSourceFileConverter.readLong(src);
 			src.skip(chunkSize);
 		}
 	}
@@ -128,7 +128,7 @@ class IffSourceFileConverter implements SourceFileConverter {
 
 		@Override
 		public void process(FileInputStream src, IffSourceFileConverter uow) throws IOException {
-			int chunkSize = readLong(src);
+			int chunkSize = IffSourceFileConverter.readLong(src);
 			src.skip(chunkSize);
 		}
 	}
@@ -142,15 +142,15 @@ class IffSourceFileConverter implements SourceFileConverter {
 		@Override
 		public void process(FileInputStream src, IffSourceFileConverter uow) throws IOException {
 			src.skip(4); // chunk size not needed
-			uow.width = readWord(src);
-			uow.height = readWord(src);
+			uow.width = IffSourceFileConverter.readWord(src);
+			uow.height = IffSourceFileConverter.readWord(src);
 			src.skip(4); // left and top not needed
-			uow.bitplanes = readByte(src);
-			int masking = readByte(src);
+			uow.bitplanes = IffSourceFileConverter.readByte(src);
+			int masking = IffSourceFileConverter.readByte(src);
 			if (masking != 0) {
 				throw new UnsupportedOperationException("Masking not yet supported!");
 			}
-			int compress = readByte(src);
+			int compress = IffSourceFileConverter.readByte(src);
 			if (compress != 1) {
 				throw new UnsupportedOperationException("Uncompressed files not yet supported!");
 			}
@@ -166,7 +166,7 @@ class IffSourceFileConverter implements SourceFileConverter {
 
 		@Override
 		public void process(FileInputStream src, IffSourceFileConverter uow) throws IOException {
-			int chunkSize = readLong(src);
+			int chunkSize = IffSourceFileConverter.readLong(src);
 			src.skip(chunkSize);
 		}
 	}
@@ -179,7 +179,7 @@ class IffSourceFileConverter implements SourceFileConverter {
 
 		@Override
 		public void process(FileInputStream src, IffSourceFileConverter uow) throws IOException {
-			int chunkSize = readLong(src);
+			int chunkSize = IffSourceFileConverter.readLong(src);
 			uow.colors = new ArrayList<>();
 			byte[] colorBytes = new byte[chunkSize];
 			src.read(colorBytes);
@@ -203,7 +203,7 @@ class IffSourceFileConverter implements SourceFileConverter {
 
 		@Override
 		public void process(FileInputStream src, IffSourceFileConverter uow) throws IOException {
-			int chunkSize = readLong(src);
+			int chunkSize = IffSourceFileConverter.readLong(src);
 			byte[] compressed = new byte[chunkSize];
 			src.read(compressed);
 			//
@@ -211,10 +211,10 @@ class IffSourceFileConverter implements SourceFileConverter {
 			uow.raw = new byte[rawSize];
 			uow.mask = new byte[rawSize];
 			//
-			readRawImageData(uow, chunkSize, compressed);
+			this.readRawImageData(uow, chunkSize, compressed);
 			//
 			if (!uow.sourceFile.isWithoutMask()) {
-				createMask(uow);
+				this.createMask(uow);
 			}
 		}
 
@@ -266,8 +266,8 @@ class IffSourceFileConverter implements SourceFileConverter {
 	private void readSource(FileInputStream src) throws IOException {
 		int availableBytes = Integer.MAX_VALUE;
 		do {
-			String chunkID = readChunkID(src);
-			ChunkProcessor chunkProcessor = getChunkProcessor(chunkID);
+			String chunkID = IffSourceFileConverter.readChunkID(src);
+			ChunkProcessor chunkProcessor = IffSourceFileConverter.getChunkProcessor(chunkID);
 			chunkProcessor.process(src, this);
 			availableBytes = src.available();
 		} while (availableBytes > 3); // everything less than 4 bytes is invalid data (padding bytes)

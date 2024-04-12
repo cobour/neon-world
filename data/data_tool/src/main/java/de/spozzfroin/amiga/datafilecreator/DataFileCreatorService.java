@@ -43,20 +43,20 @@ class DataFileCreatorService {
 
 	void run(String... args) throws Exception {
 		var config = this.configReaderService.readConfig(args);
-		convertAll(config);
+		this.convertAll(config);
 	}
 
 	private void convertAll(Config config) {
-		config.getTargetFiles().stream().forEach(tf -> convert(config, tf));
-		writeIndexFile(config);
-		writeDescriptorFile(config);
+		config.getTargetFiles().stream().forEach(tf -> this.convert(config, tf));
+		this.writeIndexFile(config);
+		this.writeDescriptorFile(config);
 	}
 
 	private void convert(Config config, TargetFile targetFile) {
 		LOG.info("Creating target file " + targetFile.getFilename());
-		processAllSourceFiles(config, targetFile);
-		Path gzippedDataFile = gzipDataFile(config, targetFile);
-		copyToDestinationFolders(config, targetFile, gzippedDataFile);
+		this.processAllSourceFiles(config, targetFile);
+		Path gzippedDataFile = this.gzipDataFile(config, targetFile);
+		this.copyToDestinationFolders(config, targetFile, gzippedDataFile);
 	}
 
 	private void processAllSourceFiles(Config config, TargetFile targetFile) {
@@ -138,13 +138,13 @@ class DataFileCreatorService {
 	private void writeIndexFile(Config config) {
 		LOG.info("Writing index file");
 		Path indexFile = Paths.get(config.getIndexFilename());
-		writeMetadataFile(config, indexFile, (writer, tf) -> tf.writeToIndexFile(writer));
+		this.writeMetadataFile(config, indexFile, (writer, tf) -> tf.writeToIndexFile(writer));
 	}
 
 	private void writeDescriptorFile(Config config) {
 		LOG.info("Writing descriptor file");
 		Path indexFile = Paths.get(config.getDescriptorFilename());
-		writeMetadataFile(config, indexFile, (writer, tf) -> tf.writeToDescriptorFile(writer));
+		this.writeMetadataFile(config, indexFile, (writer, tf) -> tf.writeToDescriptorFile(writer));
 	}
 
 	private void writeMetadataFile(Config config, Path metadataFile, MetadataOperation operation) {

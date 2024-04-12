@@ -67,22 +67,22 @@ public class TargetFile {
 	public void writeToIndexFile(PrintWriter writer) throws IOException {
 		writer.println(" rsreset");
 		this.index.stream().forEach(entry -> {
-			String name = getIdentifier() + entry.getKey();
+			String name = this.getIdentifier() + entry.getKey();
 			Long size = entry.getValue();
 			writer.println(name + ": rs.b " + size);
 		});
-		writer.println(getIdentifier() + "_size: rs.b 0");
-		writer.println(getIdentifier() + "_filesize equ " + this.sizeGzippedDataFile);
+		writer.println(this.getIdentifier() + "_size: rs.b 0");
+		writer.println(this.getIdentifier() + "_filesize equ " + this.sizeGzippedDataFile);
 		this.constants.stream().forEach(entry -> {
-			String name = getIdentifier() + entry.getKey();
+			String name = this.getIdentifier() + entry.getKey();
 			writer.println(name + " equ " + entry.getValue());
 		});
 		writer.flush();
 	}
 
 	public void writeToDescriptorFile(PrintWriter writer) throws IOException {
-		writer.println(" xdef " + getIdentifier() + "_filename");
-		writer.println(getIdentifier() + "_filename: dc.b \"" + this.filename + ".dat\",0");
+		writer.println(" xdef " + this.getIdentifier() + "_filename");
+		writer.println(this.getIdentifier() + "_filename: dc.b \"" + this.filename + ".dat\",0");
 		writer.println(" even");
 		writer.flush();
 	}

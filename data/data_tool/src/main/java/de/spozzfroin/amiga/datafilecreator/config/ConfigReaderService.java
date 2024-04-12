@@ -22,7 +22,7 @@ public class ConfigReaderService {
 	public Config readConfig(String... args) throws Exception {
 		LOG.info("Reading config");
 		//
-		var configfile = getArgValue(CONFIG_FILE_ARG, args);
+		var configfile = this.getArgValue(CONFIG_FILE_ARG, args);
 		//
 		var yaml = new Yaml(new Constructor(Config.class, new LoaderOptions()));
 		yaml.setBeanAccess(BeanAccess.FIELD);

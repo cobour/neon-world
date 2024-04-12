@@ -28,16 +28,16 @@ class PtModSourceFileConverter implements SourceFileConverter {
 
 	@Override
 	public void convertToRawData(Config config, OutputStream data) throws IOException {
-		byte[] allBytes = getAllBytes(config);
-		int startPosOfSamples = getStartPosOfSamples(allBytes);
-		writeToTargetFile(data, allBytes, startPosOfSamples);
+		byte[] allBytes = this.getAllBytes(config);
+		int startPosOfSamples = this.getStartPosOfSamples(allBytes);
+		this.writeToTargetFile(data, allBytes, startPosOfSamples);
 	}
 
 	private byte[] getAllBytes(Config config) throws IOException, FileNotFoundException {
-		Path srcPath = Paths.get(sourceFile.getFullFilename(config));
+		Path srcPath = Paths.get(this.sourceFile.getFullFilename(config));
 		long filesize = Files.size(srcPath);
 		byte[] allBytes = new byte[(int) filesize];
-		try (FileInputStream fis = new FileInputStream(sourceFile.getFullFilename(config))) {
+		try (FileInputStream fis = new FileInputStream(this.sourceFile.getFullFilename(config))) {
 			fis.read(allBytes);
 		}
 		return allBytes;
@@ -58,7 +58,7 @@ class PtModSourceFileConverter implements SourceFileConverter {
 	private void writeToTargetFile(OutputStream data, byte[] allBytes, int startPosOfSamples) throws IOException {
 		byte[] bytesToWrite;
 		String labelFragment;
-		if (targetFile.getMemoryType().isChip()) {
+		if (this.targetFile.getMemoryType().isChip()) {
 			bytesToWrite = Arrays.copyOfRange(allBytes, startPosOfSamples, allBytes.length);
 			labelFragment = "samples";
 		} else {
@@ -66,8 +66,8 @@ class PtModSourceFileConverter implements SourceFileConverter {
 			labelFragment = "data";
 		}
 		//
-		String label = generateLabel(sourceFile.getFilename(), labelFragment);
-		indexEntry = new SimpleEntry<>(label, Long.valueOf(bytesToWrite.length));
+		String label = this.generateLabel(this.sourceFile.getFilename(), labelFragment);
+		this.indexEntry = new SimpleEntry<>(label, Long.valueOf(bytesToWrite.length));
 		//
 		data.write(bytesToWrite);
 	}
@@ -75,6 +75,6 @@ class PtModSourceFileConverter implements SourceFileConverter {
 	@Override
 	public void addToIndex(List<SimpleEntry<String, Long>> index, List<SimpleEntry<String, String>> constants)
 			throws IOException {
-		index.add(indexEntry);
+		index.add(this.indexEntry);
 	}
 }

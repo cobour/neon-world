@@ -34,25 +34,25 @@ class WavSourceFileConverter implements SourceFileConverter {
 	@Override
 	public void addToIndex(List<SimpleEntry<String, Long>> index, List<SimpleEntry<String, String>> constants)
 			throws IOException {
-		String label = generateLabel(sourceFile.getFilename());
-		index.add(new SimpleEntry<>(label, Long.valueOf(sampleData.length)));
+		String label = this.generateLabel(this.sourceFile.getFilename());
+		index.add(new SimpleEntry<>(label, Long.valueOf(this.sampleData.length)));
 		//
-		label = generateLabel(sourceFile.getFilename(), "length_in_words");
-		constants.add(new SimpleEntry<>(label, Integer.toString(sampleData.length / 2)));
-		int period = 3546895 / hertz;
-		label = generateLabel(sourceFile.getFilename(), "period_pal");
+		label = this.generateLabel(this.sourceFile.getFilename(), "length_in_words");
+		constants.add(new SimpleEntry<>(label, Integer.toString(this.sampleData.length / 2)));
+		int period = 3546895 / this.hertz;
+		label = this.generateLabel(this.sourceFile.getFilename(), "period_pal");
 		constants.add(new SimpleEntry<>(label, Integer.toString(period)));
-		period = 3579546 / hertz;
-		label = generateLabel(sourceFile.getFilename(), "period_ntsc");
+		period = 3579546 / this.hertz;
+		label = this.generateLabel(this.sourceFile.getFilename(), "period_ntsc");
 		constants.add(new SimpleEntry<>(label, Integer.toString(period)));
 	}
 
 	@Override
 	public void convertToRawData(Config config, OutputStream data) throws IOException {
-		try (FileInputStream fis = new FileInputStream(sourceFile.getFullFilename(config))) {
-			readSource(fis);
+		try (FileInputStream fis = new FileInputStream(this.sourceFile.getFullFilename(config))) {
+			this.readSource(fis);
 		}
-		data.write(sampleData);
+		data.write(this.sampleData);
 	}
 
 	private interface ChunkProcessor {
@@ -82,14 +82,14 @@ class WavSourceFileConverter implements SourceFileConverter {
 		@Override
 		public void process(FileInputStream src, WavSourceFileConverter uow) throws IOException {
 			src.skip(4); // length of chunk is always 16
-			int format = readWord(src);
+			int format = WavSourceFileConverter.readWord(src);
 			if (format != 1) {
 				throw new IllegalArgumentException("Wave-File needs to be in PCM-Format!");
 			}
 			src.skip(2); // channel count
-			uow.hertz = readLong(src);
+			uow.hertz = WavSourceFileConverter.readLong(src);
 			src.skip(6); // frame size and rate
-			int bits = readWord(src);
+			int bits = WavSourceFileConverter.readWord(src);
 			if (bits != 8) {
 				throw new IllegalArgumentException("Wave-File needs to have 8 bits!");
 			}
@@ -104,7 +104,7 @@ class WavSourceFileConverter implements SourceFileConverter {
 
 		@Override
 		public void process(FileInputStream src, WavSourceFileConverter uow) throws IOException {
-			int length = readLong(src) + 2; // add two null-bytes at beginning of sample data
+			int length = WavSourceFileConverter.readLong(src) + 2; // add two null-bytes at beginning of sample data
 			if ((length & 1) == 1) {
 				length++; // even length
 			}
@@ -114,7 +114,7 @@ class WavSourceFileConverter implements SourceFileConverter {
 			uow.sampleData[length - 1] = 0; // may have been added for the length to be even, then it is not contained
 											// in src data
 			for (int i = 2; i < length; i++) {
-				int value = readByte(src);
+				int value = WavSourceFileConverter.readByte(src);
 				int highBit = value & 0x00000080;
 				int otherBits = value & 0x0000007f;
 				int target = otherBits;
@@ -129,8 +129,8 @@ class WavSourceFileConverter implements SourceFileConverter {
 	private void readSource(FileInputStream src) throws IOException {
 		int availableBytes = Integer.MAX_VALUE;
 		do {
-			String chunkID = readChunkID(src);
-			ChunkProcessor chunkProcessor = getChunkProcessor(chunkID);
+			String chunkID = WavSourceFileConverter.readChunkID(src);
+			ChunkProcessor chunkProcessor = WavSourceFileConverter.getChunkProcessor(chunkID);
 			chunkProcessor.process(src, this);
 			availableBytes = src.available();
 		} while (availableBytes > 0);

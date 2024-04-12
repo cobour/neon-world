@@ -73,10 +73,10 @@ class OdsSourceFileConverter implements SourceFileConverter {
 	@Override
 	public void addToIndex(List<AbstractMap.SimpleEntry<String, Long>> index,
 			List<AbstractMap.SimpleEntry<String, String>> constants) throws IOException {
-		var label = generateLabel(this.sourceFile.getFilename());
+		var label = this.generateLabel(this.sourceFile.getFilename());
 		index.add(new AbstractMap.SimpleEntry<>(label, (long) this.raw.length));
 		//
-		label = generateLabel(this.sourceFile.getFilename(), "steps");
+		label = this.generateLabel(this.sourceFile.getFilename(), "steps");
 		constants.add(new AbstractMap.SimpleEntry<>(label, Integer.toString(this.raw.length / 4)));
 	}
 }
