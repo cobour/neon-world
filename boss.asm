@@ -10,7 +10,7 @@
 ; DONE boss has four bob structures (used for drawing/restoring)
 ; DONE get spawn position from level file
 ; DONE boss does not have predefined movement, but moves with small assembler routine (can react to position of player)
-;      better boss movement (react to position of player)
+; DONE better boss movement (react to position of player)
 ;      boss does shoot, shots are normal enemies with predefined movement
 ;      when boss dies, play multiple explosions and sounds => halt fade out of level for the time (IgBossDeathAnimOver)
 
@@ -78,8 +78,8 @@ boss_spawn:
   bset       #EnemyActive,enemy_bools(a0)
   bset       #EnemyIsBoss,enemy_bools(a0)
 
-  move.w     #322,d0
-  moveq.l    #100,d1
+  move.w     #f003_dat_level1_tmx_boss_xpos,d0
+  moveq.l    #f003_dat_level1_tmx_boss_ypos,d1
   move.w     d0,b_xpos(a0)
   move.w     d1,b_ypos(a0)
 
@@ -114,33 +114,87 @@ boss_spawn:
 boss_update_pos_and_state:
   lea.l      ig_om_boss(a4),a0
   btst       #EnemyActive,enemy_bools(a0)
-  beq.s      .exit
+  beq        .exit
 
   btst       #BobCanCollide,b_bools(a0)
-  beq.s      .no_movement                                                                               ; boss has died
+  beq        .no_movement                                                                               ; boss has died
 
   btst       #IgPerformScroll,ig_om_bools(a4)
   beq.s      .no_scroll_pos_update
 
   moveq.l    #-1,d0
   moveq.l    #0,d1
-  bsr.s      .pos_update
+  bsr        .pos_update
 
 .no_scroll_pos_update:
   move.w     b_xpos(a0),d2
-  cmp.w      #200,d2
-  bgt.s      .check_right
-  move.w     #1,.dummy_x_add
-  move.w     #0,.dummy_y_add
-.check_right:
-  cmp.w      #270,d2
-  blt.s      .apply_movement
-  move.w     #-1,.dummy_x_add
-  move.w     #0,.dummy_y_add
-.apply_movement:
-  move.w     .dummy_x_add,d0
-  move.w     .dummy_y_add,d1
+  move.w     b_ypos(a0),d3
+  add.w      #16,d3                                                                                     ; middle
+  move.w     ig_om_player+pl_ypos(a4),d4
+  add.w      #8,d4                                                                                      ; middle
+  sub.w      #ScreenStartY,d4
+  lea.l      .xadd(pc),a1
+  lea.l      .yadd(pc),a2
+  lea.l      .stay_back_timer(pc),a3
+
+; xpos
+  cmp.w      #6,d2
+  bgt.s      .1
+  moveq.l    #2,d0
+  move.w     d0,(a1)
+  move.w     #25,(a3)
+  bra.s      .2
+.1:
+  cmp.w      #268,d2
+  blt.s      .2
+  tst.w      (a3)
+  beq.s      .1a
+  move.w     (a3),d0
+  sub.w      #1,d0
+  move.w     d0,(a3)
+  clr.w      (a1)
+  bra.s      .2
+.1a:
+  moveq.l    #-4,d0
+  clr.w      (a2)
+  move.w     d0,(a1)
+
+; ypos
+.2:
+  tst.w      (a1)
+  blt.s      .3
+
+  move.l     ig_om_frame_counter(a4),d5
+  and.l      #$0000000f,d5
+  tst.b      d5
+  bne.s      .3
+
+  cmp.w      d4,d3
+  blt.s      .2a
+  move.w     #-1,(a2)
+  bra.s      .3
+.2a:  
+  move.w     #1,(a2)
+
+.3:
+  move.w     (a1),d0
+  move.w     (a2),d1
   bsr.s      .pos_update
+
+; check ypos boundaries
+  move.w     b_ypos(a0),d0
+  move.w     #$3c,d1                                                                                    ; dec = 60
+  cmp.w      d1,d0
+  bge.s      .4
+  move.w     d1,b_ypos(a0)
+  clr.w      .yadd
+.4:
+  move.w     #$be,d1                                                                                    ; dec = 190
+  cmp.w      d1,d0
+  ble.s      .5
+  move.w     d1,b_ypos(a0)
+  clr.w      .yadd
+.5:
 
 .no_movement:
   move.w     enemy_hit_points(a0),d0
@@ -150,9 +204,11 @@ boss_update_pos_and_state:
 .exit:
   rts
 
-.dummy_x_add:
-  dc.w       -1
-.dummy_y_add:
+.xadd:  
+  dc.w       -4
+.yadd:
+  dc.w       0
+.stay_back_timer:
   dc.w       0
 
 ; d0 - add xpos

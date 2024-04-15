@@ -73,6 +73,8 @@ class TiledSourceFileConverter implements SourceFileConverter {
 	private int objectsSize = 0; // optional
 	private int respawnInfoSize = 0; // optional
 	private int bossSpawnFrame = 0; // optional
+	private int bossXPos = 0; // optional
+	private int bossYPos = 0; // optional
 	private String width; // number of tiles
 	private String height; // number of tiles
 
@@ -121,6 +123,14 @@ class TiledSourceFileConverter implements SourceFileConverter {
 		if (this.bossSpawnFrame > 0) {
 			label = this.generateLabel(this.sourceFile.getFilename(), "boss_spawn_frame");
 			constants.add(new SimpleEntry<>(label, Integer.toString(this.bossSpawnFrame)));
+		}
+		if (this.bossXPos > 0) {
+			label = this.generateLabel(this.sourceFile.getFilename(), "boss_xpos");
+			constants.add(new SimpleEntry<>(label, Integer.toString(this.bossXPos)));
+		}
+		if (this.bossYPos > 0) {
+			label = this.generateLabel(this.sourceFile.getFilename(), "boss_ypos");
+			constants.add(new SimpleEntry<>(label, Integer.toString(this.bossYPos)));
 		}
 	}
 
@@ -316,6 +326,8 @@ class TiledSourceFileConverter implements SourceFileConverter {
 			levelObject.calcSpawnFrameIfNotSet();
 			if (levelObject.boss) {
 				this.bossSpawnFrame = levelObject.spawn_frame;
+				this.bossXPos = levelObject.xpos;
+				this.bossYPos = levelObject.ypos;
 			} else {
 				if (!levelObject.isValid()) {
 					throw new IllegalStateException("not all attributes set in level object!");
