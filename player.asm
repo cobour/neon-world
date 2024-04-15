@@ -9,9 +9,7 @@ player_init:
 ; init player-struct
   lea.l      ig_om_f003+f003_dat_player_anim_horizontal_tmx(a4),a1
   lea.l      ig_om_player(a4),a3
-  move.w     #$00a0,d0
-  move.w     d0,pl_xpos(a3)
-  move.w     d0,pl_ypos(a3)
+  bsr        player_set_pos
   move.l     a1,pl_anim(a3)
   moveq.l    #0,d0
   move.b     d0,pl_animstep(a3)
@@ -198,13 +196,7 @@ player_update:
 ; set player position after explosion is shown
   cmp.w      #PlNoColDetFramesWoExpl,pl_no_col_det_frames(a3)
   bne.s      .read_joystick
-  move.w     #ScreenStartX,pl_xpos(a3)
-  move.l     a4,a2
-  add.l      #ig_om_f003+f003_dat_level1_tmx_respawn_info,a2
-  move.l     ig_om_scroll_xpos(a4),d0
-  lsr.l      #4,d0                                                                    ; xpos of level / 16
-  add.l      d0,d0                                                                    ; * 2 because the ypos are WORD values
-  move.w     (a2,d0.w),pl_ypos(a3)
+  bsr        player_set_pos
 
 .read_joystick:
 ; do not read joystick when not visible
@@ -320,6 +312,18 @@ player_update:
   bne        empty_animstep                                                           ; implicit rts
   bra        copy_animstep                                                            ; implicit rts
 
+; sets position of player according to respawn layer of level
+; uses d0,a2
+  xdef       player_set_pos
+player_set_pos:
+  move.w     #ScreenStartX,ig_om_player+pl_xpos(a4)
+  move.l     a4,a2
+  add.l      #ig_om_f003+f003_dat_level1_tmx_respawn_info,a2
+  move.l     ig_om_scroll_xpos(a4),d0
+  lsr.l      #4,d0                                                                    ; xpos of level / 16
+  add.l      d0,d0                                                                    ; * 2 because the ypos are WORD values
+  move.w     (a2,d0.w),ig_om_player+pl_ypos(a4)
+  rts
 
 ; checks if player has pressed firebutton and spawns playershot
 ; uses a3,d0 
