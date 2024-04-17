@@ -12,12 +12,15 @@
 ; DONE boss does not have predefined movement, but moves with small assembler routine (can react to position of player)
 ; DONE better boss movement (react to position of player)
 ; DONE boss does shoot, shots are normal enemies with predefined movement
-;      when boss dies, play multiple explosions and sounds => halt fade out of level for the time (IgBossDeathAnimOver)
+; DONE when boss dies, play multiple explosions and sounds => halt fade out of level for the time (IgBossDeathAnimOver)
 
   xdef       boss_init
 boss_init:
   ; end condition
   bclr       #IgBossDeathAnimOver,ig_om_bools(a4)
+  lea.l      next_additional_death_explosion(pc),a0
+  lea.l      additional_death_explosions(pc),a1
+  move.l     a1,(a0)
 
   ; enemy struct
   lea.l      ig_om_boss(a4),a0
@@ -194,7 +197,7 @@ boss_update_pos_and_state:
 .3:
   move.w     (a1),d0
   move.w     (a2),d1
-  bsr.s      .pos_update
+  bsr        .pos_update
 
 ; check ypos boundaries
   move.w     b_ypos(a0),d0
@@ -226,7 +229,6 @@ boss_update_pos_and_state:
   move.w     b_ypos(a0),d1
   add.w      #TilePixelHeight,d1
   moveq.l    #BossShotEnemyDesc,d2
-  ;moveq.l    #BossShotMovementStrDesc,d3
   move.w     .shot_movement(pc),d3
   moveq.l    #0,d4
   move.l     a0,a3
@@ -237,7 +239,34 @@ boss_update_pos_and_state:
   move.w     enemy_hit_points(a0),d0
   tst.w      d0
   bgt.s      .exit
+
+  lea.l      ig_om_enemy_explosion(a4),a2
+  btst       #BobActive,b_bools(a2)
+  bne.s      .exit
+  move.l     next_additional_death_explosion(pc),a1
+  move.l     (a1)+,d2
+  tst.l      d2
+  bne.s      .sae1
   bset       #IgBossDeathAnimOver,ig_om_bools(a4)
+  bra.s      .exit
+.sae1:
+  move.l     a1,next_additional_death_explosion
+  ; play sample
+  move.l     a0,a1
+  jsr        sfx_explosion
+  move.l     a1,a0
+  ; spawn enemy explosion (special bob, no collision detection, only one at a time)
+  bset       #BobActive,b_bools(a2)
+  moveq.l    #0,d1
+  move.l     d1,b_eol_frame(a2)
+  move.w     d1,exp_anim_count(a2)                                                                      ; includes exp_anim_count_delay
+  ; do NOT reset bb_bltptr's since explosion may be reused while playing anim
+  move.w     b_xpos(a0),b_xpos(a2)
+  move.w     b_ypos(a0),b_ypos(a2)
+  add.w      d2,b_ypos(a2)
+  swap       d2
+  add.w      d2,b_xpos(a2)
+
 .exit:
   rts
 
@@ -271,6 +300,15 @@ boss_update_pos_and_state:
   add.w      d0,b_xpos(a1)
   add.w      d1,b_ypos(a1)
   rts
+
+additional_death_explosions:
+  dc.w       4,12
+  dc.w       20,14
+  dc.w       12,16
+  dc.l       0
+
+next_additional_death_explosion:
+  dc.l       0
 
   xdef       boss_draw
 boss_draw:
