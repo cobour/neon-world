@@ -108,6 +108,8 @@ targetFiles:
         tilesFilename: tiles.iff
       - filename: tiled/red_drop_anim.tmx
         tilesFilename: tiles.iff
+      - filename: tiled/boss_shot_anim.tmx
+        tilesFilename: tiles.iff
       - filename: universe.mod
       - filename: movements/just_scroll.ods
       - filename: movements/wave.ods
@@ -118,6 +120,9 @@ targetFiles:
       - filename: movements/speed_up.ods
       - filename: movements/speed_up_2.ods
       - filename: movements/jellyfish.ods
+      - filename: movements/boss_shot_straight.ods
+      - filename: movements/boss_shot_up.ods
+      - filename: movements/boss_shot_down.ods
   - filename: F004
     memoryType: CHIP
     sourceFiles:

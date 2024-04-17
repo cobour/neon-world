@@ -107,6 +107,7 @@ enemies_spawn:
 ;
 ; out:
 ; a0 - pointer to enemy struct or zero, if no free enemy slot was available
+  xdef       spawn_new_enemy
 spawn_new_enemy:
   ; first: search for free slot
   moveq.l    #EnemyMaxCount-1,d7
@@ -376,7 +377,7 @@ ed_draw_bob:
   jmp        bob_draw
 
 ; enemy descriptors and index
-EnemyDescCount    equ 29
+EnemyDescCount    equ 30
   xdef       enemy_descriptors_index
 enemy_descriptors_index:
   dcb.l      EnemyDescCount
@@ -585,9 +586,16 @@ first_enemy_descriptor:
   dc.w       $0250
   dc.w       80
   dc.w       4,4,30,29
+  ; 29 BOSS SHOTS
+  dc.l       ig_om_f003+f003_dat_boss_shot_anim_tmx
+  dc.w       f003_dat_boss_shot_anim_tmx_tiles_width
+  dc.w       6
+  dc.w       $0000
+  dc.w       0
+  dc.w       0,0,0,0
 
 ; movement descriptors and index
-MovementDescCount equ 9
+MovementDescCount equ 12
 movement_descriptors_index:
   dcb.l      MovementDescCount
 ; see constants.i -> mvd_*
@@ -619,3 +627,12 @@ first_movement_descriptor:
   ; 8
   dc.l       ig_om_f003+f003_dat_jellyfish_ods
   dc.w       f003_dat_jellyfish_ods_steps
+  ; 9
+  dc.l       ig_om_f003+f003_dat_boss_shot_straight_ods
+  dc.w       f003_dat_boss_shot_straight_ods_steps
+  ; 10
+  dc.l       ig_om_f003+f003_dat_boss_shot_up_ods
+  dc.w       f003_dat_boss_shot_up_ods_steps
+  ; 11
+  dc.l       ig_om_f003+f003_dat_boss_shot_down_ods
+  dc.w       f003_dat_boss_shot_down_ods_steps

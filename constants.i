@@ -280,6 +280,12 @@ boss_bob_right_upper:          rs.b       b_size
 boss_bob_left_lower:           rs.b       b_size
 boss_bob_right_lower:          rs.b       b_size
 boss_size:                     rs.b       0
+; constants
+BossShotDelay               equ 40
+BossShotEnemyDesc           equ 29
+BossShotMovementStrDesc     equ 9
+BossShotMovementUpDesc      equ 10
+BossShotMovementDownDesc    equ 11
 
 ; Enemy Object Descriptor (read from level file)
                                rsreset

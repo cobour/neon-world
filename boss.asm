@@ -11,7 +11,7 @@
 ; DONE get spawn position from level file
 ; DONE boss does not have predefined movement, but moves with small assembler routine (can react to position of player)
 ; DONE better boss movement (react to position of player)
-;      boss does shoot, shots are normal enemies with predefined movement
+; DONE boss does shoot, shots are normal enemies with predefined movement
 ;      when boss dies, play multiple explosions and sounds => halt fade out of level for the time (IgBossDeathAnimOver)
 
   xdef       boss_init
@@ -129,10 +129,25 @@ boss_update_pos_and_state:
 .no_scroll_pos_update:
   move.w     b_xpos(a0),d2
   move.w     b_ypos(a0),d3
-  add.w      #16,d3                                                                                     ; middle
+  add.w      #TilePixelHeight,d3                                                                        ; middle
   move.w     ig_om_player+pl_ypos(a4),d4
-  add.w      #8,d4                                                                                      ; middle
+  add.w      #TilePixelHeight/2,d4                                                                      ; middle
   sub.w      #ScreenStartY,d4
+  lea.l      .shot_movement(pc),a1
+  move.w     d3,d5
+  sub.w      d4,d5
+  cmp.w      #16,d5
+  bgt.s      .boss_shot_up
+  cmp.w      #-16,d6
+  blt.s      .boss_shot_down
+  move.w     #BossShotMovementStrDesc,(a1)
+  bra.s      .0
+.boss_shot_up:
+  move.w     #BossShotMovementUpDesc,(a1)
+  bra.s      .0
+.boss_shot_down:
+  move.w     #BossShotMovementDownDesc,(a1)
+.0:
   lea.l      .xadd(pc),a1
   lea.l      .yadd(pc),a2
   lea.l      .stay_back_timer(pc),a3
@@ -196,6 +211,28 @@ boss_update_pos_and_state:
   clr.w      .yadd
 .5:
 
+; let boss shoot (if not moving to the left)
+  move.w     .xadd(pc),d0
+  tst.w      d0
+  blt.s      .no_movement
+  lea.l      .shot_delay(pc),a2
+  tst.w      (a2)
+  beq.s      .new_shot
+  sub.w      #1,(a2)
+  bra.s      .no_movement
+.new_shot:
+  move.w     #BossShotDelay,(a2)
+  move.w     b_xpos(a0),d0
+  move.w     b_ypos(a0),d1
+  add.w      #TilePixelHeight,d1
+  moveq.l    #BossShotEnemyDesc,d2
+  ;moveq.l    #BossShotMovementStrDesc,d3
+  move.w     .shot_movement(pc),d3
+  moveq.l    #0,d4
+  move.l     a0,a3
+  jsr        spawn_new_enemy
+  move.l     a3,a0
+
 .no_movement:
   move.w     enemy_hit_points(a0),d0
   tst.w      d0
@@ -209,6 +246,10 @@ boss_update_pos_and_state:
 .yadd:
   dc.w       0
 .stay_back_timer:
+  dc.w       0
+.shot_delay:
+  dc.w       0
+.shot_movement:
   dc.w       0
 
 ; d0 - add xpos
