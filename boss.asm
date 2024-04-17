@@ -2,18 +2,6 @@
               
   include    "constants.i"
 
-; DONE boss has one enemy structure (with embedded bob structure) which is only used for collision detection
-; DONE      enemy struct is not added to normal enemies list => no accidental restore or draw operations
-; DONE      collision detection performed against normal enemies list OR boss => if boss is active against boss, otherwise against enemies list
-; DONE      change gfx when hit (not using mask like for normal enemies)
-; DONE      when boss dies, set IgBossDeathAnimOver so level can end
-; DONE boss has four bob structures (used for drawing/restoring)
-; DONE get spawn position from level file
-; DONE boss does not have predefined movement, but moves with small assembler routine (can react to position of player)
-; DONE better boss movement (react to position of player)
-; DONE boss does shoot, shots are normal enemies with predefined movement
-; DONE when boss dies, play multiple explosions and sounds => halt fade out of level for the time (IgBossDeathAnimOver)
-
   xdef       boss_init
 boss_init:
   ; end condition
