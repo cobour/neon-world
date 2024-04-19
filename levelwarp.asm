@@ -46,7 +46,8 @@ level_warp_enemies:
   cmp.l      obj_spawn_frame(a0),d0
   blt.s      .set_next_object_desc
   add.l      #obj_size,a0
-  bra.s      .next_object_desc_loop
+  cmp.l      ig_om_end_object_desc(a4),a0
+  bne.s      .next_object_desc_loop
 .set_next_object_desc:
   move.l     a0,ig_om_next_object_desc(a4)
 
