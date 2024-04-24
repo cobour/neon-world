@@ -54,7 +54,7 @@
             "emulatorType": "fs-uae",
             "emulatorArgs": [
                 "--chip_memory=512",
-                "--slow_memory=0",
+                "--slow_memory=512", // executable is bigger while developing because of debug infos and hdd => more ram here, adf still runs on 512kb total
                 "--hard_drive_0=${workspaceFolder}/uae/dh0",
                 "--automatic_input_grab=0",
                 "--joystick_port_1=keyboard",
@@ -77,7 +77,7 @@
             "emulatorType": "fs-uae",
             "emulatorArgs": [
                 "--chip_memory=512",
-                "--slow_memory=0",
+                "--slow_memory=512", // executable is bigger while developing because of debug infos and hdd => more ram here, adf still runs on 512kb total
                 "--hard_drive_0=${workspaceFolder}/uae/dh0_adf",
                 "--joystick_port_1=keyboard",
                 "--amiga_model=A500",
