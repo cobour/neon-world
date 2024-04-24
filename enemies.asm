@@ -83,6 +83,7 @@ enemies_spawn:
   move.w     obj_enemy_desc(a2),d2
   move.w     obj_enemy_movement_desc(a2),d3
   move.w     obj_start_offset_movement(a2),d4
+  move.w     obj_start_offset_anim(a2),d5
   bsr.s      spawn_new_enemy
   
   ; maybe more than one enemy must be spawned in this frame
@@ -100,9 +101,10 @@ enemies_spawn:
 ; d2 - number of enemy descriptor (starting with zero)
 ; d3 - number of movement descriptor (starting with zero)
 ; d4 - start offset for movement (steps)
+; d5 - start offset for anim
 ;
 ; uses:
-; d5-d7,a1
+; d6-d7,a1
 ;
 ; out:
 ; a0 - pointer to enemy struct or zero, if no free enemy slot was available
@@ -127,21 +129,21 @@ spawn_new_enemy:
 
 .init:
   ; second: initialize enemy struct
-  moveq.l    #0,d5
   moveq.l    #1,d6
+  move.l     d6,b_b_0+bb_bltptr(a0)
+  move.l     d6,b_b_1+bb_bltptr(a0)
 
-  move.b     d5,b_bools(a0)
+  moveq.l    #0,d6
+  move.b     d6,b_bools(a0)
   bset       #BobActive,b_bools(a0)
   bset       #BobCanCollide,b_bools(a0)
-  move.l     d5,b_eol_frame(a0)
+  move.l     d6,b_eol_frame(a0)
   move.w     d0,b_xpos(a0)
   move.w     d1,b_ypos(a0)
   move.w     #TilePixelWidth,b_width(a0)
   move.w     #TilePixelHeight,b_height(a0)
-  move.l     d6,b_b_0+bb_bltptr(a0)
-  move.l     d6,b_b_1+bb_bltptr(a0)
 
-  move.b     d5,enemy_bools(a0)
+  move.b     d6,enemy_bools(a0)
   bset       #EnemyActive,enemy_bools(a0)
 
   lea.l      enemy_descriptors_index(pc),a1
@@ -159,7 +161,7 @@ spawn_new_enemy:
   move.w     ed_hit_points(a1),enemy_hit_points(a0)
   move.l     a1,enemy_descriptor(a0)
   move.w     d5,enemy_anim_step(a0)
-  move.w     d5,enemy_anim_delay(a0)
+  move.w     d6,enemy_anim_delay(a0)
 
   lea.l      movement_descriptors_index(pc),a1
   lsl.w      #2,d3

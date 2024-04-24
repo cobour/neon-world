@@ -295,6 +295,7 @@ obj_ypos:                      rs.w       1
 obj_enemy_desc:                rs.w       1
 obj_enemy_movement_desc:       rs.w       1
 obj_start_offset_movement:     rs.w       1
+obj_start_offset_anim:         rs.w       1
 obj_size:                      rs.b       0                                                ; MUST be the same value that is added in de.spozzfroin.amiga.datafilecreator.converters.TiledSourceFileConverter#writeObjects
 
 ; PowerUp Object Descriptor (read from level file)

@@ -418,30 +418,35 @@
    <properties>
     <property name="enemy_desc" type="int" value="6"/>
     <property name="movement_desc" type="int" value="1"/>
+    <property name="anim_start_offset" type="int" value="1"/>
    </properties>
   </object>
   <object id="40" gid="297" x="1952" y="144" width="16" height="16">
    <properties>
     <property name="enemy_desc" type="int" value="7"/>
     <property name="movement_desc" type="int" value="1"/>
+    <property name="anim_start_offset" type="int" value="1"/>
    </properties>
   </object>
   <object id="41" gid="273" x="1952" y="112" width="16" height="16">
    <properties>
     <property name="enemy_desc" type="int" value="8"/>
     <property name="movement_desc" type="int" value="1"/>
+    <property name="anim_start_offset" type="int" value="5"/>
    </properties>
   </object>
   <object id="42" gid="274" x="1952" y="128" width="16" height="16">
    <properties>
     <property name="enemy_desc" type="int" value="9"/>
     <property name="movement_desc" type="int" value="1"/>
+    <property name="anim_start_offset" type="int" value="5"/>
    </properties>
   </object>
   <object id="43" gid="275" x="1952" y="144" width="16" height="16">
    <properties>
     <property name="enemy_desc" type="int" value="10"/>
     <property name="movement_desc" type="int" value="1"/>
+    <property name="anim_start_offset" type="int" value="5"/>
    </properties>
   </object>
   <object id="44" gid="278" x="2016" y="112" width="16" height="16">
@@ -478,30 +483,35 @@
    <properties>
     <property name="enemy_desc" type="int" value="6"/>
     <property name="movement_desc" type="int" value="1"/>
+    <property name="anim_start_offset" type="int" value="2"/>
    </properties>
   </object>
   <object id="50" gid="297" x="2112" y="144" width="16" height="16">
    <properties>
     <property name="enemy_desc" type="int" value="7"/>
     <property name="movement_desc" type="int" value="1"/>
+    <property name="anim_start_offset" type="int" value="2"/>
    </properties>
   </object>
   <object id="51" gid="273" x="2112" y="112" width="16" height="16">
    <properties>
     <property name="enemy_desc" type="int" value="8"/>
     <property name="movement_desc" type="int" value="1"/>
+    <property name="anim_start_offset" type="int" value="10"/>
    </properties>
   </object>
   <object id="52" gid="274" x="2112" y="128" width="16" height="16">
    <properties>
     <property name="enemy_desc" type="int" value="9"/>
     <property name="movement_desc" type="int" value="1"/>
+    <property name="anim_start_offset" type="int" value="10"/>
    </properties>
   </object>
   <object id="53" gid="275" x="2112" y="144" width="16" height="16">
    <properties>
     <property name="enemy_desc" type="int" value="10"/>
     <property name="movement_desc" type="int" value="1"/>
+    <property name="anim_start_offset" type="int" value="10"/>
    </properties>
   </object>
   <object id="54" gid="278" x="2192" y="112" width="16" height="16">

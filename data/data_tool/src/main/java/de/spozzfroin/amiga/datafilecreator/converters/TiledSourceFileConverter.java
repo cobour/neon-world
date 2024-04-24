@@ -43,6 +43,7 @@ class TiledSourceFileConverter implements SourceFileConverter {
 		int movement_start_offset = 0;
 		boolean boss = false;
 		int powerup_id = -1;
+		int anim_start_offset = 0;
 
 		void calcSpawnFrameIfNotSet() {
 			if (this.spawn_frame == -1) {
@@ -338,6 +339,9 @@ class TiledSourceFileConverter implements SourceFileConverter {
 				case "powerup_id":
 					levelObject.powerup_id = Integer.parseInt(property.getAttribute("value"));
 					break;
+				case "anim_start_offset":
+					levelObject.anim_start_offset = Integer.parseInt(property.getAttribute("value"));
+					break;
 				default:
 					throw new IllegalArgumentException("unknown property: " + propertyName);
 				}
@@ -435,7 +439,8 @@ class TiledSourceFileConverter implements SourceFileConverter {
 			this.writeWord(lo.enemy_desc, data);
 			this.writeWord(lo.movement_desc, data);
 			this.writeWord(lo.movement_start_offset, data);
-			this.objectsSize += 14; // see obj_size in constants.i (MUST be the same value)
+			this.writeWord(lo.anim_start_offset, data);
+			this.objectsSize += 16; // see obj_size in constants.i (MUST be the same value)
 		}
 		//
 		// sort powerups by spawn_frame
