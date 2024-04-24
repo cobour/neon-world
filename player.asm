@@ -15,7 +15,6 @@ player_init:
   move.b     d0,pl_animstep(a3)
   move.w     d0,pl_no_col_det_frames(a3)
   move.b     #f003_dat_player_anim_horizontal_tmx_tiles_width,pl_max_animstep(a3)
-  moveq.l    #1,d0
   move.w     d0,pl_weapon_strength(a3)
 ; calc gfx source pointer
   moveq.l    #0,d1
@@ -337,6 +336,10 @@ player_firebutton:
   lea.l      ig_om_player(a4),a3
   cmp.w      #PlNoColDetAfterVisible,pl_no_col_det_frames(a3)
   bgt.s      .2
+
+  ; player cannot shoot when he has no weapon
+  tst.w      pl_weapon_strength(a3)
+  beq.s      .2
 
   move.w     pl_joystick(a3),d0
 

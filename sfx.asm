@@ -27,6 +27,11 @@ sfx_explosion_small:
   lea.l      explosion_small_sfx(pc),a0
   bra.s      sfx_play_sample
 
+  xdef       sfx_powerup
+sfx_powerup:
+  lea.l      powerup_sfx(pc),a0
+  bra.s      sfx_play_sample
+
   xdef       sfx_shot
 sfx_shot:
   lea.l      shot_sfx(pc),a0
@@ -73,6 +78,13 @@ enter_go_sfx:
   dc.l       m_cm_area+go_cm_f004+f004_dat_enter_wav
   dc.w       f004_dat_enter_wav_length_in_words
   dc.w       f004_dat_enter_wav_period_pal
+  dc.w       64
+  dc.b       -1
+  dc.b       64
+powerup_sfx:
+  dc.l       m_cm_area+ig_cm_f002+f002_dat_powerup_wav
+  dc.w       f002_dat_powerup_wav_length_in_words
+  dc.w       f002_dat_powerup_wav_period_pal
   dc.w       64
   dc.b       -1
   dc.b       64

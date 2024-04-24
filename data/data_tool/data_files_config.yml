@@ -37,6 +37,7 @@ targetFiles:
       - filename: sfxr/explosion.wav
       - filename: sfxr/shot.wav
       - filename: sfxr/explosion_small.wav
+      - filename: sfxr/powerup.wav
   - filename: F003
     memoryType: OTHER
     sourceFiles:

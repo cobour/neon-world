@@ -57,8 +57,14 @@ ps_new_shot:
   move.w     #TilePixelWidth,b_width(a1)
   move.w     #TilePixelHeight,b_height(a1)
 
+  move.w     ig_om_player+pl_weapon_strength(a4),d0
+  cmp.w      #1,d0
+  bne.s      .not_1
   move.l     #(TilesWidthBytes*TilesBitplanes*TilePixelHeight*10)+16,b_tiles_offset(a1)
-
+  bra.s      .play_sfx
+.not_1:
+  move.l     #(TilesWidthBytes*TilesBitplanes*TilePixelHeight*11)+16,b_tiles_offset(a1)
+.play_sfx:
 ; play shot sample
   jmp        sfx_shot
 

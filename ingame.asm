@@ -56,6 +56,7 @@ ig_start:
 
                 jsr         enemies_init
                 jsr         boss_init
+                jsr         powerups_init
 
                 move.l      #LevelScreenBufferWidthBytes,d0
                 jsr         cc_init
@@ -128,6 +129,9 @@ ig_lvl3_handler:
  
                 ; before the rest -> update starfield (because copperlist is updated at a point that has not been already executed)
                 jsr         sf_scroll
+
+                ; update powerups early because they are hardware sprites
+                jsr         powerups_update
 
                 ; do fade-in or -out
                 lea.l       ig_cop_colors,a0

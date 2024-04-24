@@ -42,10 +42,14 @@ class TiledSourceFileConverter implements SourceFileConverter {
 		boolean add_xpos = false;
 		int movement_start_offset = 0;
 		boolean boss = false;
+		int powerup_id = -1;
 
 		void calcSpawnFrameIfNotSet() {
 			if (this.spawn_frame == -1) {
 				this.spawn_frame = this.xpos - 322;
+				if (this.spawn_frame < 0) {
+					this.spawn_frame = 0;
+				}
 				this.xpos -= this.spawn_frame; // convert level-xpos to screen-xpos
 			}
 		}
@@ -77,8 +81,10 @@ class TiledSourceFileConverter implements SourceFileConverter {
 	private int bossYPos = 0; // optional
 	private String width; // number of tiles
 	private String height; // number of tiles
+	private int powerupsSize = 0; // optional
 
 	private final List<LevelObject> levelObjects = new ArrayList<>();
+	private final List<LevelObject> powerups = new ArrayList<>();
 
 	// details about tiles gfx
 	private int tilesPixelWidth = -1;
@@ -99,6 +105,10 @@ class TiledSourceFileConverter implements SourceFileConverter {
 			label = this.generateLabel(this.sourceFile.getFilename(), "objects");
 			index.add(new SimpleEntry<>(label, Long.valueOf(this.objectsSize)));
 		}
+		if (!this.powerups.isEmpty()) {
+			label = this.generateLabel(this.sourceFile.getFilename(), "powerups");
+			index.add(new SimpleEntry<>(label, Long.valueOf(this.powerupsSize)));
+		}
 		if (this.respawnInfoSize > 0) {
 			label = this.generateLabel(this.sourceFile.getFilename(), "respawn_info");
 			index.add(new SimpleEntry<>(label, Long.valueOf(this.respawnInfoSize)));
@@ -115,6 +125,12 @@ class TiledSourceFileConverter implements SourceFileConverter {
 			constants.add(new SimpleEntry<>(label, Integer.toString(this.objectsSize)));
 			label = this.generateLabel(this.sourceFile.getFilename(), "objects_count");
 			constants.add(new SimpleEntry<>(label, Integer.toString(this.levelObjects.size())));
+		}
+		if (!this.powerups.isEmpty()) {
+			label = this.generateLabel(this.sourceFile.getFilename(), "powerups_size");
+			constants.add(new SimpleEntry<>(label, Integer.toString(this.powerupsSize)));
+			label = this.generateLabel(this.sourceFile.getFilename(), "powerups_count");
+			constants.add(new SimpleEntry<>(label, Integer.toString(this.powerups.size())));
 		}
 		if (this.respawnInfoSize > 0) {
 			label = this.generateLabel(this.sourceFile.getFilename(), "respawn_info_size");
@@ -278,6 +294,7 @@ class TiledSourceFileConverter implements SourceFileConverter {
 	private void readObjectList(Document document) {
 		var objects = document.getElementsByTagName("object");
 		this.levelObjects.clear();
+		this.powerups.clear();
 		for (int i = 0; i < objects.getLength(); i++) {
 			var object = (Element) objects.item(i);
 			var levelObject = new LevelObject();
@@ -318,13 +335,18 @@ class TiledSourceFileConverter implements SourceFileConverter {
 				case "boss":
 					levelObject.boss = Boolean.parseBoolean(property.getAttribute("value"));
 					break;
+				case "powerup_id":
+					levelObject.powerup_id = Integer.parseInt(property.getAttribute("value"));
+					break;
 				default:
 					throw new IllegalArgumentException("unknown property: " + propertyName);
 				}
 			}
 			//
 			levelObject.calcSpawnFrameIfNotSet();
-			if (levelObject.boss) {
+			if (levelObject.powerup_id > -1) {
+				this.powerups.add(levelObject);
+			} else if (levelObject.boss) {
 				this.bossSpawnFrame = levelObject.spawn_frame;
 				this.bossXPos = levelObject.xpos;
 				this.bossYPos = levelObject.ypos;
@@ -405,6 +427,7 @@ class TiledSourceFileConverter implements SourceFileConverter {
 			}
 		});
 		// write bytes to data
+		this.objectsSize = 0;
 		for (LevelObject lo : this.levelObjects) {
 			this.writeLong(lo.spawn_frame, data);
 			this.writeWord(lo.xpos, data);
@@ -413,6 +436,25 @@ class TiledSourceFileConverter implements SourceFileConverter {
 			this.writeWord(lo.movement_desc, data);
 			this.writeWord(lo.movement_start_offset, data);
 			this.objectsSize += 14; // see obj_size in constants.i (MUST be the same value)
+		}
+		//
+		// sort powerups by spawn_frame
+		this.powerups.sort(new Comparator<LevelObject>() {
+			@Override
+			public int compare(LevelObject lo1, LevelObject lo2) {
+				var sf1 = Integer.valueOf(lo1.spawn_frame);
+				var sf2 = Integer.valueOf(lo2.spawn_frame);
+				return sf1.compareTo(sf2);
+			}
+		});
+		// write powerups
+		this.powerupsSize = 0;
+		for (LevelObject pup : this.powerups) {
+			this.writeLong(pup.spawn_frame, data);
+			this.writeWord(pup.xpos, data);
+			this.writeWord(pup.ypos, data);
+			this.writeWord(pup.powerup_id, data);
+			this.powerupsSize += 10; // see obj_size in constants.i (MUST be the same value)
 		}
 	}
 

@@ -297,6 +297,14 @@ obj_enemy_movement_desc:       rs.w       1
 obj_start_offset_movement:     rs.w       1
 obj_size:                      rs.b       0                                                ; MUST be the same value that is added in de.spozzfroin.amiga.datafilecreator.converters.TiledSourceFileConverter#writeObjects
 
+; PowerUp Object Descriptor (read from level file)
+                               rsreset
+pup_spawn_frame:               rs.l       1
+pup_xpos:                      rs.w       1
+pup_ypos:                      rs.w       1 
+pup_id:                        rs.w       1
+pup_size:                      rs.b       0                                                ; MUST be the same value that is added in de.spozzfroin.amiga.datafilecreator.converters.TiledSourceFileConverter#writeObjects
+
 ; Enemy Descriptor (contains static values that are the same for every instance of the specific enemy type)
                                rsreset
 ed_anim:                       rs.l       1                                                ; anim data, offset in othermem area
@@ -363,7 +371,9 @@ GFadeOut                    equ 2                                               
                                rsreset
 ig_cm_player:                  rs.b       (8*16)+16                                        ; sprites 0 and 1 (attached) display the 16x16 pix player sprite
 ig_cm_sprite2_panel:           rs.b       (16*4)+8                                         ; panel sprite data for sprite 2
+ig_cm_sprite2_powerup:         rs.b       (16*4)+4                                         ; powerup (just +4 because control word are set to the last 4 bytes of ig_cm_sprite2_panel and here only the zero long is needed)
 ig_cm_sprite3_panel:           rs.b       (16*4)+8                                         ; panel sprite data for sprite 3
+ig_cm_sprite3_powerup:         rs.b       (16*4)+4                                         ; powerup (just +4 because control word are set to the last 4 bytes of ig_cm_sprite2_panel and here only the zero long is needed)
 ig_cm_sprite4_panel:           rs.b       (16*4)+4                                         ; panel sprite data for sprite 4
 ig_cm_sprite4_starfield:       rs.b       (NumberOfStars*8)+4                              ; sprites 4 and 5 (attached) displaying the stars in the background (8 because of 1 line with sprite per Star, giving 2 control-words and 2 bitplane-words, plus 4 bytes for end-of-sprite-list)
 ig_cm_sprite5_panel:           rs.b       (16*4)+4                                         ; panel sprite data for sprite 5
@@ -389,7 +399,7 @@ ig_om_next_tile_col_left:      rs.l       1                                     
 ig_om_next_tile_col_right:     rs.l       1                                                ; offset-pointer to column of screenbuffer where next tiles have to be drawn to the right of visible area
 ig_om_bools:                   rs.b       1
 ig_om_padding_byte:            rs.b       1
-ig_om_player                   rs.b       pl_size
+ig_om_player:                  rs.b       pl_size
 ig_om_playershots:             rs.b       ps_size*PsMaxCount                               ; playershots
 ig_om_playershots_end:         rs.b       0                                                ; marker for end of playershot-structs
 ig_om_playershot_explosion:    rs.b       exp_size                                         ; only one (is reused when still playing and a new one is spawned)
@@ -399,6 +409,8 @@ ig_om_enemy_explosion:         rs.b       exp_size                              
 ig_om_boss:                    rs.b       boss_size                                        ; boss struct
 ig_om_next_object_desc:        rs.l       1                                                ; next possible object descriptor (enemy to be spawned) - points to a list that is sorted by frame counter
 ig_om_end_object_desc:         rs.l       1                                                ; pointer directly behind last valid object descriptor (if ig_om_next_object_desc equals this, then there is no more object descriptor to process)
+ig_om_next_powerup_desc:       rs.l       1                                                ; next possible powerup to spawn - points to a list that is sorted by frame counter
+ig_om_end_powerup_desc:        rs.l       1                                                ; pointer directly behind last valid powerup descriptor (if ig_om_next_powerup_desc equals this, then there is no more powerup descriptor to process)
 ig_om_starfield:               rs.l       NumberOfStars                                    ; first word contains x-pos, second word contains value that is subtracted each frame
 ig_om_f003:                    rs.b       f003_size
 ig_om_size:                    rs.b       0
