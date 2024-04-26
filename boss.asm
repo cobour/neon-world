@@ -219,6 +219,7 @@ boss_update_pos_and_state:
   moveq.l    #BossShotEnemyDesc,d2
   move.w     .shot_movement(pc),d3
   moveq.l    #0,d4
+  moveq.l    #0,d5
   move.l     a0,a3
   jsr        spawn_new_enemy
   move.l     a3,a0
