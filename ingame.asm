@@ -121,7 +121,8 @@ ig_start:
 relocate_and_respawn_player:
                 jsr         player_set_respawn_level_position
                 jsr         pf_init
-                jsr         enemies_init 
+                jsr         enemies_init
+                jsr         boss_init
                 jsr         powerups_init
                 jsr         player_set_pos
 
