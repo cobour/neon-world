@@ -87,7 +87,8 @@ DONE    complete boss.asm tasks
 DONE    set players ypos always with respawn info (even when the level begins or level warp is used); set xpos always to 0
         when player dies, do not respawn directly, but fade out, reset to some specified points in level and fade back in (use level warp for this; see above)
 DONE            first reset by 3 screens
-                refinement: reset to pre-defined positions in level (then the respawn layer becomes obsolete)
+                remove boss
+DONE            refinement: reset to pre-defined positions in level
 
 ..      powerups for the player (stronger shot, faster movement, extra life)
 

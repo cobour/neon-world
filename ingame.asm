@@ -119,16 +119,7 @@ ig_start:
 
 ; relocate and respawn player at specific location
 relocate_and_respawn_player:
-                ; calc screen to respawn player at
-                move.l      ig_om_scroll_xpos(a4),d0
-                divu        #ScreenWidth,d0                                                    ; yeah, I know, divu is bad performance, but here we have as much time as needed and ScreenWidth is no power of 2
-                ext.l       d0                                                                 ; we do not need the remainder
-                subq.l      #3,d0                                                              ; reset player by 3 screens
-                tst.l       d0
-                bge.s       .relocate
-                moveq.l     #0,d0
-.relocate:
-                move.l      d0,ig_om_level_warp(a4)
+                jsr         player_set_respawn_level_position
                 jsr         pf_init
                 jsr         enemies_init 
                 jsr         powerups_init

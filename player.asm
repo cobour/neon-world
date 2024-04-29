@@ -367,3 +367,39 @@ player_firebutton:
 
 .2:
   rts
+
+; uses a0,d0-d3
+  xdef       player_set_respawn_level_position
+player_set_respawn_level_position:
+  lea.l      .positions(pc),a0
+  moveq.l    #-1,d3
+  move.l     ig_om_scroll_xpos(a4),d0
+  divu       #ScreenWidth,d0                                                          ; yeah, I know, divu is bad performance, but here we have as much time as needed and ScreenWidth is no power of 2
+  ext.l      d0                                                                       ; we do not need the remainder
+  tst.l      d0
+  bge.s      .get_position
+  moveq.l    #0,d0
+.get_position:
+  moveq.l    #0,d2
+.get_position_loop:
+  move.l     (a0)+,d1
+  cmp.l      d3,d1
+  beq.s      .exit                                                                    ; end of list reached?
+  cmp.l      d1,d0
+  blt.s      .exit
+  move.l     d1,d2
+  bra.s      .get_position_loop
+
+.exit:
+  move.l     d2,ig_om_level_warp(a4)
+  rts
+
+.positions:
+  dc.l       0
+  dc.l       4
+  dc.l       8
+  dc.l       12
+  dc.l       17
+  dc.l       21
+  dc.l       25
+  dc.l       -1                                                                       ; end of list
