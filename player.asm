@@ -130,6 +130,15 @@ empty_animstep:
 player_update:
   lea.l      ig_om_player(a4),a3
 
+; when player has to be respawned wait for end of fade out, then relocate and fade in
+  btst       #IgPlayerRespawn,ig_om_bools(a4)
+  beq.s      .no_respawn
+  btst       #GFadeOut,g_om_bools(a4)
+  bne.s      .no_respawn
+  ; relocate and respawn player in mainloop
+  bset       #IgPlayerRelocate,ig_om_bools(a4)
+
+.no_respawn:
 ; when player has died, only anim must be updated 
   btst       #IgPlayerDead,ig_om_bools(a4)
   bne        .update_anim
@@ -176,18 +185,18 @@ player_update:
   sbcd       d0,d1
   move.b     d1,g_om_lives(a4)
 
+  moveq.l    #1,d0
+  jsr        fade_out_init
+
   tst.b      g_om_lives(a4)
   beq.s      .coll_check_play_dead
   move.w     #PlNoColDetFramesTotal,pl_no_col_det_frames(a3)
+  bset       #IgPlayerRespawn,ig_om_bools(a4)
   bra.s      .coll_check_end
 .coll_check_play_dead:
   ; last life lost => player dead
   bset       #IgPlayerDead,ig_om_bools(a4)
-
-  moveq.l    #1,d0
-  jsr        fade_out_init
   bset       #IgExit,ig_om_bools(a4)
-
   bra        .update_anim
   endif
 .coll_check_end:

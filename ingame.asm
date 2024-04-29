@@ -68,6 +68,11 @@ ig_start:
                 bsr.s       .init_music
                 move.b      #1,_mt_Enable
 .mainloop:
+                btst        #IgPlayerRelocate,ig_om_bools(a4)
+                beq.s       .mainloop_check_exit
+                bsr         relocate_and_respawn_player
+
+.mainloop_check_exit:
                 btst        #IgExit,ig_om_bools(a4)
                 beq.s       .mainloop
 .fade_out_wait_loop:
@@ -112,6 +117,31 @@ ig_start:
 
                 rts
 
+; relocate and respawn player at specific location
+relocate_and_respawn_player:
+                ; calc screen to respawn player at
+                move.l      ig_om_scroll_xpos(a4),d0
+                divu        #ScreenWidth,d0                                                    ; yeah, I know, divu is bad performance, but here we have as much time as needed and ScreenWidth is no power of 2
+                ext.l       d0                                                                 ; we do not need the remainder
+                subq.l      #3,d0                                                              ; reset player by 3 screens
+                tst.l       d0
+                bge.s       .relocate
+                moveq.l     #0,d0
+.relocate:
+                move.l      d0,ig_om_level_warp(a4)
+                jsr         pf_init
+                jsr         enemies_init 
+                jsr         powerups_init
+                jsr         player_set_pos
+
+                ; relocation is done, fade in and continue
+                moveq.l     #1,d0
+                jsr         fade_in_init
+                bclr        #IgPlayerRespawn,ig_om_bools(a4)
+                bclr        #IgPlayerRelocate,ig_om_bools(a4)
+
+                rts
+
 ig_lvl3_handler:
                 movem.l     d0-d7/a0-a6,-(sp)
 
@@ -124,6 +154,14 @@ ig_lvl3_handler:
                 ; clear Copper-IRQ-Bit
                 move.w      #%0000000000010000,INTREQ(a6)
 
+                ; until relocating in mainloop is finished just play the music
+                btst        #IgPlayerRelocate,ig_om_bools(a4)
+                bne.s       .just_music
+
+                ; do fade-in or -out
+                lea.l       ig_cop_colors,a0
+                jsr         do_fade
+
                 ; update player sprite
                 jsr         player_update
  
@@ -132,10 +170,6 @@ ig_lvl3_handler:
 
                 ; update powerups early because they are hardware sprites
                 jsr         powerups_update
-
-                ; do fade-in or -out
-                lea.l       ig_cop_colors,a0
-                jsr         do_fade
 
                 ; scroll playfield (MUST be called before everything regarding BOBs, 
                 ; otherwise BOBs will be drawn to visible buffer, may cause flickering)
@@ -176,15 +210,16 @@ ig_lvl3_handler:
                 ; increment frame counter
                 add.l       #1,ig_om_frame_counter(a4)
 
-                ; call ptplayer for music and sfx
-                jsr         _mt_music
- 
                 ; update score/lives-panel (last because now we know if an update is needed and the panel-sprites are already displayed)
                 jsr         panel_update
 
                 ; check if level is over
                 bsr.s       check_end_condition
 
+.just_music:
+                ; call ptplayer for music and sfx
+                jsr         _mt_music
+ 
                 ifne        SHOW_BLUE_TIMING
                 clr.w       COLOR00(a6)
                 endif

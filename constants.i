@@ -423,6 +423,8 @@ IgDrawTiles                 equ 2                                               
 IgPlayerDead                equ 3                                                          ; has player died? 0 = nope
 IgPanelUpdate               equ 4                                                          ; needs the score/lives-panel an update? 0 = nope
 IgBossDeathAnimOver         equ 5                                                          ; the boss was killed and its death anim (multiple explosions?) is over. 0 = nope
+IgPlayerRespawn             equ 6                                                          ; player was hit and has to be respawned
+IgPlayerRelocate            equ 7                                                          ; player was hit and has to be relocated (in mainloop)
 
 ; MainMenu ChipMem
                                rsreset
