@@ -214,7 +214,7 @@ act_pup_ypos:
 act_pup_desc:
   dc.l       0
 
-PowerupDescCount equ 2
+PowerupDescCount equ 4
 powerups_desc_prts:
   dcb.l      PowerupDescCount
 powerups_desc:
@@ -224,6 +224,12 @@ powerups_desc:
   ; 1
   dc.l       (7*TilePixelHeight*TilesWidthBytes*TilesBitplanes)+14
   dc.l       powerup_1_collected
+  ; 2
+  dc.l       (5*TilePixelHeight*TilesWidthBytes*TilesBitplanes)+0
+  dc.l       powerup_2_collected
+  ; 3
+  dc.l       (5*TilePixelHeight*TilesWidthBytes*TilesBitplanes)+2
+  dc.l       powerup_3_collected
 
 powerup_0_collected:
   lea.l      ig_om_player(a4),a0
@@ -233,4 +239,21 @@ powerup_0_collected:
 powerup_1_collected:
   lea.l      ig_om_player(a4),a0
   move.w     #2,pl_weapon_strength(a0)
+  rts
+
+powerup_2_collected:
+  move.b     g_om_lives(a4),d0
+  cmp.b      #$99,d0
+  beq.s      .exit
+  move       #0,ccr
+  moveq.l    #1,d1
+  abcd       d1,d0
+  move.b     d0,g_om_lives(a4)
+  bset       #IgPanelUpdate,ig_om_bools(a4)
+.exit:
+  rts
+
+powerup_3_collected:
+  lea.l      ig_om_player(a4),a0
+  move.w     #2,pl_speed(a0)
   rts

@@ -339,6 +339,7 @@ pl_padding_byte:               rs.b       1
 pl_no_col_det_frames:          rs.w       1                                                ; framecounter indicating that no collision for player should be detected
 pl_joystick:                   rs.w       1                                                ; joystick state from current frame
 pl_weapon_strength:            rs.w       1                                                ; how many hit points for the enemy when hit?
+pl_speed:                      rs.w       1                                                ; how many pixel to move each frame
 pl_size:                       rs.b       0
 PlShotDelay                 equ 12                                                         ; minimum frames between two shots fired
 PlExplosion                 equ (f003_dat_explosion_anim_tmx_tiles_width*2)-2              ; frames showing player explosion
@@ -350,10 +351,10 @@ PlNoColDetFramesTotal       equ PlExplosion+PlNotVisibleAfterExpl+PlNoColDetAfte
 ; General OtherMem (MUST always be included at the beginning of EVERY OtherMem-structure)
                                rsreset
 g_om_bools:                    rs.b       1
-g_om_lives:                    rs.b       1
+g_om_lives:                    rs.b       1                                                ; bcd
 g_om_level:                    rs.b       1                                                ; 0 = mainmenu, 1 = level 1 etc., $7f = gameover
 g_om_padding_byte:             rs.b       1
-g_om_score:                    rs.l       1
+g_om_score:                    rs.l       1                                                ; bcd
 g_om_fade_fi_ptr:              rs.l       1                                                ; fade-in pointer
 g_om_fade_fo_ptr:              rs.l       1                                                ; fade-out pointer
 g_om_fade_counter:             rs.b       1                                                ; valid values 0-15, 0 means fading is done

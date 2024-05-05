@@ -16,6 +16,8 @@ player_init:
   move.w     d0,pl_no_col_det_frames(a3)
   move.b     #f003_dat_player_anim_horizontal_tmx_tiles_width,pl_max_animstep(a3)
   move.w     d0,pl_weapon_strength(a3)
+  moveq.l    #1,d0
+  move.w     d0,pl_speed(a3)
 ; calc gfx source pointer
   moveq.l    #0,d1
   move.w     (a1),d1
@@ -214,19 +216,20 @@ player_update:
 ; check joystick
   jsr        js_read
   move.w     d0,pl_joystick(a3)
+  move.w     pl_speed(a3),d1
  
 ; update position according to joystick movement and switch between animations
 .check_directions:
   btst       #JsLeft,d0
   beq.s      .check_right
   ; left
-  sub.w      #1,pl_xpos(a3)
+  sub.w      d1,pl_xpos(a3)
   bra.s      .check_vertical
 .check_right:
   btst       #JsRight,d0
   beq.s      .check_vertical
   ; right
-  add.w      #1,pl_xpos(a3)
+  add.w      d1,pl_xpos(a3)
 .check_vertical:
   move.l     #ig_om_f003+f003_dat_player_anim_horizontal_tmx+m_om_area,pl_anim(a3)
   move.b     #f003_dat_player_anim_horizontal_tmx_tiles_width,pl_max_animstep(a3)
@@ -234,7 +237,7 @@ player_update:
   btst       #JsDown,d0
   beq.s      .check_up
   ; down
-  add.w      #1,pl_ypos(a3)
+  add.w      d1,pl_ypos(a3)
   move.l     #ig_om_f003+f003_dat_player_anim_down_tmx+m_om_area,pl_anim(a3)
   move.b     #f003_dat_player_anim_down_tmx_tiles_width,pl_max_animstep(a3)
   bra.s      .end_check
@@ -242,7 +245,7 @@ player_update:
   btst       #JsUp,d0
   beq.s      .end_check
   ; up
-  sub.w      #1,pl_ypos(a3)
+  sub.w      d1,pl_ypos(a3)
   move.l     #ig_om_f003+f003_dat_player_anim_up_tmx+m_om_area,pl_anim(a3)
   move.b     #f003_dat_player_anim_up_tmx_tiles_width,pl_max_animstep(a3)
 .end_check:
