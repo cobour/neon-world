@@ -281,7 +281,7 @@ boss_bob_left_lower:           rs.b       b_size
 boss_bob_right_lower:          rs.b       b_size
 boss_size:                     rs.b       0
 ; constants
-BossShotDelay               equ 40
+BossShotDelay               equ 30
 BossShotEnemyDesc           equ 29
 BossShotMovementStrDesc     equ 9
 BossShotMovementUpDesc      equ 10

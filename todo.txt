@@ -90,10 +90,10 @@ DONE            first reset by 3 screens
 DONE            remove boss
 DONE            refinement: reset to pre-defined positions in level
 
-        remove all playershots when player dies
+DONE    remove all playershots when player dies
 
 ...     powerups for the player (stronger shot, faster movement, extra life) // TODO: waiting for final gfx from kev
 
-        let the boss shoot at all three angles, not only one
+DONE    let the boss shoot at all three angles, not only one
 
         pause key

@@ -124,21 +124,6 @@ boss_update_pos_and_state:
   move.w     ig_om_player+pl_ypos(a4),d4
   add.w      #TilePixelHeight/2,d4                                                                      ; middle
   sub.w      #ScreenStartY,d4
-  lea.l      .shot_movement(pc),a1
-  move.w     d3,d5
-  sub.w      d4,d5
-  cmp.w      #16,d5
-  bgt.s      .boss_shot_up
-  cmp.w      #-16,d6
-  blt.s      .boss_shot_down
-  move.w     #BossShotMovementStrDesc,(a1)
-  bra.s      .0
-.boss_shot_up:
-  move.w     #BossShotMovementUpDesc,(a1)
-  bra.s      .0
-.boss_shot_down:
-  move.w     #BossShotMovementDownDesc,(a1)
-.0:
   lea.l      .xadd(pc),a1
   lea.l      .yadd(pc),a2
   lea.l      .stay_back_timer(pc),a3
@@ -217,12 +202,21 @@ boss_update_pos_and_state:
   move.w     b_ypos(a0),d1
   add.w      #TilePixelHeight,d1
   moveq.l    #BossShotEnemyDesc,d2
-  move.w     .shot_movement(pc),d3
+  move.w     #BossShotMovementUpDesc,d3
   moveq.l    #0,d4
   moveq.l    #0,d5
-  move.l     a0,a3
+  movem.l    d0-d5/a0,-(sp)
   jsr        spawn_new_enemy
-  move.l     a3,a0
+  movem.l    (sp)+,d0-d5/a0
+  move.w     #BossShotMovementStrDesc,d3
+  movem.l    d0-d5/a0,-(sp)
+  jsr        spawn_new_enemy
+  movem.l    (sp)+,d0-d5/a0
+  move.w     #BossShotMovementDownDesc,d3
+  movem.l    d0-d5/a0,-(sp)
+  jsr        spawn_new_enemy
+  movem.l    (sp)+,d0-d5/a0
+
 
 .no_movement:
   move.w     enemy_hit_points(a0),d0
@@ -266,8 +260,6 @@ boss_update_pos_and_state:
 .stay_back_timer:
   dc.w       0
 .shot_delay:
-  dc.w       0
-.shot_movement:
   dc.w       0
 
 ; d0 - add xpos

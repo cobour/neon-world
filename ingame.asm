@@ -125,6 +125,7 @@ relocate_and_respawn_player:
                 jsr         boss_init
                 jsr         powerups_init
                 jsr         player_set_pos
+                jsr         ps_init
 
                 ; relocation is done, fade in and continue
                 moveq.l     #1,d0
