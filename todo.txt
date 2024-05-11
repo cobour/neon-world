@@ -92,7 +92,7 @@ DONE            refinement: reset to pre-defined positions in level
 
 DONE    remove all playershots when player dies
 
-...     powerups for the player (stronger shot, faster movement, extra life) // TODO: waiting for final gfx from kev
+DONE    powerups for the player (stronger shot, faster movement, extra life)
 
 DONE    let the boss shoot at all three angles, not only one
 
