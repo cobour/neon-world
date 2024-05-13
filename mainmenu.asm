@@ -45,6 +45,8 @@ mm_start:
   moveq.l       #1,d0
   jsr           fade_in_init
 
+  jsr           sfx_init
+
   lea.l         mm_cm_f000+f000_dat_tiles_iff(a5),a0
   jsr           text_init
 

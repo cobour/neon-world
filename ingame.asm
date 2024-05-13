@@ -43,6 +43,8 @@ ig_start:
                 moveq.l     #1,d0
                 jsr         fade_in_init
 
+                jsr         sfx_init
+
                 moveq.l     #INITIAL_LEVEL_WARP,d0
                 move.l      d0,ig_om_level_warp(a4)
                 jsr         pf_init
@@ -126,6 +128,7 @@ relocate_and_respawn_player:
                 jsr         powerups_init
                 jsr         player_set_pos
                 jsr         ps_init
+                jsr         sfx_init
 
                 ; relocation is done, fade in and continue
                 moveq.l     #1,d0
