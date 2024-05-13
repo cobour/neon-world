@@ -203,11 +203,6 @@ player_update:
   endif
 .coll_check_end:
 
-; set player position after explosion is shown
-  cmp.w      #PlNoColDetFramesWoExpl,pl_no_col_det_frames(a3)
-  bne.s      .read_joystick
-  bsr        player_set_pos
-
 .read_joystick:
 ; do not read joystick when not visible
   cmp.w      #PlNoColDetAfterVisible,pl_no_col_det_frames(a3)
@@ -327,13 +322,16 @@ player_update:
 ; uses d0,a2
   xdef       player_set_pos
 player_set_pos:
+  ; xpos
   move.w     #ScreenStartX,ig_om_player+pl_xpos(a4)
+
+  ; ypos
   move.l     a4,a2
   add.l      #ig_om_f003+f003_dat_level1_tmx_respawn_info,a2
-  move.l     ig_om_scroll_xpos(a4),d0
-  lsr.l      #4,d0                                                                    ; xpos of level / 16
+  move.l     ig_om_level_warp(a4),d0
   add.l      d0,d0                                                                    ; * 2 because the ypos are WORD values
   move.w     (a2,d0.w),ig_om_player+pl_ypos(a4)
+
   rts
 
 ; checks if player has pressed firebutton and spawns playershot

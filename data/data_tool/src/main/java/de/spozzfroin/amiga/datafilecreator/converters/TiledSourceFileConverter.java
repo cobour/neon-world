@@ -369,8 +369,16 @@ class TiledSourceFileConverter implements SourceFileConverter {
 	}
 
 	private void writeRespawnInfo(List<List<Integer>> allOffsets, OutputStream data) throws IOException {
-		this.respawnInfoSize = allOffsets.size() * 2; // one word value for each column/row
+		int columnNumber = -1; // to find first column of each screen
+		int count = 0;
 		for (var v : allOffsets) {
+			// is first column of screen?
+			columnNumber++;
+			if (columnNumber % 20 != 0) {
+				continue;
+			}
+			// yes, it is, so write ypos value
+			count++;
 			int index = -1;
 			do {
 				index++;
@@ -378,6 +386,7 @@ class TiledSourceFileConverter implements SourceFileConverter {
 			this.writeWord((index * 16) + 44, data); // magic value 44 = ScreenStartY (because the player is a hardware
 			// sprite and no bob)
 		}
+		this.respawnInfoSize = count * 2; // one word value for each column/row
 	}
 
 	private byte[] createByteArray(List<List<Integer>> allOffsets) {
