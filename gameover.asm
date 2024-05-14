@@ -43,8 +43,6 @@ go_start:
   moveq.l       #1,d0
   jsr           fade_in_init
 
-  jsr           sfx_init
-
   bsr           init_screenbuffer
   bsr           init_copper_list_and_irq_handler
   bsr           init_music

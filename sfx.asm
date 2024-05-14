@@ -2,12 +2,6 @@
               
   include    "constants.i"
 
-  xdef       sfx_init
-sfx_init:
-  moveq.l    #0,d0
-  move.l     d0,no_new_sfx_frame
-  rts
-
   xdef       sfx_select
 sfx_select:
   lea.l      select_sfx(pc),a0
@@ -36,28 +30,14 @@ sfx_explosion_small:
   xdef       sfx_powerup
 sfx_powerup:
   lea.l      powerup_sfx(pc),a0
-  bsr.s      sfx_play_sample
-  move.l     ig_om_frame_counter(a4),no_new_sfx_frame
-  add.l      #50,no_new_sfx_frame
-  rts
+  bra.s      sfx_play_sample
 
   xdef       sfx_shot
 sfx_shot:
   lea.l      shot_sfx(pc),a0
 
 sfx_play_sample:
-  move.l     d0,-(sp)
-  move.l     no_new_sfx_frame(pc),d0
-  cmp.l      ig_om_frame_counter(a4),d0
-  bgt.s      .do_not_play_sfx
-  move.l     (sp)+,d0
   jmp        _mt_playfx
-.do_not_play_sfx:
-  move.l     (sp)+,d0
-  rts
-
-no_new_sfx_frame:
-  dc.l       0
 
 select_sfx:
   dc.l       m_cm_area+mm_cm_f000+f000_dat_select_wav
@@ -107,4 +87,4 @@ powerup_sfx:
   dc.w       f002_dat_powerup_wav_period_pal
   dc.w       64
   dc.b       -1
-  dc.b       64
+  dc.b       127
