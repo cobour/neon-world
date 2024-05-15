@@ -20,6 +20,9 @@ powerups_init:
   add.l      d0,a0
   dbf        d7,.pup_desc_loop
 
+  ; important when respawning player
+  bsr        disable_powerup
+
   rts
 
   xdef       powerups_update
