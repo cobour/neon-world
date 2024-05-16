@@ -201,7 +201,9 @@ SHOW_BLUE_TIMING            equ 0
 SHOW_FREE_RAM               equ 0
 SHOW_COLLISION_RED          equ 0
 MANY_LIVES                  equ 0
-INITIAL_LEVEL_WARP          equ 0                                                          ; 25 for BOSS
+INITIAL_WEAPON_STRENGTH     equ 0
+INITIAL_PLAYER_SPEED        equ 0
+INITIAL_LEVEL_WARP          equ 0
 
 ; Structures
 

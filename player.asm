@@ -15,9 +15,20 @@ player_init:
   move.b     d0,pl_animstep(a3)
   move.w     d0,pl_no_col_det_frames(a3)
   move.b     #f003_dat_player_anim_horizontal_tmx_tiles_width,pl_max_animstep(a3)
+
+  ifne       INITIAL_WEAPON_STRENGTH
+  move.w     #INITIAL_WEAPON_STRENGTH,pl_weapon_strength(a3)
+  else
   move.w     d0,pl_weapon_strength(a3)
+  endif
+
   moveq.l    #1,d0
+  ifne       INITIAL_PLAYER_SPEED
+  move.w     #INITIAL_PLAYER_SPEED,pl_speed(a3)
+  else
   move.w     d0,pl_speed(a3)
+  endif
+
 ; calc gfx source pointer
   moveq.l    #0,d1
   move.w     (a1),d1
@@ -212,7 +223,14 @@ player_update:
   jsr        js_read
   move.w     d0,pl_joystick(a3)
   move.w     pl_speed(a3),d1
- 
+  cmp.w      #2,d1
+  ; cut effective speed to 1.5 pixel per frame (alternating between 1 and 2 pixels each frame)
+  bne.s      .no_adjustment
+  move.l     ig_om_frame_counter(a4),d2
+  btst       #0,d2
+  beq.s      .no_adjustment
+  sub.w      #1,d1
+.no_adjustment:
 ; update position according to joystick movement and switch between animations
 .check_directions:
   btst       #JsLeft,d0
@@ -403,4 +421,5 @@ player_set_respawn_level_position:
   dc.l       17
   dc.l       21
   dc.l       25
+  dc.l       28
   dc.l       -1                                                                       ; end of list
