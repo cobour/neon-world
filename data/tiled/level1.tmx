@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="670" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="5" nextobjectid="167">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="670" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="5" nextobjectid="168">
  <tileset firstgid="1" source="Tileset.tsx"/>
  <layer id="1" name="playfield layer" width="670" height="16">
   <data encoding="csv">
@@ -1012,17 +1012,25 @@
   <object id="165" gid="161" x="9642" y="92" width="16" height="16">
    <properties>
     <property name="count" type="int" value="8"/>
-    <property name="count_spawn_delay" type="int" value="10"/>
+    <property name="count_spawn_delay" type="int" value="9"/>
     <property name="enemy_desc" type="int" value="5"/>
     <property name="movement_desc" type="int" value="12"/>
    </properties>
   </object>
   <object id="166" gid="161" x="9681" y="153" width="16" height="16">
    <properties>
-    <property name="count" type="int" value="12"/>
+    <property name="count" type="int" value="10"/>
     <property name="count_spawn_delay" type="int" value="10"/>
     <property name="enemy_desc" type="int" value="5"/>
     <property name="movement_desc" type="int" value="12"/>
+   </properties>
+  </object>
+  <object id="167" gid="104" x="9616" y="207" width="16" height="16">
+   <properties>
+    <property name="count" type="int" value="6"/>
+    <property name="count_spawn_delay" type="int" value="14"/>
+    <property name="enemy_desc" type="int" value="3"/>
+    <property name="movement_desc" type="int" value="13"/>
    </properties>
   </object>
  </objectgroup>
