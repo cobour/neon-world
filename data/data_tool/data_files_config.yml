@@ -124,6 +124,7 @@ targetFiles:
       - filename: movements/boss_shot_straight.ods
       - filename: movements/boss_shot_up.ods
       - filename: movements/boss_shot_down.ods
+      - filename: movements/left_down_stairs.ods
   - filename: F004
     memoryType: CHIP
     sourceFiles:

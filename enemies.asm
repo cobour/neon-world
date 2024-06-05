@@ -596,7 +596,7 @@ first_enemy_descriptor:
   dc.w       0,0,0,0
 
 ; movement descriptors and index
-MovementDescCount equ 12
+MovementDescCount equ 13
 movement_descriptors_index:
   dcb.l      MovementDescCount
 ; see constants.i -> mvd_*
@@ -637,3 +637,6 @@ first_movement_descriptor:
   ; 11
   dc.l       ig_om_f003+f003_dat_boss_shot_down_ods
   dc.w       f003_dat_boss_shot_down_ods_steps
+  ; 12
+  dc.l       ig_om_f003+f003_dat_left_down_stairs_ods
+  dc.w       f003_dat_left_down_left_ods_steps
