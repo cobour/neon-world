@@ -63,7 +63,13 @@ ps_new_shot:
   move.l     #(TilesWidthBytes*TilesBitplanes*TilePixelHeight*10)+16,b_tiles_offset(a1)
   bra.s      .play_sfx
 .not_1:
+  cmp.w      #2,d0
+  bne.s      .not_2
   move.l     #(TilesWidthBytes*TilesBitplanes*TilePixelHeight*11)+16,b_tiles_offset(a1)
+  bra.s      .play_sfx
+.not_2:
+  move.l     #(TilesWidthBytes*TilesBitplanes*TilePixelHeight*12)+16,b_tiles_offset(a1)
+
 .play_sfx:
 ; play shot sample
   jmp        sfx_shot
@@ -101,11 +107,38 @@ ps_update_pos_and_state:
   addq.l     #2,d1
   move.l     d1,b_eol_frame(a1)
   bclr       #BobCanCollide,b_bools(a1)
-  bra.s      .go_on
+  bra        .go_on
 
   ; check for collision with background between old and new position
 .still_on_screen:
+  ; upper bound of shot
   move.w     b_ypos(a1),d1
+  sub.w      ig_om_player+pl_weapon_strength(a4),d1
+  move.w     ig_om_scroll_xpos_frbuf(a4),d2
+  jsr        cc_scr_to_bplptr
+  move.l     a3,a0
+  add.l      d1,a0
+
+  ; check for any pixel in masked range
+  add.l      #LevelScreenBufferWidthBytes*ScreenBitPlanes*7,a0
+  move.l     (a0),d3
+  add.l      #LevelScreenBufferWidthBytes,a0
+  or.l       (a0),d3
+  add.l      #LevelScreenBufferWidthBytes,a0
+  or.l       (a0),d3
+  add.l      #LevelScreenBufferWidthBytes,a0
+  or.l       (a0),d3
+  lea.l      mask_background(pc),a0
+  lsl.w      #2,d0
+  move.l     (a0,d0.w),d2
+  and.l      d2,d3
+  tst.l      d3
+  bne.s      .hit
+
+  ; lower bound of shot
+  move.w     b_xpos(a1),d0
+  move.w     b_ypos(a1),d1
+  add.w      ig_om_player+pl_weapon_strength(a4),d1
   move.w     ig_om_scroll_xpos_frbuf(a4),d2
   jsr        cc_scr_to_bplptr
   move.l     a3,a0
@@ -127,6 +160,7 @@ ps_update_pos_and_state:
   tst.l      d3
   beq.s      .go_on
 
+.hit:
   ; shot hit background
   jsr        sfx_explosion_small
   move.l     ig_om_frame_counter(a4),d0

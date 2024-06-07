@@ -58,6 +58,7 @@ cd_check:
   ; is shot above enemy? then .next_en
   move.w     b_ypos(a0),d0
   add.w      #9,d0                                          ; add 6 because shot-gfx is less than 16 pixels tall
+  add.w      ig_om_player+pl_weapon_strength(a4),d0
   move.w     b_ypos(a1),d1
   add.w      ed_coldet_y1(a2),d1
   cmp.w      d0,d1
@@ -65,6 +66,7 @@ cd_check:
 
   ; is show below enemy? then .next_en
   sub.w      #3,d0                                          ; shot-gfx is 3 pixels tall
+  sub.w      ig_om_player+pl_weapon_strength(a4),d0
   move.w     b_ypos(a1),d1
   add.w      ed_coldet_y2(a2),d1
   cmp.w      d0,d1

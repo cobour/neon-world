@@ -233,6 +233,9 @@ powerups_desc:
   ; 3
   dc.l       (5*TilePixelHeight*TilesWidthBytes*TilesBitplanes)+2
   dc.l       powerup_3_collected
+  ; 4
+  dc.l       (8*TilePixelHeight*TilesWidthBytes*TilesBitplanes)+14
+  dc.l       powerup_4_collected
 
 powerup_0_collected:
   lea.l      ig_om_player(a4),a0
@@ -259,4 +262,9 @@ powerup_2_collected:
 powerup_3_collected:
   lea.l      ig_om_player(a4),a0
   move.w     #2,pl_speed(a0)
+  rts
+
+powerup_4_collected:
+  lea.l      ig_om_player(a4),a0
+  move.w     #3,pl_weapon_strength(a0)
   rts
