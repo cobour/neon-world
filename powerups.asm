@@ -239,12 +239,18 @@ powerups_desc:
 
 powerup_0_collected:
   lea.l      ig_om_player(a4),a0
+  cmp.w      #1,pl_weapon_strength(a0)
+  bgt.s      .exit
   move.w     #1,pl_weapon_strength(a0)
+.exit:
   rts
 
 powerup_1_collected:
   lea.l      ig_om_player(a4),a0
+  cmp.w      #2,pl_weapon_strength(a0)
+  bgt.s      .exit
   move.w     #2,pl_weapon_strength(a0)
+.exit:
   rts
 
 powerup_2_collected:
