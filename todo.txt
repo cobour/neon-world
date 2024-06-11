@@ -98,4 +98,11 @@ DONE    let the boss shoot at all three angles, not only one
 
 DONE    remove unnecessary entries in respawn table (only first column of screen is needed)
 
-        pause key
+nope    pause key
+
+        playershot explosion: when near to right border do not show explosion (because of the constant redraw of level there might be false positives)
+
+        when player dies, reset to speed 1 and weapon strength 1 => more powerups in the level necessary
+        when player dies and boss is on-screen, then respawn immediately and leave all powerups to player
+
+        mainmenu: at bottom switch between credits and info about enemies and powerups
