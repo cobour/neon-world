@@ -284,9 +284,12 @@ boss_update_pos_and_state:
 
 additional_death_explosions:
   dc.w       4,12
-  dc.w       20,14
+  dc.w       12,14
   dc.w       -6,6
   dc.w       -4,-2
+  dc.w       5,7
+  dc.w       -2,-2
+  dc.w       3,10
   dc.l       0
 
 next_additional_death_explosion:
