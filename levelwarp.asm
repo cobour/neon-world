@@ -24,8 +24,8 @@ level_warp_playfield:
 
 ; ig_om_next_tile_offset
   move.l     d0,d1
-  mulu       #(20*16*2),d1                                     ; 20 columns per screen, 16 rows per column, one offset is 2 bytes wide
-  add.l      #m_om_area+ig_om_f003+f003_dat_level1_tmx,d1      ; add base address of tile-offsets
+  mulu       #(20*16*2),d1                                   ; 20 columns per screen, 16 rows per column, one offset is 2 bytes wide
+  add.l      #m_om_area+ig_om_f003+f003_dat_level1_tmx,d1    ; add base address of tile-offsets
   move.l     d1,ig_om_next_tile_offset(a4)
 
 ; ig_om_next_tile_col_left - set by pf_init.init_screen_buffer, dependant on ig_om_next_tile_offset
@@ -40,7 +40,8 @@ level_warp_playfield:
 level_warp_enemies:
 
 ; ig_om_next_object_desc
-  lea.l      ig_om_f003+f003_dat_level1_tmx_objects(a4),a0
+  move.l     a4,a0
+  add.l      #ig_om_f003+f003_dat_level1_tmx_objects,a0
   move.l     ig_om_frame_counter(a4),d0
 .next_object_desc_loop:
   cmp.l      obj_spawn_frame(a0),d0
@@ -58,7 +59,8 @@ level_warp_enemies:
 ; MUST be called before powerups_init
 level_warp_powerups:
 ; set_next_powerup_desc
-  lea.l      ig_om_f003+f003_dat_level1_tmx_powerups(a4),a0
+  move.l     a4,a0
+  add.l      #ig_om_f003+f003_dat_level1_tmx_powerups,a0
   move.l     ig_om_frame_counter(a4),d0
 .next_powerup_desc_loop:
   cmp.l      pup_spawn_frame(a0),d0

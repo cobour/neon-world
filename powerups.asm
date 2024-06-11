@@ -5,7 +5,8 @@
   xdef       powerups_init
 powerups_init:
   ; init values for powerup descriptors
-  lea.l      ig_om_f003+f003_dat_level1_tmx_powerups(a4),a0
+  move.l     a4,a0
+  add.l      #ig_om_f003+f003_dat_level1_tmx_powerups,a0
   add.l      #f003_dat_level1_tmx_powerups_size,a0
   move.l     a0,ig_om_end_powerup_desc(a4)
   jsr        level_warp_powerups
