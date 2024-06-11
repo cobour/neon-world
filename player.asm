@@ -7,7 +7,8 @@
 ; uses a1-a3,d0,d1,d7
 player_init:
 ; init player-struct
-  lea.l      ig_om_f003+f003_dat_player_anim_horizontal_tmx(a4),a1
+  move.l     a4,a1
+  add.l      #ig_om_f003+f003_dat_player_anim_horizontal_tmx,a1
   lea.l      ig_om_player(a4),a3
   bsr        player_set_pos
   move.l     a1,pl_anim(a3)
@@ -422,4 +423,12 @@ player_set_respawn_level_position:
   dc.l       21
   dc.l       25
   dc.l       28
+  dc.l       32
+  dc.l       36
+  dc.l       39
+  dc.l       43
+  dc.l       48
+  dc.l       52
+  dc.l       55
+  dc.l       58
   dc.l       -1                                                                       ; end of list
