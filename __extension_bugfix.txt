@@ -1,9 +1,0 @@
-To fix "Cannot read properties of undefined (reading 'on')"-bug, navigate to file
-"~/.vscode/extensions/prb28.amiga-assembly-x.y.z/dist/extension.js"
-and replace this:
-
-process.on("unhandledRejection",((e,t)=>{a.logger.error(e+" Unhandled Rejection at Promise "+t)})).on("uncaughtException",(e=>{a.logger.error("Uncaught Exception thrown: "+this.errorString(e)),process.exit(1)}));
-
-with this:
-
-process.on("unhandledRejection",((e,t)=>{a.logger.error(e+" Unhandled Rejection at Promise "+t)}));process.on("uncaughtException",(e=>{a.logger.error("Uncaught Exception thrown: "+this.errorString(e)),process.exit(1)}));
