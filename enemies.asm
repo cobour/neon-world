@@ -379,7 +379,7 @@ ed_draw_bob:
   jmp        bob_draw
 
 ; enemy descriptors and index
-EnemyDescCount    equ 30
+EnemyDescCount    equ 31
   xdef       enemy_descriptors_index
 enemy_descriptors_index:
   dcb.l      EnemyDescCount
@@ -595,9 +595,17 @@ first_enemy_descriptor:
   dc.w       $0000
   dc.w       0
   dc.w       0,0,0,0
+  ; 30
+  dc.l       ig_om_f003+f003_dat_blue_robot_anim_tmx
+  dc.w       f003_dat_blue_robot_anim_tmx_tiles_width
+  dc.w       5
+  dc.w       $0080
+  dc.w       15
+  dc.w       0,0,15,15
+
 
 ; movement descriptors and index
-MovementDescCount equ 15
+MovementDescCount equ 16
 movement_descriptors_index:
   dcb.l      MovementDescCount
 ; see constants.i -> mvd_*
@@ -647,3 +655,6 @@ first_movement_descriptor:
   ; 14
   dc.l       ig_om_f003+f003_dat_left_down_ods
   dc.w       f003_dat_left_down_ods_steps
+  ; 15
+  dc.l       ig_om_f003+f003_dat_hover_ods
+  dc.w       f003_dat_hover_ods_steps
