@@ -15,7 +15,7 @@ LibreOffice Calc for definition of object movements
 
 ## Test systems
 
-The game is tested using FS-UAE (v3.1.66) and vAmiga (v2.5) on macOS.  
+The game is tested using FS-UAE (v3.1.66).  
 Also tested on my Amiga 500 (rev. 6a) using Kickstart 1.3 and 2.0 with 1 MB Chip-RAM and 1.5 MB Slow-RAM.  
 
 ## Target systems
