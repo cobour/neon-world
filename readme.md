@@ -20,8 +20,7 @@ Also tested on my Amiga 500 (rev. 6a) using Kickstart 1.3 and 2.0 with 1 MB Chip
 
 ## Target systems
 
-Should run on any PAL-Amiga with at least 512kb Chip-RAM.  
-When using Kickstart v2.x or higher and/or external floppy drives or hard drives are connected, additional 512 kb RAM of any type may be necessary.  
+Should run on any PAL-Amiga with at least 512kb Chip-RAM and another 512kb RAM of any type.  
 The game uses a DOS disk, so it should be no problem to install the game on a harddisk.  
 When running the game in an emulator there could be some slight stuttering. This is a problem because of most modern systems having a framerate higher than 50Hz. The game runs at 50 Hz and on my Amiga 500 and external monitor (that supports 50Hz) the scrolling and sprite movements are totally smooth.  
 
