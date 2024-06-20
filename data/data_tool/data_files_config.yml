@@ -128,6 +128,7 @@ targetFiles:
       - filename: movements/bounce_small.ods
       - filename: movements/left_down.ods
       - filename: movements/hover.ods
+      - filename: movements/bounce_big.ods
   - filename: F004
     memoryType: CHIP
     sourceFiles:
