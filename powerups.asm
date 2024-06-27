@@ -218,7 +218,7 @@ act_pup_ypos:
 act_pup_desc:
   dc.l       0
 
-PowerupDescCount equ 4
+PowerupDescCount equ 5
 powerups_desc_prts:
   dcb.l      PowerupDescCount
 powerups_desc:

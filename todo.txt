@@ -102,6 +102,8 @@ nope    pause key
 
         playershot explosion: when near to right border do not show explosion (because of the constant redraw of level there might be false positives)
 
+        draw playershots before enemy shots, so playershots do not die when hitting enemy shots
+
         when player dies, reset to speed 1 and weapon strength 1 => more powerups in the level necessary
         when player dies and boss is on-screen, then respawn immediately and leave all powerups to player
 

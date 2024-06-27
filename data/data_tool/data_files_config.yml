@@ -129,6 +129,9 @@ targetFiles:
       - filename: movements/left_down.ods
       - filename: movements/hover.ods
       - filename: movements/bounce_big.ods
+      - filename: movements/horizontal_jellyfish.ods
+      - filename: movements/left_down_2.ods
+      - filename: movements/left_down_3.ods
   - filename: F004
     memoryType: CHIP
     sourceFiles:
