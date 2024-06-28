@@ -176,14 +176,14 @@ player_update:
   ifne       SHOW_COLLISION_RED
   clr.w      COLOR00(a6)
   endif
-  bra.s      .coll_check_end
+  bra        .coll_check_end
 .collision_detected:
   ifne       SHOW_COLLISION_RED
   move.w     #$0f00,COLOR00(a6)
   else
   ; indestructable after being hit
   tst.w      pl_no_col_det_frames(a3)
-  bne.s      .coll_check_end
+  bne        .coll_check_end
   ; being hit and decrement lives-counter
   jsr        sfx_explosion
 
@@ -199,16 +199,33 @@ player_update:
   sbcd       d0,d1
   move.b     d1,g_om_lives(a4)
 
+  move.b     ig_om_boss+enemy_bools(a4),d0
+  btst       #EnemyActive,d0
+  bne.s      .coll_check_no_fade_out
   moveq.l    #1,d0
   jsr        fade_out_init
+.coll_check_no_fade_out:
 
   tst.b      g_om_lives(a4)
-  beq.s      .coll_check_play_dead
+  beq.s      .coll_check_player_dead
+
   move.w     #PlNoColDetFramesTotal,pl_no_col_det_frames(a3)
+  
+  move.b     ig_om_boss+enemy_bools(a4),d0
+  btst       #EnemyActive,d0
+  bne.s      .coll_check_no_respawn
   bset       #IgPlayerRespawn,ig_om_bools(a4)
+.coll_check_no_respawn:
+
   bra.s      .coll_check_end
-.coll_check_play_dead:
+.coll_check_player_dead:
   ; last life lost => player dead
+  move.b     ig_om_boss+enemy_bools(a4),d0
+  btst       #EnemyActive,d0
+  beq.s      .coll_check_player_dead_no_fade_out
+  moveq.l    #1,d0
+  jsr        fade_out_init
+.coll_check_player_dead_no_fade_out:
   bset       #IgPlayerDead,ig_om_bools(a4)
   bset       #IgExit,ig_om_bools(a4)
   bra        .update_anim
