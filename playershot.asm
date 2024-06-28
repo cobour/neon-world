@@ -168,6 +168,11 @@ ps_update_pos_and_state:
   move.l     d0,b_eol_frame(a1)
   bclr       #BobCanCollide,b_bools(a1)
 
+  ; if shot is at right border do not spawn explosion
+  move.w     b_xpos(a1),d0
+  cmp.w      #ScreenWidth-8,d0
+  bge.s      .go_on
+
   ; spawn small explosion (only one at a time is enough)
   lea.l      ig_om_playershot_explosion(a4),a2
   bset       #BobActive,b_bools(a2)
