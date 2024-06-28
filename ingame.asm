@@ -174,15 +174,15 @@ ig_lvl3_handler:
                 ; read firebutton 
                 jsr         player_firebutton
                 
-                ; update position and state of all currently active enemies and/or boss
-                jsr         enemies_update_pos_and_state
-                jsr         boss_update_pos_and_state
-
                 ; draw static unkillable enemies before collision detection for playershots
                 jsr         background_enemies_draw
 
                 ; update all currently active playershots and playershot-explosion
                 jsr         ps_update_pos_and_state
+
+                ; update position and state of all currently active enemies and/or boss
+                jsr         enemies_update_pos_and_state
+                jsr         boss_update_pos_and_state
 
                 ; check for collisions between playershots and enemies
                 jsr         cd_check

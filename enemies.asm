@@ -586,7 +586,7 @@ first_enemy_descriptor:
   dc.w       0                                                        ; no anim
   dc.w       0                                                        ; no anim
   dc.w       $0250
-  dc.w       80
+  dc.w       150
   dc.w       4,4,30,29
   ; 29 BOSS SHOTS
   dc.l       ig_om_f003+f003_dat_boss_shot_anim_tmx
