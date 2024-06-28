@@ -149,7 +149,7 @@ ig_lvl3_handler:
 
                 ; until relocating in mainloop is finished just play the music
                 btst        #IgPlayerRelocate,ig_om_bools(a4)
-                bne.s       .just_music
+                bne         .just_music
 
                 ; do fade-in or -out
                 lea.l       ig_cop_colors,a0
@@ -174,15 +174,26 @@ ig_lvl3_handler:
                 ; read firebutton 
                 jsr         player_firebutton
                 
-                ; draw static unkillable enemies before collision detection for playershots
+                ; update position and state of all currently active enemies and/or boss
+                jsr         enemies_update_pos_and_state
+                jsr         boss_update_pos_and_state
+
+                ; draw static unkillable enemies before collision detection for playershots (when boss is NOT active)
+                move.b      ig_om_boss+enemy_bools(a4),d0
+                btst        #EnemyActive,d0
+                bne.s       .1
                 jsr         background_enemies_draw
+.1:
 
                 ; update all currently active playershots and playershot-explosion
                 jsr         ps_update_pos_and_state
 
-                ; update position and state of all currently active enemies and/or boss
-                jsr         enemies_update_pos_and_state
-                jsr         boss_update_pos_and_state
+                ; draw static unkillable enemies before collision detection for playershots (when boss is active)
+                move.b      ig_om_boss+enemy_bools(a4),d0
+                btst        #EnemyActive,d0
+                beq.s       .2
+                jsr         background_enemies_draw
+.2:
 
                 ; check for collisions between playershots and enemies
                 jsr         cd_check
