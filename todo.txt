@@ -100,11 +100,13 @@ DONE    remove unnecessary entries in respawn table (only first column of screen
 
 nope    pause key
 
-        playershot explosion: when near to right border do not show explosion (because of the constant redraw of level there might be false positives)
+DONE    playershot explosion: when near to right border do not show explosion (because of the constant redraw of level there might be false positives)
 
-        draw playershots before enemy shots, so playershots do not die when hitting enemy shots
+DONE    draw playershots before enemy shots, so playershots do not die when hitting enemy shots
+
+DONE    when player dies and boss is on-screen, then respawn immediately and leave all powerups to player
 
         when player dies, reset to speed 1 and weapon strength 1 => more powerups in the level necessary
-        when player dies and boss is on-screen, then respawn immediately and leave all powerups to player
+                keep powerups when boss is active
 
         mainmenu: at bottom switch between credits and info about enemies and powerups
