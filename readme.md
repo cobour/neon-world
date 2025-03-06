@@ -1,5 +1,11 @@
 # Neon-World (Shoot-em-up hobby-project for the Amiga)
 
+## UPDATE 06.03.2025 - This is it
+
+I think that this is the final state of Neonorld. It was a very good learning project for me, but now it feels finished for me.
+I've made some small fixes to run the data-tool on windows without problems.
+Feel free to do with this source code whatever you want. Have fun!
+
 ## Motivation
 
 After 30 years of not-assembly-coding I wanted to start a small project for my beloved Amiga 500.  

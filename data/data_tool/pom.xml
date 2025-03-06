@@ -41,6 +41,11 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <arguments>
+                        <argument>config.file=./data_files_config.yml</argument>
+                    </arguments>
+                </configuration>
             </plugin>
         </plugins>
     </build>
